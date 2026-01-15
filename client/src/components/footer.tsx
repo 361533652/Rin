@@ -6,6 +6,7 @@ import { siteName } from '../utils/constants';
 import { useTranslation } from "react-i18next";
 import { useLoginModal } from '../hooks/useLoginModal';
 import { MusicPlayer } from './music_player';
+import { defaultSongs } from '../types/music';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 function Footer() {
@@ -41,64 +42,68 @@ function Footer() {
     };
 
     return (
-        <footer>
-            <Helmet>
-                <link rel="alternate" type="application/rss+xml" title={siteName} href="/sub/rss.xml" />
-                <link rel="alternate" type="application/atom+xml" title={siteName} href="/sub/atom.xml" />
-                <link rel="alternate" type="application/json" title={siteName} href="/sub/rss.json" />
-            </Helmet>
-            <div className="flex flex-col mb-8 space-y-2 justify-center items-center t-primary ani-show">
-                {footerHtml && <div dangerouslySetInnerHTML={{ __html: footerHtml }} />}
-                <p className='text-sm text-neutral-500 font-normal link-line'>
-                    <span onDoubleClick={() => {
-                        if(doubleClickTimes >= 2){ // actually need 3 times doubleClick
-                            setDoubleClickTimes(0)
-                            if(!loginEnabled) {
-                                setIsOpened(true)
+        <div>
+            <footer>
+                <Helmet>
+                    <link rel="alternate" type="application/rss+xml" title={siteName} href="/sub/rss.xml" />
+                    <link rel="alternate" type="application/atom+xml" title={siteName} href="/sub/atom.xml" />
+                    <link rel="alternate" type="application/json" title={siteName} href="/sub/rss.json" />
+                </Helmet>
+                <div className="flex flex-col mb-8 space-y-2 justify-center items-center t-primary ani-show">
+                    {footerHtml && <div dangerouslySetInnerHTML={{ __html: footerHtml }} />}
+                    <p className='text-sm text-neutral-500 font-normal link-line'>
+                        <span onDoubleClick={() => {
+                            if(doubleClickTimes >= 2){ // actually need 3 times doubleClick
+                                setDoubleClickTimes(0)
+                                if(!loginEnabled) {
+                                    setIsOpened(true)
+                                }
+                            } else {
+                                setDoubleClickTimes(doubleClickTimes + 1)
                             }
-                        } else {
-                            setDoubleClickTimes(doubleClickTimes + 1)
-                        }
-                    }}>
-                        © {new Date().getFullYear()} Powered by <a className='hover:underline' href="https://github.com/openRin/Rin" target="_blank">Rin</a>
-                    </span>
-                    {config.get<boolean>('rss') && <>
-                        <Spliter />
-                        <Popup trigger={
-                            <button className="hover:underline" type="button">
-                                RSS
-                            </button>
-                        }
-                            position="top center"
-                            arrow={false}
-                            closeOnDocumentClick>
-                            <div className="border-card">
-                                <p className='font-bold t-primary'>
-                                    {t('footer.rss')}
-                                </p>
-                                <p>
-                                    <a href='/sub/rss.xml'>
-                                        RSS
-                                    </a> <Spliter />
-                                    <a href='/sub/atom.xml'>
-                                        Atom
-                                    </a> <Spliter />
-                                    <a href='/sub/rss.json'>
-                                        JSON
-                                    </a>
-                                </p>
+                        }}>
+                            © {new Date().getFullYear()} Powered by <a className='hover:underline' href="https://github.com/openRin/Rin" target="_blank">Rin</a>
+                        </span>
+                        {config.get<boolean>('rss') && <>
+                            <Spliter />
+                            <Popup trigger={
+                                <button className="hover:underline" type="button">
+                                    RSS
+                                </button>
+                            }
+                                position="top center"
+                                arrow={false}
+                                closeOnDocumentClick>
+                                <div className="border-card">
+                                    <p className='font-bold t-primary'>
+                                        {t('footer.rss')}
+                                    </p>
+                                    <p>
+                                        <a href='/sub/rss.xml'>
+                                            RSS
+                                        </a> <Spliter />
+                                        <a href='/sub/atom.xml'>
+                                            Atom
+                                        </a> <Spliter />
+                                        <a href='/sub/rss.json'>
+                                            JSON
+                                        </a>
+                                    </p>
 
-                            </div>
-                        </Popup>
-                    </>}
-                </p>
-                {/* 音乐播放器 */}
-                <div className="w-full max-w-5xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                                </div>
+                            </Popup>
+                        </>}
+                    </p>
+                </div>
+                <LoginModal />
+            </footer>
+            {/* 音乐播放器 - 独立固定在底部 */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-zinc-200 dark:border-zinc-700 z-50 px-4 py-2">
+                <div className="w-full max-w-5xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mx-auto">
                     <div className="flex-1 min-w-0">
                         <MusicPlayer 
-                            src={process.env.MUSIC_URL || 'https://music.163.com/song/media/outer/url?id=191249.mp3'}
-                            title={process.env.MUSIC_TITLE || '背景音乐'}
-                            artist={process.env.MUSIC_ARTIST || '未知艺术家'}
+                            songs={defaultSongs}
+                            autoPlay={true}
                         />
                     </div>
                     {/* 夜间模式切换：放右侧，不占用太多纵向空间 */}
@@ -109,8 +114,7 @@ function Footer() {
                     </div>
                 </div>
             </div>
-            <LoginModal />
-        </footer>
+        </div>
     );
 }
 

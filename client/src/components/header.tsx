@@ -11,6 +11,7 @@ import { IconSmall } from "./icon";
 import { Input } from "./input";
 import { Padding } from "./padding";
 import { ClientConfigContext } from "../state/config";
+import { Weather } from "./weather";
 
 
 export function Header({ children }: { children?: React.ReactNode }) {
@@ -58,6 +59,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                 </div>
                             </div>
                             <div className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
+                                <Weather />
                                 <SearchButton />
                                 <LanguageSwitch />
                                 <UserAvatar profile={profile} />
@@ -123,11 +125,12 @@ function Menu() {
                 overlayStyle={{ background: "rgba(0,0,0,0.3)" }}
             >
                 <div className="flex flex-col bg-w rounded-xl p-2 mt-4 w-[50vw]">
-                    <div className="flex flex-row justify-end space-x-2">
-                        <SearchButton onClose={onClose} />
-                        <LanguageSwitch />
-                        <UserAvatar profile={profile} />
-                    </div>
+                        <div className="flex flex-row justify-end space-x-2">
+                            <Weather />
+                            <SearchButton onClose={onClose} />
+                            <LanguageSwitch />
+                            <UserAvatar profile={profile} />
+                        </div>
                     <NavBar menu={true} onClick={onClose} />
                 </div>
             </Popup>
