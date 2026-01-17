@@ -5,6 +5,8 @@ import { DefaultParams, PathPattern, Route, Switch } from 'wouter'
 import Footer from './components/footer'
 import { Header } from './components/header'
 import { Padding } from './components/padding'
+import { MusicPlayer } from './components/music_player'
+import { defaultSongs } from './types/music'
 import useTableOfContents from './hooks/useTableOfContents.tsx'
 import { client } from './main'
 import { CallbackPage } from './page/callback'
@@ -177,12 +179,23 @@ function App() {
             </RouteMe>
 
             {/* Default route in a switch */}
-            <RouteMe>
+            <RouteMe path="*">
               <ErrorPage error={t('error.not_found')} />
             </RouteMe>
           </Switch>
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
+      {/* 音乐播放器 - 独立固定在底部，不受路由切换影响 */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-zinc-200 dark:border-zinc-700 z-50 px-4 py-2">
+        <div className="w-full max-w-5xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mx-auto">
+          <div className="flex-1 min-w-0">
+            <MusicPlayer 
+              songs={defaultSongs}
+              autoPlay={true}
+            />
+          </div>
+        </div>
+      </div>
     </>
   )
 }
