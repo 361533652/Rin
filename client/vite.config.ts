@@ -12,6 +12,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       visualizer({ open: true }) // 自动开启分析页面
-    ],
+    ]
   }
 })
