@@ -515,7 +515,8 @@ const AI_PROVIDER_PRESETS = [
     { value: 'claude', label: 'Claude', url: 'https://api.anthropic.com/v1' },
     { value: 'gemini', label: 'Gemini', url: 'https://generativelanguage.googleapis.com/v1beta/openai' },
     { value: 'deepseek', label: 'DeepSeek', url: 'https://api.deepseek.com/v1' },
-    { value: 'zhipu', label: 'Zhipu', url: 'https://open.bigmodel.cn/api/paas/v4' }
+    { value: 'zhipu', label: 'Zhipu', url: 'https://open.bigmodel.cn/api/paas/v4' },
+    { value: 'siliconflow', label: 'SiliconFlow', url: 'https://api.siliconflow.cn/v1' }
 ];
 
 const AI_MODEL_PRESETS: Record<string, string[]> = {
@@ -607,6 +608,41 @@ const AI_MODEL_PRESETS: Record<string, string[]> = {
         'glm-4-flash-250414',
         'glm-4-flashx-250414',
         'glm-3-turbo'
+    ],
+    siliconflow: [
+        // OpenAI models
+        'openai/gpt-4o',
+        'openai/gpt-4o-mini',
+        'openai/gpt-4-turbo',
+        'openai/gpt-3.5-turbo',
+        // Anthropic models
+        'anthropic/claude-3.5-sonnet',
+        'anthropic/claude-3-opus',
+        'anthropic/claude-3-sonnet',
+        'anthropic/claude-3-haiku',
+        // Google models
+        'google/gemini-1.5-pro',
+        'google/gemini-1.5-flash',
+        // Mistral models
+        'mistral/mistral-large',
+        'mistral/mixtral-8x7b',
+        'mistral/mistral-7b',
+        // Meta models
+        'meta-llama/llama-3.1-70b',
+        'meta-llama/llama-3.1-8b',
+        'meta-llama/llama-3-70b',
+        'meta-llama/llama-3-8b',
+        // Cohere models
+        'cohere/command-r-plus',
+        'cohere/command-r',
+        // Other popular models
+        'qwen/qwen2.5-72b',
+        'qwen/qwen2.5-32b',
+        'qwen/qwen2.5-14b',
+        'qwen/qwen2.5-7b',
+        'deepseek/deepseek-v3.1',
+        'glm-4/glm-4.6',
+        'glm-4/glm-4.5'
     ]
 };
 
