@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Popup from 'reactjs-popup';
 import { ClientConfigContext } from '../state/config';
 import { Helmet } from "react-helmet";
@@ -6,38 +6,13 @@ import { siteName } from '../utils/constants';
 import { useTranslation } from "react-i18next";
 import { useLoginModal } from '../hooks/useLoginModal';
 
-type ThemeMode = 'light' | 'dark' | 'system';
 function Footer() {
     const { t } = useTranslation()
-    const [modeState, setModeState] = useState<ThemeMode>('system');
     const config = useContext(ClientConfigContext);
     const footerHtml = config.get<string>('footer');
     const loginEnabled = config.get<boolean>('login.enabled');
     const [doubleClickTimes, setDoubleClickTimes] = useState(0);
     const { LoginModal, setIsOpened } = useLoginModal()
-    useEffect(() => {
-        const mode = localStorage.getItem('theme') as ThemeMode || 'system';
-        setModeState(mode);
-        setMode(mode);
-    }, [])
-
-    const setMode = (mode: ThemeMode) => {
-        setModeState(mode);
-        localStorage.setItem('theme', mode);
-
-
-        if (mode !== 'system' || (!('theme' in localStorage) && window.matchMedia(`(prefers-color-scheme: ${mode})`).matches)) {
-            document.documentElement.setAttribute('data-color-mode', mode);
-        } else {
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-            if (mediaQuery.matches) {
-                document.documentElement.setAttribute('data-color-mode', 'dark');
-            } else {
-                document.documentElement.setAttribute('data-color-mode', 'light');
-            }
-        }
-        window.dispatchEvent(new Event("colorSchemeChange"));
-    };
 
     return (
         <div>
@@ -95,12 +70,6 @@ function Footer() {
                 </div>
                 <LoginModal />
             </footer>
-            {/* 主题切换按钮 */}
-            <div className="fixed bottom-4 right-4 z-40 inline-flex rounded-full border border-zinc-200 p-[3px] dark:border-zinc-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg">
-                <ThemeButton mode='light' current={modeState} label="Toggle light mode" icon="ri-sun-line" onClick={setMode} />
-                <ThemeButton mode='system' current={modeState} label="Toggle system mode" icon="ri-computer-line" onClick={setMode} />
-                <ThemeButton mode='dark' current={modeState} label="Toggle dark mode" icon="ri-moon-line" onClick={setMode} />
-            </div>
         </div>
     );
 }
@@ -110,13 +79,6 @@ function Spliter() {
         |
     </span>
     )
-}
-
-function ThemeButton({ current, mode, label, icon, onClick }: { current: ThemeMode, label: string, mode: ThemeMode, icon: string, onClick: (mode: ThemeMode) => void }) {
-    return (<button aria-label={label} type="button" onClick={() => onClick(mode)}
-        className={`rounded-inherit inline-flex h-[32px] w-[32px] items-center justify-center border-0 t-primary ${current === mode ? "bg-w rounded-full shadow-xl shadow-light" : ""}`}>
-        <i className={`${icon}`} />
-    </button>)
 }
 
 export default Footer;

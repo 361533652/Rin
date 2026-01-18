@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Song } from '../types/music';
 
+type ThemeMode = 'light' | 'dark' | 'system';
+
 interface MusicPlayerProps {
   src?: string; // 音乐文件 URL
   title?: string; // 歌曲名称
@@ -26,6 +28,31 @@ export function MusicPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  const [modeState, setModeState] = useState<ThemeMode>('system');
+
+  // 初始化主题模式
+  useEffect(() => {
+    const mode = localStorage.getItem('theme') as ThemeMode || 'system';
+    setModeState(mode);
+    setMode(mode);
+  }, [])
+
+  const setMode = (mode: ThemeMode) => {
+    setModeState(mode);
+    localStorage.setItem('theme', mode);
+
+    if (mode !== 'system' || (!('theme' in localStorage) && window.matchMedia(`(prefers-color-scheme: ${mode})`).matches)) {
+      document.documentElement.setAttribute('data-color-mode', mode);
+    } else {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      if (mediaQuery.matches) {
+        document.documentElement.setAttribute('data-color-mode', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-color-mode', 'light');
+      }
+    }
+    window.dispatchEvent(new Event("colorSchemeChange"));
+  };
 
   // 初始化当前歌曲
   useEffect(() => {
@@ -204,62 +231,124 @@ export function MusicPlayer({
       />
       
       {compact ? (
-        <div className="flex items-center gap-3">
-          {/* 上一曲/下一曲 */}
-          <div className="flex items-center gap-1">
-            <button
-              onClick={playPrevious}
-              disabled={songs.length <= 1}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                songs.length > 1
-                  ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
-                  : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
-              }`}
-              aria-label="上一曲"
-            >
-              <i className="ri-skip-back-fill" />
-            </button>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          {/* 第一行：控制按钮和歌曲信息 */}
+          <div className="flex items-center gap-2 flex-1">
+            {/* 上一曲/下一曲 */}
+            <div className="flex items-center gap-1">
+              <button
+                onClick={playPrevious}
+                disabled={songs.length <= 1}
+                className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors ${
+                  songs.length > 1
+                    ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+                    : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
+                }`}
+                aria-label="上一曲"
+              >
+                <i className="ri-skip-back-fill text-xs" />
+              </button>
 
-            {/* 播放/暂停 */}
-            <button
-              onClick={hasMusic ? togglePlay : undefined}
-              disabled={!hasMusic}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                hasMusic
-                  ? "bg-theme text-white hover:bg-theme-hover"
-                  : "bg-neutral-300 text-white dark:bg-neutral-700 cursor-not-allowed"
-              }`}
-              aria-label={isPlaying ? '暂停' : '播放'}
-            >
-              <i className={isPlaying ? 'ri-pause-fill' : 'ri-play-fill'} />
-            </button>
+              {/* 播放/暂停 */}
+              <button
+                onClick={hasMusic ? togglePlay : undefined}
+                disabled={!hasMusic}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  hasMusic
+                    ? "bg-theme text-white hover:bg-theme-hover"
+                    : "bg-neutral-300 text-white dark:bg-neutral-700 cursor-not-allowed"
+                }`}
+                aria-label={isPlaying ? '暂停' : '播放'}
+              >
+                <i className={isPlaying ? 'ri-pause-fill' : 'ri-play-fill'} />
+              </button>
 
-            <button
-              onClick={playNext}
-              disabled={songs.length <= 1}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                songs.length > 1
-                  ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
-                  : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
-              }`}
-              aria-label="下一曲"
-            >
-              <i className="ri-skip-forward-fill" />
-            </button>
+              <button
+                onClick={playNext}
+                disabled={songs.length <= 1}
+                className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors ${
+                  songs.length > 1
+                    ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+                    : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed"
+                }`}
+                aria-label="下一曲"
+              >
+                <i className="ri-skip-forward-fill text-xs" />
+              </button>
+            </div>
+
+            {/* 标题/艺人 */}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-black dark:text-white truncate leading-5">
+                {displayTitle}
+              </p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate leading-4 hidden sm:block">
+                {displayArtist}
+              </p>
+            </div>
+
+            {/* 音量控制（仅在大屏幕显示） */}
+            <div className="hidden sm:flex items-center gap-2">
+              <button
+                onClick={hasMusic ? toggleMute : undefined}
+                disabled={!hasMusic}
+                className={`w-7 h-7 flex items-center justify-center transition-colors ${
+                  hasMusic
+                    ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+                    : "text-neutral-400 dark:text-neutral-600 cursor-not-allowed"
+                }`}
+                aria-label={isMuted ? '取消静音' : '静音'}
+              >
+                <i className={isMuted ? 'ri-volume-mute-fill text-xs' : volume > 0.5 ? 'ri-volume-up-fill text-xs' : 'ri-volume-down-fill text-xs'} />
+              </button>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={isMuted ? 0 : volume}
+                onChange={hasMusic ? handleVolumeChange : undefined}
+                disabled={!hasMusic}
+                className={`w-16 h-1 rounded-lg appearance-none accent-theme ${
+                  hasMusic ? "cursor-pointer bg-neutral-200 dark:bg-neutral-700" : "cursor-not-allowed bg-neutral-200 dark:bg-neutral-700 opacity-60"
+                }`}
+              />
+            </div>
+
+            {/* 主题切换按钮 */}
+            <div className="inline-flex rounded-full border border-zinc-200 p-[2px] dark:border-zinc-700 bg-white/80 dark:bg-neutral-900/80 shadow-sm">
+              <button 
+                onClick={() => setMode('light')}
+                aria-label="Toggle light mode"
+                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
+                  modeState === 'light' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
+                }`}
+              >
+                <i className="ri-sun-line text-xs" />
+              </button>
+              <button 
+                onClick={() => setMode('system')}
+                aria-label="Toggle system mode"
+                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
+                  modeState === 'system' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
+                }`}
+              >
+                <i className="ri-computer-line text-xs" />
+              </button>
+              <button 
+                onClick={() => setMode('dark')}
+                aria-label="Toggle dark mode"
+                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
+                  modeState === 'dark' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
+                }`}
+              >
+                <i className="ri-moon-line text-xs" />
+              </button>
+            </div>
           </div>
 
-          {/* 标题/艺人（横向占一小块） */}
-          <div className="min-w-0 w-44 sm:w-56">
-            <p className="text-sm font-medium text-black dark:text-white truncate leading-5">
-              {displayTitle}
-            </p>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate leading-4">
-              {displayArtist}
-            </p>
-          </div>
-
-          {/* 进度条（主区域） */}
-          <div className="flex-1 min-w-0">
+          {/* 第二行：进度条（在小屏幕上独占一行） */}
+          <div className="w-full">
             <input
               type="range"
               min="0"
@@ -267,7 +356,7 @@ export function MusicPlayer({
               value={currentTime}
               onChange={hasMusic ? handleSeek : undefined}
               disabled={!hasMusic}
-              className={`w-full h-1 rounded-lg appearance-none accent-theme ${
+              className={`w-full h-1.5 rounded-lg appearance-none accent-theme ${
                 hasMusic ? "cursor-pointer bg-neutral-200 dark:bg-neutral-700" : "cursor-not-allowed bg-neutral-200 dark:bg-neutral-700 opacity-60"
               }`}
               style={{
@@ -280,34 +369,6 @@ export function MusicPlayer({
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
             </div>
-          </div>
-
-          {/* 音量 */}
-          <div className="hidden sm:flex items-center gap-2">
-            <button
-              onClick={hasMusic ? toggleMute : undefined}
-              disabled={!hasMusic}
-              className={`w-8 h-8 flex items-center justify-center transition-colors ${
-                hasMusic
-                  ? "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
-                  : "text-neutral-400 dark:text-neutral-600 cursor-not-allowed"
-              }`}
-              aria-label={isMuted ? '取消静音' : '静音'}
-            >
-              <i className={isMuted ? 'ri-volume-mute-fill' : volume > 0.5 ? 'ri-volume-up-fill' : 'ri-volume-down-fill'} />
-            </button>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={isMuted ? 0 : volume}
-              onChange={hasMusic ? handleVolumeChange : undefined}
-              disabled={!hasMusic}
-              className={`w-20 h-1 rounded-lg appearance-none accent-theme ${
-                hasMusic ? "cursor-pointer bg-neutral-200 dark:bg-neutral-700" : "cursor-not-allowed bg-neutral-200 dark:bg-neutral-700 opacity-60"
-              }`}
-            />
           </div>
         </div>
       ) : (
