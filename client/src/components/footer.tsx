@@ -95,16 +95,11 @@ function Footer() {
                 </div>
                 <LoginModal />
             </footer>
-            {/* 音乐播放器 - 独立固定在底部 */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-zinc-200 dark:border-zinc-700 z-50 px-4 py-2">
-                <div className="w-full max-w-5xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mx-auto">
-                    {/* 夜间模式切换：放右侧，不占用太多纵向空间 */}
-            <div className="w-fit-content self-center sm:self-auto inline-flex rounded-full border border-zinc-200 p-[3px] dark:border-zinc-700">
+            {/* 主题切换按钮 */}
+            <div className="fixed bottom-4 right-4 z-40 inline-flex rounded-full border border-zinc-200 p-[3px] dark:border-zinc-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-lg">
                 <ThemeButton mode='light' current={modeState} label="Toggle light mode" icon="ri-sun-line" onClick={setMode} />
                 <ThemeButton mode='system' current={modeState} label="Toggle system mode" icon="ri-computer-line" onClick={setMode} />
                 <ThemeButton mode='dark' current={modeState} label="Toggle dark mode" icon="ri-moon-line" onClick={setMode} />
-            </div>
-                </div>
             </div>
         </div>
     );

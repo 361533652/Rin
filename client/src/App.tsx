@@ -155,7 +155,7 @@ function App() {
             </RouteWithIndex>
 
             <RouteMe path="/user/github">
-              {_ => (
+              {() => (
                 <TipsPage>
                   <Tips value={t('error.api_url')} type='error' />
                 </TipsPage>
@@ -163,7 +163,7 @@ function App() {
             </RouteMe>
 
             <RouteMe path="/*/user/github">
-              {_ => (
+              {() => (
                 <TipsPage>
                   <Tips value={t('error.api_url_slash')} type='error' />
                 </TipsPage>
@@ -171,7 +171,7 @@ function App() {
             </RouteMe>
 
             <RouteMe path="/user/github/callback">
-              {_ => (
+              {() => (
                 <TipsPage>
                   <Tips value={t('error.github_callback')} type='error' />
                 </TipsPage>
@@ -186,13 +186,15 @@ function App() {
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
       {/* 音乐播放器 - 独立固定在底部，不受路由切换影响 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-zinc-200 dark:border-zinc-700 z-50 px-4 py-2">
-        <div className="w-full max-w-5xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mx-auto">
-          <div className="flex-1 min-w-0">
-            <MusicPlayer 
-              songs={defaultSongs}
-              autoPlay={true}
-            />
+      <div className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm border-t border-zinc-200 dark:border-zinc-700 z-50 px-4 py-3">
+        <div className="w-full max-w-6xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <div className="flex-1 min-w-0 w-full">
+              <MusicPlayer 
+                songs={defaultSongs}
+                autoPlay={true}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -202,12 +204,14 @@ function App() {
 
 function RouteMe({ path, children, headerComponent, paddingClassName, requirePermission }:
   { path?: PathPattern, children: React.ReactNode | ((params: DefaultParams) => React.ReactNode), headerComponent?: React.ReactNode, paddingClassName?: string, requirePermission?: boolean }) {
-  if (requirePermission) {
-    const profile = useContext(ProfileContext);
-    const { t } = useTranslation();
-    if (!profile?.permission)
-      children = <ErrorPage error={t('error.permission_denied')} />;
+  const profile = useContext(ProfileContext);
+  const { t } = useTranslation();
+  
+  let renderedChildren = children;
+  if (requirePermission && !profile?.permission) {
+    renderedChildren = <ErrorPage error={t('error.permission_denied')} />;
   }
+  
   return (
     <Route path={path} >
       {params => {
@@ -216,7 +220,7 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
             {headerComponent}
           </Header>
           <Padding className={paddingClassName}>
-            {typeof children === 'function' ? children(params) : children}
+            {typeof renderedChildren === 'function' ? renderedChildren(params) : renderedChildren}
           </Padding>
           <Footer />
         </>)

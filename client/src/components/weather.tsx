@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { client } from '../main';
+import { useEffect, useState } from "react";
+import { client } from "../main";
 
 // 定义OpenWeather响应结构
 interface OpenWeatherResponse {
@@ -56,29 +56,31 @@ export function Weather() {
         setLoading(true);
         setError(null);
         setWeather(null);
-        
+
         // 尝试获取用户地理位置
         let lat: number | null = null;
         let lon: number | null = null;
-        
+
         try {
           // 获取用户地理位置
-          const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-            if (!navigator.geolocation) {
-              reject(new Error('浏览器不支持地理位置功能'));
-              return;
-            }
-            
-            navigator.geolocation.getCurrentPosition(resolve, reject, {
-              enableHighAccuracy: false,
-              timeout: 10000,
-              maximumAge: 300000 // 5分钟内的缓存位置有效
-            });
-          });
+          const position = await new Promise<GeolocationPosition>(
+            (resolve, reject) => {
+              if (!navigator.geolocation) {
+                reject(new Error("浏览器不支持地理位置功能"));
+                return;
+              }
+
+              navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: false,
+                timeout: 10000,
+                maximumAge: 300000, // 5分钟内的缓存位置有效
+              });
+            },
+          );
           lat = position.coords.latitude;
           lon = position.coords.longitude;
         } catch (geoError) {
-          console.error('获取地理位置失败:', geoError);
+          console.error("获取地理位置失败:", geoError);
           // 地理位置获取失败，使用默认城市
         }
 
@@ -88,21 +90,26 @@ export function Weather() {
           queryParams.lat = lat.toString();
           queryParams.lon = lon.toString();
         }
-        
+
         const { data, error } = await client.weather.index.get({
-          query: queryParams
+          query: queryParams,
         });
-        
+
         if (error) {
-          throw new Error('获取天气数据失败');
+          throw new Error("获取天气数据失败");
         }
-        
-        if (data && typeof data === 'object' && data !== null && !('error' in data)) {
+
+        if (
+          data &&
+          typeof data === "object" &&
+          data !== null &&
+          !("error" in data)
+        ) {
           setWeather(data as OpenWeatherResponse);
         }
       } catch (err) {
-        console.error('Error fetching weather:', err);
-        setError(err instanceof Error ? err.message : '获取天气数据失败');
+        console.error("Error fetching weather:", err);
+        setError(err instanceof Error ? err.message : "获取天气数据失败");
       } finally {
         setLoading(false);
       }
@@ -113,20 +120,24 @@ export function Weather() {
 
   // 映射天气状况到图标
   const getWeatherIcon = (iconCode: string) => {
-    if (iconCode.includes('01')) {
-      return 'ri-sun-fill'; // 晴天
-    } else if (iconCode.includes('02') || iconCode.includes('03') || iconCode.includes('04')) {
-      return 'ri-cloud-fill'; // 多云
-    } else if (iconCode.includes('09') || iconCode.includes('10')) {
-      return 'ri-rainy-fill'; // 雨
-    } else if (iconCode.includes('11')) {
-      return 'ri-lightning-fill'; // 雷雨
-    } else if (iconCode.includes('13')) {
-      return 'ri-snowy-fill'; // 雪
-    } else if (iconCode.includes('50')) {
-      return 'ri-cloud-fog-fill'; // 雾
+    if (iconCode.includes("01")) {
+      return "ri-sun-fill"; // 晴天
+    } else if (
+      iconCode.includes("02") ||
+      iconCode.includes("03") ||
+      iconCode.includes("04")
+    ) {
+      return "ri-cloud-fill"; // 多云
+    } else if (iconCode.includes("09") || iconCode.includes("10")) {
+      return "ri-rainy-fill"; // 雨
+    } else if (iconCode.includes("11")) {
+      return "ri-lightning-fill"; // 雷雨
+    } else if (iconCode.includes("13")) {
+      return "ri-snowy-fill"; // 雪
+    } else if (iconCode.includes("50")) {
+      return "ri-cloud-fog-fill"; // 雾
     } else {
-      return 'ri-cloud-sun-line'; // 默认
+      return "ri-cloud-sun-line"; // 默认
     }
   };
 
@@ -148,9 +159,15 @@ export function Weather() {
 
   return (
     <div className="flex flex-row items-center space-x-1 px-2 py-1 rounded-full border dark:border-neutral-600 bg-w t-primary bg-button">
-      <i className={`${getWeatherIcon(weather.weather[0].icon)} text-yellow-500`} />
-      <span className="text-sm font-medium">{Math.round(weather.main.temp)}°</span>
-      <span className="text-xs text-neutral-500">{weather.weather[0].description}</span>
+      <i
+        className={`${getWeatherIcon(weather.weather[0].icon)} text-yellow-500`}
+      />
+      <span className="text-sm font-medium">
+        {Math.round(weather.main.temp)}°
+      </span>
+      <span className="text-xs text-neutral-500">
+        {weather.weather[0].description}
+      </span>
     </div>
   );
 }

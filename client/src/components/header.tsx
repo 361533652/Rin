@@ -20,15 +20,16 @@ export function Header({ children }: { children?: React.ReactNode }) {
 
     return useMemo(() => (
         <>
-            <div className="fixed z-40">
+            <div className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-zinc-200 dark:border-zinc-800">
                 <div className="w-screen">
-                    <Padding className="mx-4 mt-4">
-                        <div className="w-full flex justify-between items-center">
+                    <Padding className="mt-2 mb-2">
+                        <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3">
+                            {/* Logo 部分 - 大屏幕显示完整信息，小屏幕只显示头像 */}
                             <Link aria-label={t('home')} href="/"
-                                className="hidden opacity-0 md:opacity-100 duration-300 mr-auto md:flex flex-row items-center">
-                                <img src={process.env.AVATAR} alt="Avatar" className="w-12 h-12 rounded-2xl border-2" />
-                                <div className="flex flex-col justify-center items-start mx-4">
-                                    <p className="text-xl font-bold dark:text-white">
+                                className="flex items-center">
+                                <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-2xl border-2" />
+                                <div className="hidden sm:flex flex-col justify-center items-start mx-3">
+                                    <p className="text-lg font-bold dark:text-white">
                                         {process.env.NAME}
                                     </p>
                                     <p className="text-xs text-neutral-500">
@@ -36,29 +37,18 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                     </p>
                                 </div>
                             </Link>
-                            <div
-                                className="w-full md:w-max transition-all duration-500 md:absolute md:left-1/2 md:translate-x-[-50%] flex-row justify-center items-center">
-                                <div
-                                    className="flex flex-row items-center bg-w t-primary rounded-full px-2 shadow-xl shadow-light">
-                                    <Link aria-label={t('home')} href="/"
-                                        className="visible opacity-100 md:hidden md:opacity-0 duration-300 mr-auto flex flex-row items-center py-2">
-                                        <img src={process.env.AVATAR} alt="Avatar"
-                                            className="w-10 h-10 rounded-full border-2" />
-                                        <div className="flex flex-col justify-center items-start mx-2">
-                                            <p className="text-sm font-bold">
-                                                {process.env.NAME}
-                                            </p>
-                                            <p className="text-xs text-neutral-500">
-                                                {process.env.DESCRIPTION}
-                                            </p>
-                                        </div>
-                                    </Link>
+                            
+                            {/* 导航菜单 - 大屏幕居中，小屏幕可折叠 */}
+                            <div className="w-full sm:w-auto flex justify-center">
+                                <div className="flex flex-row items-center bg-white dark:bg-neutral-900 rounded-full px-2 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20">
                                     <NavBar menu={false} />
                                     {children}
                                     <Menu />
                                 </div>
                             </div>
-                            <div className="ml-auto hidden opacity-0 md:opacity-100 duration-300 md:flex flex-row items-center space-x-2">
+                            
+                            {/* 右侧功能按钮 - 大屏幕显示，小屏幕在菜单中 */}
+                            <div className="hidden sm:flex flex-row items-center space-x-2">
                                 <Weather />
                                 <SearchButton />
                                 <LanguageSwitch />
@@ -68,9 +58,9 @@ export function Header({ children }: { children?: React.ReactNode }) {
                     </Padding>
                 </div>
             </div>
-            <div className="h-20"></div>
+            <div className="h-16 sm:h-20"></div>
         </>
-    ), [profile, children])
+    ), [profile, children, t])
 }
 
 function NavItem({ menu, title, selected, href, when = true, onClick }: {
@@ -105,12 +95,12 @@ function Menu() {
     }
 
     return (
-        <div className="visible md:hidden flex flex-row items-center">
+        <div className="flex flex-row items-center sm:hidden">
             <Popup
                 arrow={false}
                 trigger={<div>
                     <button onClick={() => setOpen(true)}
-                        className="w-10 h-10 rounded-full flex flex-row items-center justify-center">
+                        className="w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-neutral-800 hover:bg-zinc-100 dark:hover:bg-neutral-700 transition-colors">
                         <i className="ri-menu-line ri-lg" />
                     </button>
                 </div>
@@ -122,16 +112,35 @@ function Menu() {
                 onClose={onClose}
                 closeOnDocumentClick
                 closeOnEscape
-                overlayStyle={{ background: "rgba(0,0,0,0.3)" }}
+                overlayStyle={{ background: "rgba(0,0,0,0.5)" }}
             >
-                <div className="flex flex-col bg-w rounded-xl p-2 mt-4 w-[50vw]">
-                        <div className="flex flex-row justify-end space-x-2">
+                <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-xl p-4 mt-2 w-[80vw] max-w-sm shadow-2xl">
+                    <div className="flex flex-col space-y-4">
+                        <div className="flex flex-row justify-between items-center">
+                            <div className="flex items-center">
+                                <img src={process.env.AVATAR} alt="Avatar" className="w-8 h-8 rounded-xl border" />
+                                <div className="flex flex-col ml-3">
+                                    <p className="text-sm font-bold dark:text-white">
+                                        {process.env.NAME}
+                                    </p>
+                                    <p className="text-xs text-neutral-500">
+                                        {process.env.DESCRIPTION}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="flex flex-row justify-between items-center p-2 bg-zinc-100 dark:bg-neutral-800 rounded-lg">
                             <Weather />
                             <SearchButton onClose={onClose} />
                             <LanguageSwitch />
                             <UserAvatar profile={profile} />
                         </div>
-                    <NavBar menu={true} onClick={onClose} />
+                        
+                        <div className="flex flex-col space-y-2">
+                            <NavBar menu={true} onClick={onClose} />
+                        </div>
+                    </div>
                 </div>
             </Popup>
         </div>
@@ -199,7 +208,7 @@ function LanguageSwitch({ className }: { className?: string }) {
 function SearchButton({ className, onClose }: { className?: string, onClose?: () => void }) {
     const { t } = useTranslation()
     const [isOpened, setIsOpened] = useState(false);
-    const [_, setLocation] = useLocation()
+    const [, setLocation] = useLocation()
     const [value, setValue] = useState('')
     const label = t('article.search.title')
     const onSearch = () => {

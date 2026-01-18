@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
 import { FeedCard } from "../components/feed_card"
@@ -10,9 +10,22 @@ import { siteName } from "../utils/constants"
 import { tryInt } from "../utils/int"
 import { useTranslation } from "react-i18next";
 
+interface FeedItem {
+    id: string;
+    title: string;
+    summary: string;
+    avatar?: string;
+    draft?: number;
+    listed?: number;
+    top?: number;
+    hashtags: { id: number; name: string }[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 type FeedsData = {
     size: number,
-    data: any[],
+    data: FeedItem[],
     hasNext: boolean
 }
 
@@ -24,7 +37,8 @@ type FeedsMap = {
 
 export function FeedsPage() {
     const { t } = useTranslation()
-    const query = new URLSearchParams(useSearch());
+    const search = useSearch();
+    const query = useMemo(() => new URLSearchParams(search), [search]);
     const profile = useContext(ProfileContext);
     const [listState, _setListState] = useState<FeedType>(query.get("type") as FeedType || 'normal')
     const [status, setStatus] = useState<'loading' | 'idle'>('idle')
@@ -36,35 +50,37 @@ export function FeedsPage() {
     const page = tryInt(1, query.get("page"))
     const limit = tryInt(10, query.get("limit"), process.env.PAGE_SIZE)
     const ref = useRef("")
-    function fetchFeeds(type: FeedType) {
-        client.feed.index.get({
-            query: {
-                page: page,
-                limit: limit,
-                type: type
-            },
-            headers: headersWithAuth()
-        }).then(({ data }) => {
-            if (data && typeof data !== 'string') {
-                setFeeds({
-                    ...feeds,
-                    [type]: data
-                })
-                setStatus('idle')
-            }
-        })
-    }
     useEffect(() => {
         const key = `${query.get("page")} ${query.get("type")}`
         if (ref.current == key) return
         const type = query.get("type") as FeedType || 'normal'
+        
+        const fetchFeeds = () => {
+            client.feed.index.get({
+                query: {
+                    page: page,
+                    limit: limit,
+                    type: type
+                },
+                headers: headersWithAuth()
+            }).then(({ data }) => {
+                if (data && typeof data !== 'string') {
+                    setFeeds(prevFeeds => ({
+                        ...prevFeeds,
+                        [type]: data
+                    }))
+                    setStatus('idle')
+                }
+            })
+        }
+        
         if (type !== listState) {
             _setListState(type)
         }
         setStatus('loading')
-        fetchFeeds(type)
+        fetchFeeds()
         ref.current = key
-    }, [query.get("page"), query.get("type")])
+    }, [page, limit, listState, search, query])
     return (
         <>
             <Helmet>
@@ -76,21 +92,21 @@ export function FeedsPage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
-                <main className="w-full flex flex-col justify-center items-center mb-8">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
-                        <p>
+                <main className="w-full flex flex-col mb-12">
+                    <div className="text-start text-black dark:text-white py-6">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
-                        </p>
-                        <div className="flex flex-row justify-between">
-                            <p className="text-sm mt-4 text-neutral-500 font-normal">
+                        </h1>
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
+                            <p className="text-sm text-neutral-500 font-normal">
                                 {t('article.total$count', { count: feeds[listState]?.size })}
                             </p>
                             {profile?.permission &&
                                 <div className="flex flex-row space-x-4">
-                                    <Link href={listState === 'draft' ? '/?type=normal' : '/?type=draft'} className={`text-sm mt-4 text-neutral-500 font-normal ${listState === 'draft' ? "text-theme" : ""}`}>
+                                    <Link href={listState === 'draft' ? '/?type=normal' : '/?type=draft'} className={`text-sm text-neutral-500 font-normal hover:text-theme transition-colors ${listState === 'draft' ? "text-theme" : ""}`}>
                                         {t('draft_bin')}
                                     </Link>
-                                    <Link href={listState === 'unlisted' ? '/?type=normal' : '/?type=unlisted'} className={`text-sm mt-4 text-neutral-500 font-normal ${listState === 'unlisted' ? "text-theme" : ""}`}>
+                                    <Link href={listState === 'unlisted' ? '/?type=normal' : '/?type=unlisted'} className={`text-sm text-neutral-500 font-normal hover:text-theme transition-colors ${listState === 'unlisted' ? "text-theme" : ""}`}>
                                         {t('unlisted')}
                                     </Link>
                                 </div>
@@ -98,22 +114,22 @@ export function FeedsPage() {
                         </div>
                     </div>
                     <Waiting for={status === 'idle'}>
-                        <div className="wauto flex flex-col ani-show">
-                            {feeds[listState].data.map(({ id, ...feed }: any) => (
-                                <FeedCard key={id} id={id} {...feed} />
+                        <div className="flex flex-col space-y-6 ani-show">
+                            {feeds[listState].data.map((feed) => (
+                                <FeedCard key={feed.id} {...feed} />
                             ))}
                         </div>
-                        <div className="wauto flex flex-row items-center mt-4 ani-show">
+                        <div className="flex flex-row justify-between items-center mt-8 ani-show">
                             {page > 1 &&
                                 <Link href={`/?type=${listState}&page=${(page - 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
                                     {t('previous')}
                                 </Link>
                             }
-                            <div className="flex-1" />
+                            {page <= 1 && <div className="w-24"></div>}
                             {feeds[listState]?.hasNext &&
                                 <Link href={`/?type=${listState}&page=${(page + 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
                                     {t('next')}
                                 </Link>
                             }
