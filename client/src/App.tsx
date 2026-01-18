@@ -34,6 +34,48 @@ function App() {
   const { t } = useTranslation()
   const [profile, setProfile] = useState<Profile | undefined>()
   const [config, setConfig] = useState<ConfigWrapper>(new ConfigWrapper({}, new Map()))
+  const [musicEnabled, setMusicEnabled] = useState(() => {
+    // 从 localStorage 获取用户偏好设置
+    const saved = localStorage.getItem('music_enabled');
+    return saved ? JSON.parse(saved) : false; // 默认关闭
+  });
+  const [showPlayer, setShowPlayer] = useState(true)
+  const lastScrollY = useRef(0)
+  
+  // 保存音乐启用状态到 localStorage
+  useEffect(() => {
+    localStorage.setItem('music_enabled', JSON.stringify(musicEnabled));
+  }, [musicEnabled]);
+  
+  useEffect(() => {
+    if (!musicEnabled) return; // 如果音乐未启用，不添加滚动监听器
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+      
+      // 计算是否接近页面底部（例如距离底部100px以内）
+      const isNearBottom = (documentHeight - currentScrollY - windowHeight) < 100
+      
+      // 向下滚动时隐藏播放器，向上滚动或接近底部时显示播放器
+      if (currentScrollY > lastScrollY.current && !isNearBottom) {
+        // 向下滚动且不在底部，隐藏播放器
+        setShowPlayer(false)
+      } else if (currentScrollY < lastScrollY.current || isNearBottom) {
+        // 向上滚动或接近底部，显示播放器
+        setShowPlayer(true)
+      }
+      
+      lastScrollY.current = currentScrollY
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [musicEnabled])
   useEffect(() => {
     // --- 自动缩放逻辑开始 ---
     const HIGH_RES_THRESHOLD = 2560; // 定义高分屏阈值
@@ -188,17 +230,47 @@ function App() {
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
       {/* 音乐播放器 - 独立固定在底部，不受路由切换影响 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-transparent z-50 px-4 py-3">
-        <div className="w-full max-w-6xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            <div className="flex-1 min-w-0 w-full">
-              <MusicPlayer 
-                songs={defaultSongs}
-                autoPlay={true}
-              />
+      {musicEnabled && (
+        <div 
+          className={`fixed bottom-0 left-0 right-0 bg-transparent z-50 px-4 py-3 transition-transform duration-300 ease-in-out ${
+            showPlayer ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <div className="flex-1 min-w-0 w-full">
+                <MusicPlayer 
+                  songs={defaultSongs}
+                  autoPlay={true}
+                />
+              </div>
             </div>
           </div>
         </div>
+      )}
+      {/* 音乐播放器开关按钮 */}
+      <div className="fixed bottom-40 right-4 z-50">
+        <button
+          onClick={() => setMusicEnabled(!musicEnabled)}
+          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
+            musicEnabled 
+              ? 'bg-theme text-white' 
+              : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+          }`}
+          aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
+        >
+          <i className={`ri-${musicEnabled ? 'volume-up' : 'volume-mute'}-fill`} />
+        </button>
+      </div>
+      {/* 回到顶部按钮 */}
+      <div className="fixed bottom-24 right-4 z-50">
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="w-12 h-12 rounded-full bg-theme text-white flex items-center justify-center shadow-lg hover:bg-theme-hover transition-all"
+          aria-label="回到顶部"
+        >
+          <span className="text-xs font-bold">TOP</span>
+        </button>
       </div>
     </>
   )

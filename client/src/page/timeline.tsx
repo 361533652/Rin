@@ -60,7 +60,7 @@ export function TimelinePage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <Waiting for={feeds}>
-                <main className="w-full flex flex-col mb-12 ani-show">
+                <main className="w-full md:w-10/12 lg:w-8/12 xl:w-6/12 2xl:w-5/12 flex flex-col mb-12 ani-show">
                     <div className="text-start text-black dark:text-white py-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {t('timeline')}

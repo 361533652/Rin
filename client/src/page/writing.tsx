@@ -311,8 +311,8 @@ export function WritingPage({ id }: { id?: number }) {
         <meta property="og:type" content="article" />
         <meta property="og:url" content={document.URL} />
       </Helmet>
-      <div className="grid grid-cols-1 md:grid-cols-3 t-primary mt-2">
-        <div className="col-span-2 pb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 t-primary mt-2">
+        <div className="md:col-span-3 pb-8">
           <div className="bg-w rounded-2xl shadow-xl shadow-light p-4">
             {MetaInput({ className: "visible md:hidden mb-8" })}
             <MarkdownEditor content={content} setContent={setContent} height='600px' />
@@ -331,7 +331,7 @@ export function WritingPage({ id }: { id?: number }) {
             </button>
           </div>
         </div>
-        <div className="hidden md:visible max-w-96 md:flex flex-col">
+        <div className="hidden md:visible max-w-96 md:col-span-1 md:flex flex-col">
           {MetaInput({ className: "bg-w rounded-2xl shadow-xl shadow-light p-4 mx-8" })}
           <div className="flex flex-row justify-center mt-8">
             <button
