@@ -125,7 +125,7 @@ export function Settings() {
         <div className="flex flex-col justify-center items-center">
             <ServerConfigContext.Provider value={serverConfig}>
                 <ClientConfigContext.Provider value={clientConfig}>
-                    <main className="wauto rounded-2xl bg-w m-2 p-6" aria-label={t("main_content")}>
+                    <main className="w-full md:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-8/12 rounded-2xl bg-w m-2 p-6" aria-label={t("main_content")}>
                         <div className="flex flex-row items-center space-x-2">
                             <h1 className="text-2xl font-bold t-primary">
                                 {t('settings.title')}
