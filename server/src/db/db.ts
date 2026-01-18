@@ -18,6 +18,7 @@ export interface Env {
     S3_CACHE_FOLDER: string,
     WEBHOOK_URL: string,
     S3_FORCE_PATH_STYLE: string,
+    WEATHER_API_KEY: string,
 
     RSS_TITLE: string,
     RSS_DESCRIPTION: string,

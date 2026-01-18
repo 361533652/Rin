@@ -60,28 +60,28 @@ export function TimelinePage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <Waiting for={feeds}>
-                <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
-                        <p>
+                <main className="w-full md:w-10/12 lg:w-8/12 xl:w-6/12 2xl:w-5/12 flex flex-col mb-12 ani-show">
+                    <div className="text-start text-black dark:text-white py-6">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                             {t('timeline')}
-                        </p>
-                        <div className="flex flex-row justify-between">
-                            <p className="text-sm mt-4 text-neutral-500 font-normal">
+                        </h1>
+                        <div className="mt-4">
+                            <p className="text-sm text-neutral-500 font-normal">
                                 {t('article.total$count', { count: length })}
                             </p>
                         </div>
                     </div>
                     {feeds && Object.keys(feeds).sort((a, b) => parseInt(b) - parseInt(a)).map(year => (
-                        <div key={year} className="wauto flex flex-col justify-center items-start">
-                            <h1 className="flex flex-row items-center space-x-2">
-                                <span className="text-2xl font-bold t-primary ">
+                        <div key={year} className="flex flex-col mb-10">
+                            <h2 className="flex flex-row items-center space-x-3 mb-6">
+                                <span className="text-2xl font-bold t-primary">
                                     {t('year$year', { year: year })}
                                 </span>
-                                <span className="text-sm t-secondary">
+                                <span className="text-sm t-secondary bg-zinc-100 dark:bg-neutral-800 px-2 py-1 rounded-full">
                                     {t('article.total_short$count', { count: feeds[+year]?.length })}
-                                    </span>
-                            </h1>
-                            <div className="w-full flex flex-col justify-center items-start my-4">
+                                </span>
+                            </h2>
+                            <div className="flex flex-col space-y-4">
                                 {feeds[+year]?.map(({ id, title, createdAt }) => (
                                     <FeedItem key={id} id={id.toString()} title={title || t('unlisted')}
                                               createdAt={new Date(createdAt)}/>
