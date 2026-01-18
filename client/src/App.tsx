@@ -45,7 +45,7 @@ function App() {
     };
     applyScaling();
     // --- 自动缩放逻辑结束 ---
-    if (ref.current) return
+    if (ref.current) return;
     if (getCookie('token')?.length ?? 0 > 0) {
       client.user.profile.get({
         headers: headersWithAuth()
@@ -75,7 +75,7 @@ function App() {
       })
     }
     ref.current = true
-  }, [])
+  }, [t])
   const favicon = `${process.env.API_URL}/favicon`;
   return (
     <>
@@ -141,15 +141,15 @@ function App() {
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
-              {(params, TOC, clean) => {
-                return (<FeedPage id={params.id || ""} TOC={TOC} clean={clean} />)
+              {(params, _, clean) => {
+                return (<FeedPage id={params.id || ""} clean={clean} />)
               }}
             </RouteWithIndex>
 
             <RouteWithIndex path="/:alias">
-              {(params, TOC, clean) => {
+              {(params, _, clean) => {
                 return (
-                  <FeedPage id={params.alias || ""} TOC={TOC} clean={clean} />
+                  <FeedPage id={params.alias || ""} clean={clean} />
                 )
               }}
             </RouteWithIndex>

@@ -43,7 +43,7 @@ type Feed = {
 
 
 
-export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Element, clean: (id: string) => void }) {
+export function FeedPage({ id, clean }: { id: string, clean: (id: string) => void }) {
   const { t } = useTranslation();
   const profile = useContext(ProfileContext);
   const [feed, setFeed] = useState<Feed>();
@@ -156,7 +156,7 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
         }
       });
     ref.current = id;
-  }, [id]);
+  }, [id, clean]);
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
