@@ -1,18 +1,183 @@
 import { useEffect, useRef } from 'react';
 import { useColorMode } from '../utils/darkModeUtils';
 
+// 定义 particles.js 配置的类型
+type ParticleOptions = {
+  particles?: {
+    number?: {
+      value?: number;
+      density?: {
+        enable?: boolean;
+        value_area?: number;
+      };
+    };
+    color?: {
+      value?: string;
+    };
+    shape?: {
+      type?: string | string[];
+      stroke?: {
+        width?: number;
+        color?: string;
+      };
+      polygon?: {
+        nb_sides?: number;
+      };
+    };
+    opacity?: {
+      value?: number;
+      random?: boolean;
+      anim?: {
+        enable?: boolean;
+        speed?: number;
+        opacity_min?: number;
+        sync?: boolean;
+      };
+    };
+    size?: {
+      value?: number;
+      random?: boolean;
+      anim?: {
+        enable?: boolean;
+        speed?: number;
+        size_min?: number;
+        sync?: boolean;
+      };
+    };
+    line_linked?: {
+      enable?: boolean;
+      distance?: number;
+      color?: string;
+      opacity?: number;
+      width?: number;
+    };
+    move?: {
+      enable?: boolean;
+      speed?: number;
+      direction?: string;
+      random?: boolean;
+      straight?: boolean;
+      out_mode?: string;
+      bounce?: boolean;
+      attract?: {
+        enable?: boolean;
+        rotateX?: number;
+        rotateY?: number;
+      };
+    };
+  };
+  interactivity?: {
+    detect_on?: string;
+    events?: {
+      onhover?: {
+        enable?: boolean;
+        mode?: string | string[];
+      };
+      onclick?: {
+        enable?: boolean;
+        mode?: string | string[];
+      };
+      resize?: boolean;
+    };
+    modes?: {
+      grab?: {
+        distance?: number;
+        line_linked?: {
+          opacity?: number;
+        };
+      };
+      bubble?: {
+        distance?: number;
+        size?: number;
+        duration?: number;
+        opacity?: number;
+        speed?: number;
+      };
+      repulse?: {
+        distance?: number;
+        duration?: number;
+      };
+      push?: {
+        particles_nb?: number;
+      };
+      remove?: {
+        particles_nb?: number;
+      };
+    };
+  };
+  retina_detect?: boolean;
+};
+
 // 声明全局粒子JS对象
 declare global {
   interface Window {
-    particlesJS: any;
-    pJSDom: any[];
-    Stats: any;
+    particlesJS: (container: string | Element, options: ParticleOptions) => void;
+    pJSDom: Array<{
+      pJS: {
+        particles: {
+          array?: Array<{
+            x?: number;
+            y?: number;
+            radius?: number;
+            color?: {
+              r?: number;
+              g?: number;
+              b?: number;
+            };
+            opacity?: number;
+            velocity?: {
+              x?: number;
+              y?: number;
+            };
+            links?: Array<{
+                source?: {
+                  x?: number;
+                  y?: number;
+                  radius?: number;
+                  color?: {
+                    r?: number;
+                    g?: number;
+                    b?: number;
+                  };
+                  opacity?: number;
+                };
+                destination?: {
+                  x?: number;
+                  y?: number;
+                  radius?: number;
+                  color?: {
+                    r?: number;
+                    g?: number;
+                    b?: number;
+                  };
+                  opacity?: number;
+                };
+                opacity?: number;
+                width?: number;
+              }>;
+          }>;
+        };
+        fn: {
+          vendors: {
+            destroy: () => void;
+          };
+        };
+      };
+    }>;
+    Stats: {
+      new: () => {
+        setMode: (mode: number) => void;
+        domElement: HTMLElement;
+        begin: () => void;
+        end: () => void;
+      };
+    };
   }
 }
 
 interface ParticlesProps {
   id?: string;
-  options?: any;
+  options?: ParticleOptions;
 }
 
 export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
@@ -132,13 +297,12 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         "retina_detect": true
       };
 
-      // 使用 DOM 元素引用进行初始化
-      const container = document.getElementById(id) || particlesRef.current;
+      
       
       try {
         // 清理旧的粒子特效
         if (window.pJSDom && window.pJSDom.length > 0) {
-          window.pJSDom.forEach((pJS: any) => {
+          window.pJSDom.forEach((pJS) => {
             if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
               pJS.pJS.fn.vendors.destroy();
             }
@@ -165,7 +329,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
       // 检查是否在浏览器环境中
       if (typeof window !== 'undefined' && window.pJSDom && window.pJSDom.length > 0) {
         try {
-          window.pJSDom.forEach((pJS: any) => {
+          window.pJSDom.forEach((pJS) => {
             if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
               pJS.pJS.fn.vendors.destroy();
             }
