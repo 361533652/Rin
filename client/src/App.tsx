@@ -55,15 +55,13 @@ function App() {
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight
       
-      // 计算是否接近页面底部（例如距离底部100px以内）
-      const isNearBottom = (documentHeight - currentScrollY - windowHeight) < 100
+      // 计算是否接近页面底部（例如距离底部200px以内，给播放器高度留出空间）
+      const isNearBottom = (documentHeight - currentScrollY - windowHeight) < 200
       
-      // 向下滚动时隐藏播放器，向上滚动或接近底部时显示播放器
-      if (currentScrollY > lastScrollY.current && !isNearBottom) {
-        // 向下滚动且不在底部，隐藏播放器
+      // 当接近页面底部时隐藏播放器，避免遮挡底部内容；其他时候显示播放器
+      if (isNearBottom) {
         setShowPlayer(false)
-      } else if (currentScrollY < lastScrollY.current || isNearBottom) {
-        // 向上滚动或接近底部，显示播放器
+      } else {
         setShowPlayer(true)
       }
       
