@@ -21,7 +21,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
 
   useEffect(() => {
     // 检查是否在浏览器环境中
-    if (typeof window !== 'undefined' && particlesRef.current && window.particlesJS) {
+    if (typeof window !== 'undefined' && window.particlesJS) {
       // 根据主题确定粒子颜色
       const particleColor = colorMode === 'dark' ? '#ffffff' : '#333333';
       
@@ -94,12 +94,12 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
           "detect_on": "canvas",
           "events": {
             "onhover": {
-              "enable": false,
-              "mode": "grab"
+              "enable": true,
+              "mode": "repulse"
             },
             "onclick": {
               "enable": true,
-              "mode": "repulse"
+              "mode": "push"
             },
             "resize": true
           },
@@ -132,6 +132,9 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         "retina_detect": true
       };
 
+      // 使用 DOM 元素引用进行初始化
+      const container = document.getElementById(id) || particlesRef.current;
+      
       try {
         // 清理旧的粒子特效
         if (window.pJSDom && window.pJSDom.length > 0) {
@@ -147,6 +150,14 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
       } catch (error) {
         console.error('粒子特效初始化失败:', error);
       }
+      
+      // 设置粒子画布的 pointer-events 为 auto，以接收鼠标事件
+      setTimeout(() => {
+        const canvas = particlesRef.current?.querySelector('canvas');
+        if (canvas) {
+          (canvas as HTMLElement).style.pointerEvents = 'auto';
+        }
+      }, 100); // 稍微延迟以确保 canvas 已创建
     }
 
     // 清理函数
@@ -167,6 +178,13 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
   }, [id, options, colorMode]);
 
   return (
-    <div id={id} ref={particlesRef} className="fixed top-0 left-0 w-full h-full -z-10"></div>
+    <div 
+      id={id} 
+      ref={particlesRef} 
+      className="fixed inset-0 w-full h-full"
+      style={{ 
+        zIndex: -1,
+      }}
+    ></div>
   );
 };
