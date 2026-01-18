@@ -18,7 +18,8 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
   const particlesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (particlesRef.current && window.particlesJS) {
+    // 检查是否在浏览器环境中
+    if (typeof window !== 'undefined' && particlesRef.current && window.particlesJS) {
       // 默认配置 - 移除了无法访问的背景图片
       const defaultOptions = {
         "particles": {
@@ -126,19 +127,27 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         "retina_detect": true
       };
 
-      // 初始化粒子特效
-      window.particlesJS(id, options || defaultOptions);
+      try {
+        // 初始化粒子特效
+        window.particlesJS(id, options || defaultOptions);
+      } catch (error) {
+        console.error('粒子特效初始化失败:', error);
+      }
     }
 
     // 清理函数
     return () => {
-      // 粒子特效的清理逻辑
-      if (window.pJSDom && window.pJSDom.length > 0) {
-        window.pJSDom.forEach((pJS: any) => {
-          if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
-            pJS.pJS.fn.vendors.destroy();
-          }
-        });
+      // 检查是否在浏览器环境中
+      if (typeof window !== 'undefined' && window.pJSDom && window.pJSDom.length > 0) {
+        try {
+          window.pJSDom.forEach((pJS: any) => {
+            if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
+              pJS.pJS.fn.vendors.destroy();
+            }
+          });
+        } catch (error) {
+          console.error('粒子特效清理失败:', error);
+        }
       }
     };
   }, [id, options]);

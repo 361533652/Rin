@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { visualizer } from "rollup-plugin-visualizer";
+import copy from 'rollup-plugin-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -11,7 +12,13 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      visualizer({ open: true }) // 自动开启分析页面
+      visualizer({ open: true }), // 自动开启分析页面
+      copy({
+        targets: [
+          { src: 'particles.js', dest: 'dist' },
+          { src: 'js', dest: 'dist' }
+        ]
+      })
     ]
   }
 })
