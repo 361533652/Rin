@@ -6,6 +6,7 @@ import Footer from './components/footer'
 import { Header } from './components/header'
 import { Padding } from './components/padding'
 import { MusicPlayer } from './components/music_player'
+import { Particles } from './components/particles'
 import { defaultSongs } from './types/music'
 import useTableOfContents from './hooks/useTableOfContents.tsx'
 import { client } from './main'
@@ -85,6 +86,7 @@ function App() {
             {favicon &&
               <link rel="icon" href={favicon} />}
           </Helmet>
+          <Particles />
           <Switch>
             <RouteMe path="/">
               <FeedsPage />

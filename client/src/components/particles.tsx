@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useColorMode } from '../utils/darkModeUtils';
 
 // 声明全局粒子JS对象
 declare global {
@@ -16,10 +17,14 @@ interface ParticlesProps {
 
 export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
   const particlesRef = useRef<HTMLDivElement>(null);
+  const colorMode = useColorMode();
 
   useEffect(() => {
     // 检查是否在浏览器环境中
     if (typeof window !== 'undefined' && particlesRef.current && window.particlesJS) {
+      // 根据主题确定粒子颜色
+      const particleColor = colorMode === 'dark' ? '#ffffff' : '#333333';
+      
       // 默认配置 - 移除了无法访问的背景图片
       const defaultOptions = {
         "particles": {
@@ -31,13 +36,13 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
             }
           },
           "color": {
-            "value": "#ffffff"
+            "value": particleColor
           },
           "shape": {
             "type": "star",
             "stroke": {
               "width": 0,
-              "color": "#000000"
+              "color": particleColor
             },
             "polygon": {
               "nb_sides": 5
@@ -64,18 +69,18 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
             }
           },
           "line_linked": {
-            "enable": false,
+            "enable": true,
             "distance": 150,
-            "color": "#ffffff",
+            "color": particleColor,
             "opacity": 0.4,
             "width": 1
           },
           "move": {
             "enable": true,
             "speed": 6,
-            "direction": "left",
+            "direction": "none",
             "random": true,
-            "straight": true,
+            "straight": false,
             "out_mode": "out",
             "bounce": false,
             "attract": {
@@ -128,6 +133,15 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
       };
 
       try {
+        // 清理旧的粒子特效
+        if (window.pJSDom && window.pJSDom.length > 0) {
+          window.pJSDom.forEach((pJS: any) => {
+            if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
+              pJS.pJS.fn.vendors.destroy();
+            }
+          });
+        }
+        
         // 初始化粒子特效
         window.particlesJS(id, options || defaultOptions);
       } catch (error) {
@@ -150,7 +164,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         }
       }
     };
-  }, [id, options]);
+  }, [id, options, colorMode]);
 
   return (
     <div id={id} ref={particlesRef} className="fixed top-0 left-0 w-full h-full -z-10"></div>
