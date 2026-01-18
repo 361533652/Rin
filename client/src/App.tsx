@@ -188,7 +188,7 @@ function App() {
         </ProfileContext.Provider>
       </ClientConfigContext.Provider>
       {/* 音乐播放器 - 独立固定在底部，不受路由切换影响 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-transparent backdrop-blur-sm z-50 px-4 py-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-transparent z-50 px-4 py-3">
         <div className="w-full max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <div className="flex-1 min-w-0 w-full">

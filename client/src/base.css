@@ -54,6 +54,13 @@
   background-size: cover;
   background-position: center;
   /* We'll control z-index via inline styles in the React component */
+  pointer-events: none; /* 确保粒子层不会拦截鼠标事件 */
+}
+
+/* 确保表单和输入元素在粒子层之上 */
+input, textarea, select, button, [contenteditable], .form-container, .editor-container {
+  position: relative;
+  z-index: 10;
 }
 
 /* ---- stats.js ---- */
