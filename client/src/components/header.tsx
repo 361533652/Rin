@@ -102,32 +102,33 @@ function Menu() {
 
     return (
         <div className="flex flex-row items-center sm:hidden">
-            <Popup
-                arrow={false}
-                trigger={<div>
-                    <button onClick={() => setOpen(true)}
-                        className="w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-neutral-800 hover:bg-zinc-100 dark:hover:bg-neutral-700 transition-colors">
-                        <i className="ri-menu-line ri-lg" />
-                    </button>
-                </div>
-                }
-                position="bottom center"
-                open={isOpen}
-                nested
-                onOpen={() => document.body.style.overflow = "hidden"}
-                onClose={onClose}
-                closeOnDocumentClick
-                closeOnEscape
-                overlayStyle={{ background: "rgba(0,0,0,0.5)" }}
-                contentStyle={{
-                    width: "90vw",
-                    maxWidth: "400px",
-                    margin: "0 auto",
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)"
+            <ReactModal
+                isOpen={isOpen}
+                onRequestClose={onClose}
+                style={{
+                    content: {
+                        top: "50%",
+                        left: "50%",
+                        right: "auto",
+                        bottom: "auto",
+                        marginRight: "-50%",
+                        transform: "translate(-50%, -50%)",
+                        padding: "0",
+                        border: "none",
+                        borderRadius: "16px",
+                        background: "none",
+                        width: "90vw",
+                        maxWidth: "400px",
+                        maxHeight: "80vh",
+                        overflow: "auto"
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        zIndex: 1000
+                    }
                 }}
+                shouldCloseOnOverlayClick={true}
+                shouldCloseOnEsc={true}
             >
                 <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-xl p-4 w-full shadow-2xl">
                     <div className="flex flex-col space-y-4">
@@ -157,7 +158,7 @@ function Menu() {
                         </div>
                     </div>
                 </div>
-            </Popup>
+            </ReactModal>
         </div>
     )
 }
