@@ -43,6 +43,20 @@
     }
   }
 
+/* 移动端hover状态修复 - 防止hover状态在触摸设备上保持 */
+@media (hover: none) and (pointer: coarse) {
+  .bg-button:hover,
+  .bg-hover:hover,
+  button:hover {
+    background-color: inherit !important;
+  }
+  
+  /* 针对TOP按钮的特殊处理 */
+  .fixed.bottom-24.right-4.z-50 button:hover {
+    background-color: #fc466b !important;
+  }
+}
+
 /* ---- particles.js container ---- */
 #particles-js {
   position: fixed;
