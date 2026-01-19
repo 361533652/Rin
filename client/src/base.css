@@ -43,6 +43,20 @@
     }
   }
 
+/* 移动端hover状态修复 - 防止hover状态在触摸设备上保持 */
+@media (hover: none) and (pointer: coarse) {
+  .bg-button:hover,
+  .bg-hover:hover,
+  button:hover {
+    background-color: inherit !important;
+  }
+  
+  /* 针对TOP按钮的特殊处理 - 更新为半透明背景色 */
+  .fixed.bottom-24.right-4.z-50 button:hover {
+    background-color: rgba(252, 70, 107, 0.8) !important;
+  }
+}
+
 /* ---- particles.js container ---- */
 #particles-js {
   position: fixed;
