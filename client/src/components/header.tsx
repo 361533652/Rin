@@ -24,26 +24,32 @@ export function Header({ children }: { children?: React.ReactNode }) {
                 <div className="w-screen">
                     <Padding className="mt-2 mb-2" fullWidth={true}>
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
-                            {/* Logo 部分 - 大屏幕显示完整信息，小屏幕只显示头像 */}
-                            <Link aria-label={t('home')} href="/"
-                                className="flex items-center ml-4 lg:ml-6">
-                                <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-2xl border-2" />
-                                <div className="hidden sm:flex flex-col justify-center items-start ml-2">
-                                    <p className="text-lg font-bold dark:text-white">
-                                        {process.env.NAME}
-                                    </p>
-                                    <p className="text-xs text-neutral-500">
-                                        {process.env.DESCRIPTION}
-                                    </p>
+                            {/* Logo 部分 - 大屏幕显示完整信息，小屏幕显示头像和菜单按钮 */}
+                            <div className="w-full sm:w-auto flex justify-between items-center sm:justify-start">
+                                <Link aria-label={t('home')} href="/"
+                                    className="flex items-center ml-4 lg:ml-6">
+                                    <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-2xl border-2" />
+                                    <div className="hidden sm:flex flex-col justify-center items-start ml-2">
+                                        <p className="text-lg font-bold dark:text-white">
+                                            {process.env.NAME}
+                                        </p>
+                                        <p className="text-xs text-neutral-500">
+                                            {process.env.DESCRIPTION}
+                                        </p>
+                                    </div>
+                                </Link>
+                                
+                                {/* 移动端菜单按钮 - 显示在头像右侧 */}
+                                <div className="sm:hidden flex items-center mr-4">
+                                    <Menu />
                                 </div>
-                            </Link>
+                            </div>
                             
-                            {/* 导航菜单 - 大屏幕居中，小屏幕可折叠 */}
-                            <div className="w-full sm:w-auto flex justify-center flex-1">
+                            {/* 导航菜单 - 大屏幕居中，小屏幕隐藏 */}
+                            <div className="hidden sm:flex sm:w-auto justify-center flex-1">
                                 <div className="flex flex-row items-center bg-white dark:bg-neutral-900 rounded-full px-4 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 mx-4 lg:mx-8">
                                     <NavBar menu={false} />
                                     {children}
-                                    <Menu />
                                 </div>
                             </div>
                             
@@ -105,7 +111,7 @@ function Menu() {
                     </button>
                 </div>
                 }
-                position="bottom right"
+                position="bottom center"
                 open={isOpen}
                 nested
                 onOpen={() => document.body.style.overflow = "hidden"}
@@ -113,8 +119,17 @@ function Menu() {
                 closeOnDocumentClick
                 closeOnEscape
                 overlayStyle={{ background: "rgba(0,0,0,0.5)" }}
+                contentStyle={{
+                    width: "90vw",
+                    maxWidth: "400px",
+                    margin: "0 auto",
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)"
+                }}
             >
-                <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-xl p-4 mt-2 w-[80vw] max-w-sm shadow-2xl">
+                <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-xl p-4 w-full shadow-2xl">
                     <div className="flex flex-col space-y-4">
                         <div className="flex flex-row justify-between items-center">
                             <div className="flex items-center">
