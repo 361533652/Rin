@@ -102,6 +102,11 @@ function Menu() {
 
     return (
         <div className="flex flex-row items-center sm:hidden">
+            <button onClick={() => setOpen(true)}
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-neutral-800 hover:bg-zinc-100 dark:hover:bg-neutral-700 transition-colors">
+                <i className="ri-menu-line ri-lg" />
+            </button>
+            
             <ReactModal
                 isOpen={isOpen}
                 onRequestClose={onClose}
