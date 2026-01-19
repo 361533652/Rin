@@ -22,13 +22,13 @@ export function Header({ children }: { children?: React.ReactNode }) {
         <>
             <div className="fixed top-0 left-0 right-0 z-40 bg-transparent backdrop-blur-sm">
                 <div className="w-screen">
-                    <Padding className="mt-2 mb-2">
-                        <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <Padding className="mt-2 mb-2" fullWidth={true}>
+                        <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
                             {/* Logo 部分 - 大屏幕显示完整信息，小屏幕只显示头像 */}
                             <Link aria-label={t('home')} href="/"
-                                className="flex items-center">
+                                className="flex items-center ml-4 lg:ml-6">
                                 <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-2xl border-2" />
-                                <div className="hidden sm:flex flex-col justify-center items-start mx-3">
+                                <div className="hidden sm:flex flex-col justify-center items-start ml-2">
                                     <p className="text-lg font-bold dark:text-white">
                                         {process.env.NAME}
                                     </p>
@@ -39,8 +39,8 @@ export function Header({ children }: { children?: React.ReactNode }) {
                             </Link>
                             
                             {/* 导航菜单 - 大屏幕居中，小屏幕可折叠 */}
-                            <div className="w-full sm:w-auto flex justify-center">
-                                <div className="flex flex-row items-center bg-white dark:bg-neutral-900 rounded-full px-2 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20">
+                            <div className="w-full sm:w-auto flex justify-center flex-1">
+                                <div className="flex flex-row items-center bg-white dark:bg-neutral-900 rounded-full px-4 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 mx-4 lg:mx-8">
                                     <NavBar menu={false} />
                                     {children}
                                     <Menu />
@@ -48,7 +48,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                             </div>
                             
                             {/* 右侧功能按钮 - 大屏幕显示，小屏幕在菜单中 */}
-                            <div className="hidden sm:flex flex-row items-center space-x-2">
+                            <div className="hidden sm:flex flex-row items-center space-x-4 mr-4 lg:mr-6">
                                 <Weather />
                                 <SearchButton />
                                 <LanguageSwitch />
