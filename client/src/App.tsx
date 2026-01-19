@@ -250,10 +250,10 @@ function App() {
       <div className="fixed bottom-40 right-4 z-50">
         <button
           onClick={() => setMusicEnabled(!musicEnabled)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
+          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
             musicEnabled 
-              ? 'bg-theme text-white' 
-              : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+              ? 'bg-theme/80 text-white hover:bg-theme/60 active:bg-theme/40' 
+              : 'bg-gray-200/80 text-gray-700 dark:bg-gray-700/80 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 active:bg-gray-200/40 dark:active:bg-gray-700/40'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
         >
@@ -264,7 +264,7 @@ function App() {
       <div className="fixed bottom-24 right-4 z-50">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="w-12 h-12 rounded-full bg-theme text-white flex items-center justify-center shadow-lg hover:bg-theme-hover active:bg-theme-active transition-all touch-manipulation"
+          className="w-12 h-12 rounded-full bg-theme/80 text-white flex items-center justify-center shadow-lg backdrop-blur-sm hover:bg-theme/60 active:bg-theme/40 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
