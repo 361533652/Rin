@@ -185,136 +185,104 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
   const colorMode = useColorMode();
 
   useEffect(() => {
-    // 检查是否在浏览器环境中
-    if (typeof window !== 'undefined' && window.particlesJS) {
+    let cancelled = false;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    let retries = 0;
+    // particles.js 是 index.html 中的本地脚本，正常情况下几毫秒内即就绪；
+    // 设置重试上限（约 5s）作为兜底，避免极端情况下无限空转，而非内存泄露。
+    const MAX_RETRIES = 100;
+
+    const initParticles = () => {
+      if (cancelled) return;
+      // particles.js 通过全局 <script> 加载，整页刷新后可能尚未就绪；
+      // 未就绪时轮询重试，避免初始化被一次性条件跳过导致粒子永久丢失。
+      if (typeof window === 'undefined' || !window.particlesJS) {
+        if (retries >= MAX_RETRIES) {
+          console.warn('particles.js 未在预期时间内加载，放弃初始化粒子特效');
+          return;
+        }
+        retries += 1;
+        retryTimer = setTimeout(initParticles, 50);
+        return;
+      }
+
       // 根据主题确定粒子颜色
       const particleColor = colorMode === 'dark' ? '#ffffff' : '#333333';
-      
+
       // 默认配置 - 移除了无法访问的背景图片
-      const defaultOptions = {
-        "particles": {
-          "number": {
-            "value": 80,
-            "density": {
-              "enable": true,
-              "value_area": 800
-            }
+      const defaultOptions: ParticleOptions = {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: particleColor },
+          shape: {
+            type: 'star',
+            stroke: { width: 0, color: particleColor },
+            polygon: { nb_sides: 5 },
           },
-          "color": {
-            "value": particleColor
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
           },
-          "shape": {
-            "type": "star",
-            "stroke": {
-              "width": 0,
-              "color": particleColor
-            },
-            "polygon": {
-              "nb_sides": 5
-            }
+          size: {
+            value: 4,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
           },
-          "opacity": {
-            "value": 0.5,
-            "random": false,
-            "anim": {
-              "enable": false,
-              "speed": 1,
-              "opacity_min": 0.1,
-              "sync": false
-            }
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: particleColor,
+            opacity: 0.4,
+            width: 1,
           },
-          "size": {
-            "value": 4,
-            "random": true,
-            "anim": {
-              "enable": false,
-              "speed": 40,
-              "size_min": 0.1,
-              "sync": false
-            }
+          move: {
+            enable: true,
+            speed: 6,
+            direction: 'none',
+            random: true,
+            straight: false,
+            out_mode: 'out',
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
           },
-          "line_linked": {
-            "enable": true,
-            "distance": 150,
-            "color": particleColor,
-            "opacity": 0.4,
-            "width": 1
-          },
-          "move": {
-            "enable": true,
-            "speed": 6,
-            "direction": "none",
-            "random": true,
-            "straight": false,
-            "out_mode": "out",
-            "bounce": false,
-            "attract": {
-              "enable": false,
-              "rotateX": 600,
-              "rotateY": 1200
-            }
-          }
         },
-        "interactivity": {
-          "detect_on": "canvas",
-          "events": {
-            "onhover": {
-              "enable": true,
-              "mode": "repulse"
-            },
-            "onclick": {
-              "enable": true,
-              "mode": "push"
-            },
-            "resize": true
+        interactivity: {
+          detect_on: 'canvas',
+          events: {
+            onhover: { enable: true, mode: 'repulse' },
+            onclick: { enable: true, mode: 'push' },
+            resize: true,
           },
-          "modes": {
-            "grab": {
-              "distance": 200,
-              "line_linked": {
-                "opacity": 1
-              }
-            },
-            "bubble": {
-              "distance": 400,
-              "size": 40,
-              "duration": 2,
-              "opacity": 8,
-              "speed": 3
-            },
-            "repulse": {
-              "distance": 200,
-              "duration": 0.4
-            },
-            "push": {
-              "particles_nb": 4
-            },
-            "remove": {
-              "particles_nb": 2
-            }
-          }
+          modes: {
+            grab: { distance: 200, line_linked: { opacity: 1 } },
+            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
         },
-        "retina_detect": true
+        retina_detect: true,
       };
 
-      
-      
       try {
-        // 清理旧的粒子特效
+        // 清理旧的粒子特效，避免整页刷新/主题切换后残留多个实例
         if (window.pJSDom && window.pJSDom.length > 0) {
           window.pJSDom.forEach((pJS) => {
-            if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
-              pJS.pJS.fn.vendors.destroy();
+            try {
+              pJS.pJS?.fn?.vendors?.destroy?.();
+            } catch {
+              /* 忽略单个实例销毁失败 */
             }
           });
         }
-        
+
         // 初始化粒子特效
         window.particlesJS(id, options || defaultOptions);
       } catch (error) {
         console.error('粒子特效初始化失败:', error);
       }
-      
+
       // 设置粒子画布的 pointer-events 为 auto，以接收鼠标事件
       setTimeout(() => {
         const canvas = particlesRef.current?.querySelector('canvas');
@@ -322,16 +290,22 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
           (canvas as HTMLElement).style.pointerEvents = 'auto';
         }
       }, 100); // 稍微延迟以确保 canvas 已创建
-    }
+    };
+
+    initParticles();
 
     // 清理函数
     return () => {
+      cancelled = true;
+      if (retryTimer) clearTimeout(retryTimer);
       // 检查是否在浏览器环境中
       if (typeof window !== 'undefined' && window.pJSDom && window.pJSDom.length > 0) {
         try {
           window.pJSDom.forEach((pJS) => {
-            if (pJS.pJS && pJS.pJS.fn && pJS.pJS.fn.vendors && pJS.pJS.fn.vendors.destroy) {
-              pJS.pJS.fn.vendors.destroy();
+            try {
+              pJS.pJS?.fn?.vendors?.destroy?.();
+            } catch {
+              /* 忽略单个实例销毁失败 */
             }
           });
         } catch (error) {

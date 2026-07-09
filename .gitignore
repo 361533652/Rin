@@ -36,3 +36,6 @@ dist-ssr
 
 # Bun
 .bun/*
+
+# WorkBuddy 工作区数据
+.workbuddy/
