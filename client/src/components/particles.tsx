@@ -254,7 +254,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
           },
         },
         interactivity: {
-          detect_on: 'canvas',
+          detect_on: 'window',
           events: {
             onhover: { enable: true, mode: 'gather' },
             onclick: { enable: true, mode: 'push' },
