@@ -264,6 +264,11 @@
   "summary": "概要",
   "tags": "タグ",
   "timeline": "タイムライン",
+  "tools": "ツール",
+  "back_to_site": "メインサイトに戻る",
+  "image_host": "画像ホスティング",
+  "image_host_desc": "画像をアップロードして外部リンクを生成",
+  "coming_soon": "準備中",
   "title": "タイトル",
   "title_empty": "タイトルは空にできません",
   "top": {

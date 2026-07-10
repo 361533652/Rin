@@ -28,6 +28,7 @@ import { Tips, TipsPage } from './components/tips.tsx'
 import { useTranslation } from 'react-i18next'
 import { MomentsPage } from './page/moments'
 import { ErrorPage } from './page/error.tsx'
+import { ToolsPage } from './page/tools'
 
 // 平滑回到顶部：用 requestAnimationFrame 缓动，兼容不支持 scrollTo(options) 的浏览器（如旧版 Safari 会忽略 behavior: 'smooth' 直接瞬跳）
 function smoothScrollToTop(duration = 500) {
@@ -195,6 +196,10 @@ function App() {
 
             <RouteMe path="/callback" >
               <CallbackPage />
+            </RouteMe>
+
+            <RouteMe path="/tools">
+              <ToolsPage />
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
