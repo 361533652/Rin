@@ -126,7 +126,9 @@ var pJS = function(tag_id, params){
           distance: 200,
           radius: 70,
           strength: 2.4,
-          swirl: 2.2
+          swirl: 2.2,
+          max: 45,
+          escape: 1.5
         }
       },
       mouse:{}
@@ -160,7 +162,8 @@ var pJS = function(tag_id, params){
     mode_gather_distance: pJS.interactivity.modes.gather.distance,
     mode_gather_radius: pJS.interactivity.modes.gather.radius,
     mode_gather_strength: pJS.interactivity.modes.gather.strength,
-    mode_gather_swirl: pJS.interactivity.modes.gather.swirl
+    mode_gather_swirl: pJS.interactivity.modes.gather.swirl,
+    mode_gather_escape: pJS.interactivity.modes.gather.escape
   };
 
 
@@ -191,6 +194,7 @@ var pJS = function(tag_id, params){
     pJS.interactivity.modes.gather.radius = pJS.tmp.obj.mode_gather_radius * pJS.canvas.pxratio;
     pJS.interactivity.modes.gather.strength = pJS.tmp.obj.mode_gather_strength * pJS.canvas.pxratio;
     pJS.interactivity.modes.gather.swirl = pJS.tmp.obj.mode_gather_swirl * pJS.canvas.pxratio;
+    pJS.interactivity.modes.gather.escape = pJS.tmp.obj.mode_gather_escape * pJS.canvas.pxratio;
 
   };
 
@@ -518,6 +522,9 @@ var pJS = function(tag_id, params){
   };
 
   pJS.fn.particlesUpdate = function(){
+
+    /* 每帧重置 gather 聚集计数，用于给聚拢粒子数量设上限 */
+    pJS.tmp.gather_count = 0;
 
     for(var i = 0; i < pJS.particles.array.length; i++){
 
@@ -1048,10 +1055,30 @@ var pJS = function(tag_id, params){
       var D = pJS.interactivity.modes.gather.distance,
           targetR = pJS.interactivity.modes.gather.radius,
           strength = pJS.interactivity.modes.gather.strength,
-          swirl = pJS.interactivity.modes.gather.swirl;
+          swirl = pJS.interactivity.modes.gather.swirl,
+          maxG = pJS.interactivity.modes.gather.max,
+          escape = pJS.interactivity.modes.gather.escape;
 
       // 仅在鼠标影响半径内生效，dist_mouse 为 0 时跳过以避免除零
       if(dist_mouse > 0 && dist_mouse < D){
+
+        // 已达聚集上限：对超出上限的粒子施加向外逃逸力，避免无限堆积、实现回收
+        if(pJS.tmp.gather_count >= maxG){
+          var n2 = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse};
+          var falloff2 = (1 - dist_mouse/D);
+          var stepOut = {
+            x: -n2.x * escape * falloff2,
+            y: -n2.y * escape * falloff2
+          };
+          if(pJS.particles.move.out_mode == 'bounce'){
+            if(p.x + stepOut.x - p.radius > 0 && p.x + stepOut.x + p.radius < pJS.canvas.w) p.x += stepOut.x;
+            if(p.y + stepOut.y - p.radius > 0 && p.y + stepOut.y + p.radius < pJS.canvas.h) p.y += stepOut.y;
+          }else{
+            p.x += stepOut.x;
+            p.y += stepOut.y;
+          }
+          return;
+        }
 
         var normVec = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse};
 
@@ -1075,6 +1102,9 @@ var pJS = function(tag_id, params){
           p.x += step.x;
           p.y += step.y;
         }
+
+        // 计入已聚集粒子数，供上限判断；数组顺序稳定，保证每帧被聚集的是同一批，避免抖动
+        pJS.tmp.gather_count = (pJS.tmp.gather_count || 0) + 1;
 
       }
 

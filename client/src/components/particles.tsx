@@ -102,6 +102,8 @@ type ParticleOptions = {
         radius?: number;
         strength?: number;
         swirl?: number;
+        max?: number;
+        escape?: number;
       };
       push?: {
         particles_nb?: number;
@@ -264,7 +266,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
             grab: { distance: 220, line_linked: { opacity: 0.8 } },
             bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
             repulse: { distance: 200, duration: 0.4 },
-            gather: { distance: 320, radius: 120, strength: 2.0, swirl: 1.3 },
+            gather: { distance: 320, radius: 120, strength: 2.0, swirl: 1.3, max: 45, escape: 1.5 },
             push: { particles_nb: 4 },
             remove: { particles_nb: 2 },
           },
