@@ -264,6 +264,11 @@
   "summary": "Summary",
   "tags": "Tags",
   "timeline": "Timeline",
+  "tools": "Tools",
+  "back_to_site": "Back to site",
+  "image_host": "Image Host",
+  "image_host_desc": "Upload images and get external links",
+  "coming_soon": "Coming soon",
   "title": "Title",
   "title_empty": "Title cannot be empty",
   "top": {

@@ -264,6 +264,11 @@
   "summary": "简介",
   "tags": "标签",
   "timeline": "时间轴",
+  "tools": "工具",
+  "back_to_site": "回到主站",
+  "image_host": "图床",
+  "image_host_desc": "上传图片并生成外链",
+  "coming_soon": "敬请期待",
   "title": "标题",
   "title_empty": "标题不能为空",
   "top": {
