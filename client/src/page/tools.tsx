@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet';
 import { useTranslation } from "react-i18next";
-import { Link } from "wouter";
 import { siteName } from "../utils/constants";
 
 export function ToolsPage() {
@@ -16,15 +15,10 @@ export function ToolsPage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                <div className="wauto flex flex-row items-center justify-between py-4 w-full">
+                <div className="wauto flex flex-row items-center py-4 w-full">
                     <div className="text-start text-black dark:text-white text-4xl font-bold">
                         <p>{t('tools')}</p>
                     </div>
-                    <Link href="/"
-                        className="flex items-center gap-2 rounded-full bg-w border-card px-4 py-2 text-sm t-primary hover:text-theme duration-300">
-                        <i className="ri-home-2-line" />
-                        {t('back_to_site')}
-                    </Link>
                 </div>
 
                 <div className="wauto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">
