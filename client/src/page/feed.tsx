@@ -145,11 +145,15 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           setTimeout(() => {
             setFeed(data);
             setTop(data.top);
-            // Extract head image
-            const img_reg = /!\[.*?\]\((.*?)\)/;
-            const img_match = img_reg.exec(data.content);
-            if (img_match) {
-              setHeadImage(img_match[1]);
+            // Extract head image: prefer explicit cover, fallback to first image in content
+            if (data.cover) {
+              setHeadImage(data.cover);
+            } else {
+              const img_reg = /!\[.*?\]\((.*?)\)/;
+              const img_match = img_reg.exec(data.content);
+              if (img_match) {
+                setHeadImage(img_match[1]);
+              }
             }
             clean(id);
           }, 0);

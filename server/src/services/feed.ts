@@ -60,13 +60,14 @@ export function FeedService() {
                         orderBy: [desc(feeds.top), desc(feeds.createdAt), desc(feeds.updatedAt)],
                         offset: page_num * limit_num,
                         limit: limit_num + 1,
-                    })).map(({ content, hashtags, summary, ...other }) => {
+                    })).map(({ content, hashtags, summary, cover, ...other }) => {
                         // 提取首图
                         const avatar = extractImage(content);
                         return {
                             summary: summary.length > 0 ? summary : content.length > 100 ? content.slice(0, 100) : content,
                             hashtags: hashtags.map(({ hashtag }) => hashtag),
                             avatar,
+                            cover: cover || undefined,
                             ...other
                         }
                     });
@@ -102,7 +103,7 @@ export function FeedService() {
                         orderBy: [desc(feeds.createdAt), desc(feeds.updatedAt)],
                     }))
                 })
-                .post('/', async ({ admin, set, uid, body: { title, alias, listed, content, summary, draft, tags, createdAt } }) => {
+                .post('/', async ({ admin, set, uid, body: { title, alias, listed, content, summary, draft, tags, createdAt, cover } }) => {
                     if (!admin) {
                         set.status = 403;
                         return 'Permission denied';
@@ -143,6 +144,7 @@ export function FeedService() {
                         ai_summary,
                         uid,
                         alias,
+                        cover,
                         listed: listed ? 1 : 0,
                         draft: draft ? 1 : 0,
                         createdAt: date,
@@ -165,6 +167,7 @@ export function FeedService() {
                         draft: t.Boolean(),
                         listed: t.Boolean(),
                         createdAt: t.Optional(t.Date()),
+                        cover: t.Optional(t.String()),
                         tags: t.Array(t.String())
                     })
                 })
@@ -357,7 +360,7 @@ export function FeedService() {
                     set,
                     uid,
                     params: { id },
-                    body: { title, listed, content, summary, alias, draft, top, tags, createdAt }
+                    body: { title, listed, content, summary, alias, draft, top, tags, createdAt, cover }
                 }) => {
                     const id_num = parseInt(id);
                     const feed = await db.query.feeds.findFirst({
@@ -398,6 +401,7 @@ export function FeedService() {
                         ai_summary,
                         alias,
                         top,
+                        cover,
                         listed: listed ? 1 : 0,
                         draft: draft ? 1 : 0,
                         createdAt: createdAt ? new Date(createdAt) : undefined,
@@ -418,7 +422,8 @@ export function FeedService() {
                         draft: t.Optional(t.Boolean()),
                         createdAt: t.Optional(t.Date()),
                         tags: t.Optional(t.Array(t.String())),
-                        top: t.Optional(t.Integer())
+                        top: t.Optional(t.Integer()),
+                        cover: t.Optional(t.String())
                     })
                 })
                 .post('/top/:id', async ({

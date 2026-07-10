@@ -9,6 +9,7 @@ export type Keys =
     | "alias"
     | "listed"
     | "preview"
+    | "cover"
     ;
 const keys: Keys[] = [
     "title",
@@ -19,6 +20,7 @@ const keys: Keys[] = [
     "alias",
     "listed",
     "preview",
+    "cover",
 ];
 
 export class Cache {

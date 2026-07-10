@@ -25,19 +25,21 @@ async function publish({
   tags,
   draft,
   createdAt,
+  cover,
   onCompleted,
   showAlert
 }: {
-  title: string;
-  listed: boolean;
-  content: string;
-  summary: string;
-  tags: string[];
-  draft: boolean;
-  alias?: string;
-  createdAt?: Date;
-  onCompleted?: () => void;
-  showAlert: ShowAlertType;
+  title: string,
+  listed: boolean,
+  content: string,
+  summary: string,
+  tags: string[],
+  draft: boolean,
+  alias?: string,
+  createdAt?: Date,
+  cover?: string,
+  onCompleted?: () => void,
+  showAlert: ShowAlertType,
 }) {
   const t = i18n.t
   const { data, error } = await client.feed.index.post(
@@ -50,6 +52,7 @@ async function publish({
       listed,
       draft,
       createdAt,
+      cover,
     },
     {
       headers: headersWithAuth(),
@@ -79,20 +82,22 @@ async function update({
   listed,
   draft,
   createdAt,
+  cover,
   onCompleted,
   showAlert
 }: {
-  id: number;
-  listed: boolean;
-  title?: string;
-  alias?: string;
-  content?: string;
-  summary?: string;
-  tags?: string[];
-  draft?: boolean;
-  createdAt?: Date;
-  onCompleted?: () => void;
-  showAlert: ShowAlertType;
+  id: number,
+  listed: boolean,
+  title?: string,
+  alias?: string,
+  content?: string,
+  summary?: string,
+  tags?: string[],
+  draft?: boolean,
+  createdAt?: Date,
+  cover?: string,
+  onCompleted?: () => void,
+  showAlert: ShowAlertType,
 }) {
   const t = i18n.t
   const { error } = await client.feed({ id }).post(
@@ -105,6 +110,7 @@ async function update({
       listed,
       draft,
       createdAt,
+      cover,
     },
     {
       headers: headersWithAuth(),
@@ -131,6 +137,7 @@ export function WritingPage({ id }: { id?: number }) {
   const [summary, setSummary] = cache.useCache("summary", "");
   const [tags, setTags] = cache.useCache("tags", "");
   const [alias, setAlias] = cache.useCache("alias", "");
+  const [cover, setCover] = cache.useCache("cover", "");
   const [draft, setDraft] = useState(false);
   const [listed, setListed] = useState(true);
   const [content, setContent] = cache.useCache("content", "");
@@ -156,6 +163,7 @@ export function WritingPage({ id }: { id?: number }) {
         draft,
         listed,
         createdAt,
+        cover,
         onCompleted: () => {
           setPublishing(false)
         },
@@ -180,6 +188,7 @@ export function WritingPage({ id }: { id?: number }) {
         alias,
         listed,
         createdAt,
+        cover,
         onCompleted: () => {
           setPublishing(false)
         },
@@ -203,6 +212,7 @@ export function WritingPage({ id }: { id?: number }) {
             if (alias == "" && data.alias) setAlias(data.alias);
             if (content == "") setContent(data.content);
             if (summary == "") setSummary(data.summary);
+            if (cover == "" && data.cover) setCover(data.cover);
             setListed(data.listed === 1);
             setDraft(data.draft === 1);
             setCreatedAt(new Date(data.createdAt));
@@ -264,6 +274,13 @@ export function WritingPage({ id }: { id?: number }) {
             value={alias}
             setValue={setAlias}
             placeholder={t("alias")}
+            className="mt-4"
+          />
+          <Input
+            id={id}
+            value={cover}
+            setValue={setCover}
+            placeholder={t("cover")}
             className="mt-4"
           />
           <div
@@ -353,4 +370,3 @@ export function WritingPage({ id }: { id?: number }) {
 
   );
 }
-

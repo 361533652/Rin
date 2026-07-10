@@ -15,6 +15,7 @@ interface FeedItem {
     title: string;
     summary: string;
     avatar?: string;
+    cover?: string;
     draft?: number;
     listed?: number;
     top?: number;

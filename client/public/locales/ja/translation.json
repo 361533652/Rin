@@ -8,6 +8,7 @@
   },
   "alert": "警告",
   "alias": "エイリアス",
+  "cover": "カバー画像",
   "article": {
     "delete": {
       "confirm": "この記事を削除してもよろしいですか？",
