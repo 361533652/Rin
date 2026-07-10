@@ -159,7 +159,7 @@ declare global {
         };
         fn: {
           vendors: {
-            destroy: () => void;
+            destroypJS: () => void;
           };
         };
       };
@@ -270,13 +270,15 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         if (window.pJSDom && window.pJSDom.length > 0) {
           window.pJSDom.forEach((pJS) => {
             try {
-              pJS.pJS?.fn?.vendors?.destroy?.();
+              pJS.pJS?.fn?.vendors?.destroypJS?.();
             } catch {
               /* 忽略单个实例销毁失败 */
             }
           });
         }
 
+        // 确保全局 pJSDom 数组存在（destroypJS 会将其置为 null，否则下次 push 报错）
+        window.pJSDom = window.pJSDom || [];
         // 初始化粒子特效
         window.particlesJS(id, options || defaultOptions);
       } catch (error) {
@@ -303,7 +305,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         try {
           window.pJSDom.forEach((pJS) => {
             try {
-              pJS.pJS?.fn?.vendors?.destroy?.();
+              pJS.pJS?.fn?.vendors?.destroypJS?.();
             } catch {
               /* 忽略单个实例销毁失败 */
             }

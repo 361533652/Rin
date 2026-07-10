@@ -47,7 +47,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                             
                             {/* 导航菜单 - 大屏幕居中，小屏幕隐藏 */}
                             <div className="hidden sm:flex sm:w-auto justify-center flex-1">
-                                <div className="flex flex-row items-center bg-white dark:bg-neutral-900 rounded-full px-4 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 mx-4 lg:mx-8">
+                                <div className="flex flex-row items-center bg-white/70 dark:bg-neutral-900/70 backdrop-blur-md rounded-full px-4 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 mx-4 lg:mx-8">
                                     <NavBar menu={false} />
                                     {children}
                                 </div>
@@ -103,7 +103,7 @@ function Menu() {
     return (
         <div className="flex flex-row items-center sm:hidden">
             <button onClick={() => setOpen(true)}
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-white dark:bg-neutral-800 hover:bg-zinc-100 dark:hover:bg-neutral-700 transition-colors">
+                className="w-8 h-8 rounded-full flex items-center justify-center bg-white/70 dark:bg-neutral-800/70 backdrop-blur-md hover:bg-zinc-100 dark:hover:bg-neutral-700 transition-colors">
                 <i className="ri-menu-line ri-lg" />
             </button>
             
@@ -135,7 +135,7 @@ function Menu() {
                 shouldCloseOnOverlayClick={true}
                 shouldCloseOnEsc={true}
             >
-                <div className="flex flex-col bg-white dark:bg-neutral-900 rounded-xl p-4 w-full shadow-2xl">
+                <div className="flex flex-col bg-white/70 dark:bg-neutral-900/70 backdrop-blur-md rounded-xl p-4 w-full shadow-2xl">
                     <div className="flex flex-col space-y-4">
                         <div className="flex flex-row justify-between items-center">
                             <div className="flex items-center">
