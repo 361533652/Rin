@@ -12,7 +12,7 @@ function processNode(child: Content, index: number, siblings: Content[]) {
   if (lang !== 'mermaid') return;
   // 把原始 mermaid 源码存进 data-mermaid（属性值需转义 & 和 "），
   // 供主题切换重渲染时从该属性还原，避免拿到上一次残留的 SVG
-  const escaped = value.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  const escaped = value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   siblings[index] = {
     type: 'html',
     value: `

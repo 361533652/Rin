@@ -172,7 +172,12 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
     const restoreSource = (selector: string) => {
       root.querySelectorAll<HTMLElement>(selector).forEach((pre) => {
         const src = pre.dataset.mermaid;
-        if (src !== undefined) pre.textContent = src;
+        if (src !== undefined) {
+          // 清掉 mermaid 打的「已处理」标记，否则 mermaid.run 会跳过该节点、
+          // 导致主题切换后图表停在原始语法状态（mermaid.js:14822 的 data-processed 判定）
+          pre.removeAttribute("data-processed");
+          pre.textContent = src;
+        }
       });
     };
     restoreSource("pre.mermaid_default");
