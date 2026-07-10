@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Loading from 'react-loading';
 import { useColorMode } from "../utils/darkModeUtils";
 import { Markdown } from "./markdown";
-import { client } from "../main";
+import { endpoint } from "../main";
 import { headersWithAuth } from "../utils/auth";
 
 interface MarkdownEditorProps {
@@ -24,23 +24,21 @@ export function MarkdownEditor({ content, setContent, placeholder = "> Write you
   const [uploading, setUploading] = useState(false);
 
   function uploadImage(file: File, onSuccess: (url: string) => void, showAlert: (msg: string) => void) {
-    client.storage.index
-      .post(
-        {
-          key: file.name,
-          file: file,
-        },
-        {
-          headers: headersWithAuth(),
-        }
-      )
-      .then(({ data, error }) => {
-        if (error) {
+    const form = new FormData();
+    form.append("key", file.name);
+    form.append("file", file);
+    fetch(`${endpoint}/storage`, {
+      method: "POST",
+      headers: headersWithAuth(),
+      body: form,
+    })
+      .then(async (res) => {
+        const text = await res.text();
+        if (!res.ok) {
           showAlert(t("upload.failed"));
+          return;
         }
-        if (data) {
-          onSuccess(data);
-        }
+        onSuccess(text);
       })
       .catch((e: any) => {
         console.error(e);
