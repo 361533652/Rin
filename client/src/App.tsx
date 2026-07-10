@@ -29,6 +29,21 @@ import { useTranslation } from 'react-i18next'
 import { MomentsPage } from './page/moments'
 import { ErrorPage } from './page/error.tsx'
 
+// 平滑回到顶部：用 requestAnimationFrame 缓动，兼容不支持 scrollTo(options) 的浏览器（如旧版 Safari 会忽略 behavior: 'smooth' 直接瞬跳）
+function smoothScrollToTop(duration = 500) {
+  const startY = window.scrollY
+  if (startY === 0) return
+  const startTime = performance.now()
+  const easeInOutCubic = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  const step = (now: number) => {
+    const progress = Math.min((now - startTime) / duration, 1)
+    window.scrollTo(0, startY * (1 - easeInOutCubic(progress)))
+    if (progress < 1) requestAnimationFrame(step)
+  }
+  requestAnimationFrame(step)
+}
+
 function App() {
   const ref = useRef(false)
   const { t } = useTranslation()
@@ -263,7 +278,7 @@ function App() {
       {/* 回到顶部按钮 */}
       <div className="fixed bottom-24 right-4 z-50">
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => smoothScrollToTop()}
           className="w-12 h-12 rounded-full bg-theme/80 text-white flex items-center justify-center shadow-lg backdrop-blur-sm hover:bg-theme/60 active:bg-theme/40 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
