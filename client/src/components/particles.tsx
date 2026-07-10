@@ -10,6 +10,7 @@ type ParticleOptions = {
         enable?: boolean;
         value_area?: number;
       };
+      maxParticles?: number;
     };
     color?: {
       value?: string;
@@ -220,7 +221,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
       // 默认配置 - 移除了无法访问的背景图片
       const defaultOptions: ParticleOptions = {
         particles: {
-          number: { value: 80, density: { enable: true, value_area: 800 } },
+          number: { value: 80, density: { enable: true, value_area: 800 }, maxParticles: 120 },
           color: { value: particleColor },
           shape: {
             type: 'star',
