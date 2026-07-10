@@ -121,6 +121,12 @@ var pJS = function(tag_id, params){
         },
         remove:{
           particles_nb: 2
+        },
+        gather:{
+          distance: 200,
+          radius: 70,
+          strength: 2.4,
+          swirl: 2.2
         }
       },
       mouse:{}
@@ -150,7 +156,11 @@ var pJS = function(tag_id, params){
     mode_grab_distance: pJS.interactivity.modes.grab.distance,
     mode_bubble_distance: pJS.interactivity.modes.bubble.distance,
     mode_bubble_size: pJS.interactivity.modes.bubble.size,
-    mode_repulse_distance: pJS.interactivity.modes.repulse.distance
+    mode_repulse_distance: pJS.interactivity.modes.repulse.distance,
+    mode_gather_distance: pJS.interactivity.modes.gather.distance,
+    mode_gather_radius: pJS.interactivity.modes.gather.radius,
+    mode_gather_strength: pJS.interactivity.modes.gather.strength,
+    mode_gather_swirl: pJS.interactivity.modes.gather.swirl
   };
 
 
@@ -177,6 +187,10 @@ var pJS = function(tag_id, params){
     pJS.particles.line_linked.width = pJS.tmp.obj.line_linked_width * pJS.canvas.pxratio;
     pJS.interactivity.modes.bubble.size = pJS.tmp.obj.mode_bubble_size * pJS.canvas.pxratio;
     pJS.interactivity.modes.repulse.distance = pJS.tmp.obj.mode_repulse_distance * pJS.canvas.pxratio;
+    pJS.interactivity.modes.gather.distance = pJS.tmp.obj.mode_gather_distance * pJS.canvas.pxratio;
+    pJS.interactivity.modes.gather.radius = pJS.tmp.obj.mode_gather_radius * pJS.canvas.pxratio;
+    pJS.interactivity.modes.gather.strength = pJS.tmp.obj.mode_gather_strength * pJS.canvas.pxratio;
+    pJS.interactivity.modes.gather.swirl = pJS.tmp.obj.mode_gather_swirl * pJS.canvas.pxratio;
 
   };
 
@@ -606,6 +620,10 @@ var pJS = function(tag_id, params){
         pJS.fn.modes.repulseParticle(p);
       }
 
+      if(isInArray('gather', pJS.interactivity.events.onhover.mode) || isInArray('gather', pJS.interactivity.events.onclick.mode)){
+        pJS.fn.modes.gatherParticle(p);
+      }
+
       /* interaction auto between particles */
       if(pJS.particles.line_linked.enable || pJS.particles.move.attract.enable){
         for(var j = i + 1; j < pJS.particles.array.length; j++){
@@ -1018,6 +1036,51 @@ var pJS = function(tag_id, params){
 
   }
 
+
+  pJS.fn.modes.gatherParticle = function(p){
+
+    if(pJS.interactivity.events.onhover.enable && isInArray('gather', pJS.interactivity.events.onhover.mode) && pJS.interactivity.status == 'mousemove') {
+
+      var dx_mouse = pJS.interactivity.mouse.pos_x - p.x,
+          dy_mouse = pJS.interactivity.mouse.pos_y - p.y,
+          dist_mouse = Math.sqrt(dx_mouse*dx_mouse + dy_mouse*dy_mouse);
+
+      var D = pJS.interactivity.modes.gather.distance,
+          targetR = pJS.interactivity.modes.gather.radius,
+          strength = pJS.interactivity.modes.gather.strength,
+          swirl = pJS.interactivity.modes.gather.swirl;
+
+      // 仅在鼠标影响半径内生效，dist_mouse 为 0 时跳过以避免除零
+      if(dist_mouse > 0 && dist_mouse < D){
+
+        var normVec = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse};
+
+        // 径向：把粒子拉向光标，但收敛到 radius 处的环形轨道，而非坍缩到一点
+        var radialErr = dist_mouse - targetR;
+        var falloff = (1 - dist_mouse/D);
+        var radial = Math.sign(radialErr) * Math.min(Math.abs(radialErr), strength) * falloff;
+
+        // 切向（法向量旋转 90°）：制造绕光标的圆周运动
+        var tangVec = {x: -normVec.y, y: normVec.x};
+
+        var step = {
+          x: normVec.x * radial + tangVec.x * swirl * falloff,
+          y: normVec.y * radial + tangVec.y * swirl * falloff
+        };
+
+        if(pJS.particles.move.out_mode == 'bounce'){
+          if(p.x + step.x - p.radius > 0 && p.x + step.x + p.radius < pJS.canvas.w) p.x += step.x;
+          if(p.y + step.y - p.radius > 0 && p.y + step.y + p.radius < pJS.canvas.h) p.y += step.y;
+        }else{
+          p.x += step.x;
+          p.y += step.y;
+        }
+
+      }
+
+    }
+
+  };
 
   pJS.fn.modes.grabParticle = function(p){
 

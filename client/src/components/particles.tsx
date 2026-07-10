@@ -97,6 +97,12 @@ type ParticleOptions = {
         distance?: number;
         duration?: number;
       };
+      gather?: {
+        distance?: number;
+        radius?: number;
+        strength?: number;
+        swirl?: number;
+      };
       push?: {
         particles_nb?: number;
       };
@@ -250,7 +256,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         interactivity: {
           detect_on: 'canvas',
           events: {
-            onhover: { enable: true, mode: 'repulse' },
+            onhover: { enable: true, mode: 'gather' },
             onclick: { enable: true, mode: 'push' },
             resize: true,
           },
@@ -258,6 +264,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
             grab: { distance: 200, line_linked: { opacity: 1 } },
             bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
             repulse: { distance: 200, duration: 0.4 },
+            gather: { distance: 200, radius: 70, strength: 2.4, swirl: 2.2 },
             push: { particles_nb: 4 },
             remove: { particles_nb: 2 },
           },
