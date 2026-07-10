@@ -24,7 +24,8 @@ var pJS = function(tag_id, params){
         density: {
           enable: true,
           value_area: 800
-        }
+        },
+        maxParticles: 120
       },
       color: {
         value: '#fff'
@@ -776,6 +777,20 @@ var pJS = function(tag_id, params){
   /* ---------- pJS functions - modes events ------------ */
 
   pJS.fn.modes.pushParticles = function(nb, pos){
+
+    // 全局上限：防止点击 / 密度补粒子无限累积导致卡顿
+    var max = pJS.particles.number.maxParticles;
+    if(max && max > 0){
+      var room = max - pJS.particles.array.length;
+      if(room <= 0){
+        // 已达上限：移除最旧 nb 个（数组头部），腾出空间，保持点击仍有反馈且总数恒定
+        var recycle = Math.min(nb, pJS.particles.array.length);
+        pJS.particles.array.splice(0, recycle);
+        room = recycle;
+      }
+      if(room <= 0) return; // 极端情况：无任何空间则不添加
+      nb = Math.min(nb, room);
+    }
 
     pJS.tmp.pushing = true;
 
