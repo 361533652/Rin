@@ -18,7 +18,9 @@
     <div id="particles-js"></div>
 
     <!-- scripts -->
-    <script src="particles.js"></script>
+    <!-- 必须用绝对路径 /particles.js：发布后跳转到 /feed/:id 等子路径时，
+         相对路径会解析成 /feed/particles.js 导致 404，粒子库加载失败、特效消失 -->
+    <script src="/particles.js"></script>
 
     <!-- stats.js (hidden) -->
     <!-- <script src="js/lib/stats.js"></script>
