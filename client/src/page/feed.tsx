@@ -18,6 +18,7 @@ import { Button } from "../components/button";
 import { Tips } from "../components/tips";
 import { useLoginModal } from "../hooks/useLoginModal";
 import mermaid from "mermaid";
+import { useColorMode } from "../utils/darkModeUtils";
 import { AdjacentSection } from "../components/adjacent_feed.tsx";
 
 type Feed = {
@@ -50,6 +51,8 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
   const [error, setError] = useState<string>();
   const [headImage, setHeadImage] = useState<string>();
   const ref = useRef("");
+  const contentRef = useRef<HTMLDivElement>(null);
+  const colorMode = useColorMode();
   const [, setLocation] = useLocation();
   const { showAlert, AlertUI } = useAlert();
   const { showConfirm, ConfirmUI } = useConfirm();
@@ -145,11 +148,15 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           setTimeout(() => {
             setFeed(data);
             setTop(data.top);
-            // Extract head image
-            const img_reg = /!\[.*?\]\((.*?)\)/;
-            const img_match = img_reg.exec(data.content);
-            if (img_match) {
-              setHeadImage(img_match[1]);
+            // Extract head image: prefer explicit cover, fallback to first image in content
+            if (data.cover) {
+              setHeadImage(data.cover);
+            } else {
+              const img_reg = /!\[.*?\]\((.*?)\)/;
+              const img_match = img_reg.exec(data.content);
+              if (img_match) {
+                setHeadImage(img_match[1]);
+              }
             }
             clean(id);
           }, 0);
@@ -158,13 +165,30 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
     ref.current = id;
   }, [id, clean]);
   useEffect(() => {
+    const root = contentRef.current;
+    if (!root) return;
+    // 主题切换时 Markdown 会重新渲染并把 <pre> 重置为源码，这里先从 data-mermaid 还原，
+    // 保证 mermaid 始终基于原始源码渲染（避免拿到上一次残留的 SVG 导致报错/串色）
+    const restoreSource = (selector: string) => {
+      root.querySelectorAll<HTMLElement>(selector).forEach((pre) => {
+        const src = pre.dataset.mermaid;
+        if (src !== undefined) {
+          // 清掉 mermaid 打的「已处理」标记，否则 mermaid.run 会跳过该节点、
+          // 导致主题切换后图表停在原始语法状态（mermaid.js:14822 的 data-processed 判定）
+          pre.removeAttribute("data-processed");
+          pre.textContent = src;
+        }
+      });
+    };
+    restoreSource("pre.mermaid_default");
+    restoreSource("pre.mermaid_dark");
     mermaid.initialize({
       startOnLoad: false,
       theme: "default",
     });
     mermaid.run({
       suppressErrors: true,
-      nodes: document.querySelectorAll("pre.mermaid_default")
+      nodes: root.querySelectorAll("pre.mermaid_default")
     }).then(() => {
       mermaid.initialize({
         startOnLoad: false,
@@ -172,10 +196,10 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
       });
       mermaid.run({
         suppressErrors: true,
-        nodes: document.querySelectorAll("pre.mermaid_dark")
+        nodes: root.querySelectorAll("pre.mermaid_dark")
       });
     })
-  }, [feed]);
+  }, [feed, colorMode]);
 
   return (
     <Waiting for={feed || error}>
@@ -314,7 +338,9 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                     </p>
                   </div>
                 )}
-                <Markdown content={feed.content} />
+                <div ref={contentRef}>
+                  <Markdown content={feed.content} />
+                </div>
                 <div className="mt-6 flex flex-col gap-2">
                   {feed.hashtags.length > 0 && (
                     <div className="flex flex-row flex-wrap gap-x-2">

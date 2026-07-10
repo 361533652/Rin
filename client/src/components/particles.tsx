@@ -97,6 +97,14 @@ type ParticleOptions = {
         distance?: number;
         duration?: number;
       };
+      gather?: {
+        distance?: number;
+        radius?: number;
+        strength?: number;
+        swirl?: number;
+        max?: number;
+        escape?: number;
+      };
       push?: {
         particles_nb?: number;
       };
@@ -159,7 +167,7 @@ declare global {
         };
         fn: {
           vendors: {
-            destroy: () => void;
+            destroypJS: () => void;
           };
         };
       };
@@ -248,16 +256,17 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
           },
         },
         interactivity: {
-          detect_on: 'canvas',
+          detect_on: 'window',
           events: {
-            onhover: { enable: true, mode: 'repulse' },
+            onhover: { enable: true, mode: ['grab', 'gather'] },
             onclick: { enable: true, mode: 'push' },
             resize: true,
           },
           modes: {
-            grab: { distance: 200, line_linked: { opacity: 1 } },
+            grab: { distance: 220, line_linked: { opacity: 0.8 } },
             bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
             repulse: { distance: 200, duration: 0.4 },
+            gather: { distance: 320, radius: 120, strength: 2.0, swirl: 1.3, max: 45, escape: 1.5 },
             push: { particles_nb: 4 },
             remove: { particles_nb: 2 },
           },
@@ -270,13 +279,15 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         if (window.pJSDom && window.pJSDom.length > 0) {
           window.pJSDom.forEach((pJS) => {
             try {
-              pJS.pJS?.fn?.vendors?.destroy?.();
+              pJS.pJS?.fn?.vendors?.destroypJS?.();
             } catch {
               /* 忽略单个实例销毁失败 */
             }
           });
         }
 
+        // 确保全局 pJSDom 数组存在（destroypJS 会将其置为 null，否则下次 push 报错）
+        window.pJSDom = window.pJSDom || [];
         // 初始化粒子特效
         window.particlesJS(id, options || defaultOptions);
       } catch (error) {
@@ -303,7 +314,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
         try {
           window.pJSDom.forEach((pJS) => {
             try {
-              pJS.pJS?.fn?.vendors?.destroy?.();
+              pJS.pJS?.fn?.vendors?.destroypJS?.();
             } catch {
               /* 忽略单个实例销毁失败 */
             }

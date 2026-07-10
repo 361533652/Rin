@@ -8,6 +8,7 @@
   },
   "alert": "提示",
   "alias": "別名",
+  "cover": "封面",
   "article": {
     "delete": {
       "confirm": "確定刪除這篇文章嗎？",

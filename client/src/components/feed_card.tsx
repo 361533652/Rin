@@ -4,21 +4,22 @@ import {timeago} from "../utils/timeago";
 import {HashTag} from "./hashtag";
 import {useMemo} from "react";
 
-export function FeedCard({ id, title, avatar, draft, listed, top, summary, hashtags, createdAt, updatedAt }:
+export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary, hashtags, createdAt, updatedAt }:
     {
-        id: string, avatar?: string,
+        id: string, avatar?: string, cover?: string,
         draft?: number, listed?: number, top?: number,
         title: string, summary: string,
         hashtags: { id: number, name: string }[],
         createdAt: Date, updatedAt: Date
     }) {
     const { t } = useTranslation()
+    const coverImage = cover || avatar
     return useMemo(() => (
         <>
-            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl bg-white dark:bg-neutral-900 my-2 p-6 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 hover:shadow-xl hover:shadow-zinc-200 dark:hover:shadow-zinc-700/30 transition-all duration-300 border border-zinc-100 dark:border-zinc-800">
-                {avatar &&
+            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl bg-white/70 dark:bg-neutral-900/70 backdrop-blur-md my-2 p-6 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 hover:shadow-xl hover:shadow-zinc-200 dark:hover:shadow-zinc-700/30 transition-all duration-300 border border-zinc-100 dark:border-zinc-800">
+                {coverImage &&
                     <div className="mb-4 rounded-xl overflow-hidden">
-                        <img src={avatar} alt=""
+                        <img src={coverImage} alt=""
                             className="object-cover object-center w-full max-h-80 sm:max-h-96 hover:scale-[1.02] transition-transform duration-500" />
                     </div>}
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-pretty overflow-hidden mb-3">
