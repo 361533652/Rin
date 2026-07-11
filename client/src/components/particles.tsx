@@ -221,7 +221,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
       // 默认配置 - 移除了无法访问的背景图片
       const defaultOptions: ParticleOptions = {
         particles: {
-          number: { value: 80, density: { enable: true, value_area: 800 }, maxParticles: 120 },
+          number: { value: 80, density: { enable: false, value_area: 800 }, maxParticles: 120 },
           color: { value: particleColor },
           shape: {
             type: 'star',
@@ -267,7 +267,7 @@ export const Particles = ({ id = 'particles-js', options }: ParticlesProps) => {
             grab: { distance: 220, line_linked: { opacity: 0.8 } },
             bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
             repulse: { distance: 200, duration: 0.4 },
-            gather: { distance: 320, radius: 120, strength: 2.0, swirl: 1.3, max: 45, escape: 1.5 },
+            gather: { distance: 360, radius: 90, strength: 3.5, swirl: 3.5, max: 60, escape: 1.8 },
             push: { particles_nb: 4 },
             remove: { particles_nb: 2 },
           },
