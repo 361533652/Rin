@@ -325,7 +325,7 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
 function RouteWithIndex({ path, children }:
   { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element, clean: (id: string) => void) => React.ReactNode }) {
   const { TOC, cleanup } = useTableOfContents(".toc-content");
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <Route path={path}>
@@ -335,26 +335,21 @@ function RouteWithIndex({ path, children }:
             {TOCHeader({ TOC })}
           </Header>
           <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-16 2xl:mx-24 duration-300">
-            <div className="flex flex-row justify-center gap-4">
-              <div className="max-w-4xl flex-1 min-w-0 w-full">
-                {children(params, TOC, cleanup)}
-                <Footer />
-              </div>
-              <div className="hidden xl:flex items-start sticky top-20 self-start shrink-0">
-                {expanded ? (
-                  <aside className="w-52 max-h-[calc(100vh-6rem)] overflow-y-auto">
-                    <TOC />
-                  </aside>
-                ) : null}
-                <button
-                  onClick={() => setExpanded(v => !v)}
-                  className="w-6 h-10 rounded-l-lg bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl flex items-center justify-center text-gray-400 hover:text-gray-600 shrink-0"
-                >
-                  <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line text-sm`} />
-                </button>
-              </div>
+            <div className="max-w-4xl mx-auto w-full">
+              {children(params, TOC, cleanup)}
+              <Footer />
             </div>
           </div>
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="hidden lg:flex fixed right-0 top-1/2 -translate-y-1/2 z-50 w-7 h-14 rounded-l-lg bg-white/80 dark:bg-neutral-800/80 backdrop-blur-xl items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 shadow-sm border border-gray-200/30 dark:border-gray-700/30 transition-colors"
+            title={expanded ? "收起大纲" : "展开大纲"}
+          >
+            <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
+          </button>
+          <aside className={`hidden lg:block fixed right-0 top-0 h-screen z-40 w-56 pt-20 pb-8 pl-4 pr-2 overflow-y-auto bg-white/85 dark:bg-neutral-900/85 backdrop-blur-xl shadow-lg border-l border-gray-200/20 dark:border-gray-700/20 transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
+            <TOC />
+          </aside>
         </>
       )}
     </Route>
