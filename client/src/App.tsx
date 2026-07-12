@@ -203,15 +203,15 @@ function App() {
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
-              {(params, TOC, clean) => {
-                return (<FeedPage id={params.id || ""} clean={clean} TOC={TOC} />)
+              {(params, _, clean) => {
+                return (<FeedPage id={params.id || ""} clean={clean} />)
               }}
             </RouteWithIndex>
 
             <RouteWithIndex path="/:alias">
-              {(params, TOC, clean) => {
+              {(params, _, clean) => {
                 return (
-                  <FeedPage id={params.alias || ""} clean={clean} TOC={TOC} />
+                  <FeedPage id={params.alias || ""} clean={clean} />
                 )
               }}
             </RouteWithIndex>
@@ -325,11 +325,40 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
 function RouteWithIndex({ path, children }:
   { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element, clean: (id: string) => void) => React.ReactNode }) {
   const { TOC, cleanup } = useTableOfContents(".toc-content");
-  return (<RouteMe path={path} headerComponent={TOCHeader({ TOC: TOC })} paddingClassName='mx-4'>
-    {params => {
-      return children(params, TOC, cleanup)
-    }}
-  </RouteMe>)
+  const [expanded, setExpanded] = useState(true);
+
+  return (
+    <Route path={path}>
+      {params => (
+        <>
+          <Header>
+            {TOCHeader({ TOC })}
+          </Header>
+          <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-16 2xl:mx-24 duration-300">
+            <div className="flex flex-row justify-center gap-4">
+              <div className="max-w-4xl flex-1 min-w-0 w-full">
+                {children(params, TOC, cleanup)}
+                <Footer />
+              </div>
+              <div className="hidden xl:flex items-start sticky top-20 self-start shrink-0">
+                {expanded ? (
+                  <aside className="w-52 max-h-[calc(100vh-6rem)] overflow-y-auto">
+                    <TOC />
+                  </aside>
+                ) : null}
+                <button
+                  onClick={() => setExpanded(v => !v)}
+                  className="w-6 h-10 rounded-l-lg bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl flex items-center justify-center text-gray-400 hover:text-gray-600 shrink-0"
+                >
+                  <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line text-sm`} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </Route>
+  );
 }
 
 export default App

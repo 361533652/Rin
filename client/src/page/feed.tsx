@@ -46,7 +46,7 @@ type Feed = {
 
 
 
-export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) => void, TOC: () => JSX.Element }) {
+export function FeedPage({ id, clean }: { id: string, clean: (id: string) => void }) {
   const { t } = useTranslation();
   const profile = useContext(ProfileContext);
   const [feed, setFeed] = useState<Feed>();
@@ -61,7 +61,6 @@ export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) =
   const [top, setTop] = useState<number>(0);
   const config = useContext(ClientConfigContext);
   const counterEnabled = config.get<boolean>('counter.enabled');
-  const [tocExpanded, setTocExpanded] = useState(true);
   const [aiSummaryEnabled, setAiSummaryEnabled] = useState(config.get<boolean>('ai_summary.enabled') ?? false);
 
   // Listen for config changes
@@ -255,7 +254,7 @@ export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) =
         )}
         {feed && !error && (
           <>
-            <main className={`w-full transition-all duration-300 ${tocExpanded ? 'lg:max-w-[calc(100%-16rem)]' : ''}`}>
+            <main className="w-full">
               <article
                 className="rounded-2xl bg-w m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
@@ -376,17 +375,6 @@ export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) =
               {feed && <Comments id={`${feed.id}`} />}
               <div className="h-16" />
             </main>
-            <button
-              onClick={() => setTocExpanded(v => !v)}
-              className="hidden lg:flex fixed right-0 top-20 z-50 w-8 h-12 rounded-l-lg bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-600 transition"
-            >
-              <i className={`ri-arrow-${tocExpanded ? 'right' : 'left'}-s-line text-sm`} />
-            </button>
-            {tocExpanded && (
-              <aside className="hidden lg:block fixed right-0 top-0 h-screen w-64 z-40 pt-20 px-4 pb-4 overflow-y-auto bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl [&_.bg-w]:!bg-transparent">
-                <TOC />
-              </aside>
-            )}
           </>
         )}
       </div>
