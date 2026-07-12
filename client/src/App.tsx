@@ -203,15 +203,15 @@ function App() {
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
-              {(params, _, clean) => {
-                return (<FeedPage id={params.id || ""} clean={clean} />)
+              {(params, TOC, clean) => {
+                return (<FeedPage id={params.id || ""} clean={clean} TOC={TOC} />)
               }}
             </RouteWithIndex>
 
             <RouteWithIndex path="/:alias">
-              {(params, _, clean) => {
+              {(params, TOC, clean) => {
                 return (
-                  <FeedPage id={params.alias || ""} clean={clean} />
+                  <FeedPage id={params.alias || ""} clean={clean} TOC={TOC} />
                 )
               }}
             </RouteWithIndex>

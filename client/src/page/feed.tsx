@@ -46,7 +46,7 @@ type Feed = {
 
 
 
-export function FeedPage({ id, clean }: { id: string, clean: (id: string) => void }) {
+export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) => void, TOC: () => JSX.Element }) {
   const { t } = useTranslation();
   const profile = useContext(ProfileContext);
   const [feed, setFeed] = useState<Feed>();
@@ -61,6 +61,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
   const [top, setTop] = useState<number>(0);
   const config = useContext(ClientConfigContext);
   const counterEnabled = config.get<boolean>('counter.enabled');
+  const [tocExpanded, setTocExpanded] = useState(true);
   const [aiSummaryEnabled, setAiSummaryEnabled] = useState(config.get<boolean>('ai_summary.enabled') ?? false);
 
   // Listen for config changes
@@ -254,7 +255,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
         )}
         {feed && !error && (
           <>
-            <main className="w-full">
+            <main className="w-full lg:max-w-[calc(100%-16rem)]">
               <article
                 className="rounded-2xl bg-w m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
@@ -375,6 +376,18 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
               {feed && <Comments id={`${feed.id}`} />}
               <div className="h-16" />
             </main>
+            <aside className="hidden lg:flex lg:flex-col w-60 flex-shrink-0 sticky top-20 self-start ml-2">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-xs font-bold t-secondary">{t("index.title")}</span>
+                <button
+                  onClick={() => setTocExpanded(v => !v)}
+                  className="text-gray-400 hover:text-gray-600 transition text-sm"
+                >
+                  <i className={`ri-arrow-${tocExpanded ? 'up' : 'down'}-s-line`} />
+                </button>
+              </div>
+              {tocExpanded && <TOC />}
+            </aside>
           </>
         )}
       </div>
