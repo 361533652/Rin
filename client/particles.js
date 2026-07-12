@@ -1097,17 +1097,23 @@ var pJS = function(tag_id, params){
 
         var normVec = {x: dx_mouse/dist_mouse, y: dy_mouse/dist_mouse};
 
+        // 每个粒子分配一次持久的随机旋转方向(+1/-1)与随机速度系数，形成随机方向+随机速度
+        if (p.gatherDir === undefined) {
+          p.gatherDir = Math.random() < 0.5 ? -1 : 1;
+          p.gatherSpeed = 0.6 + Math.random() * 0.8;   // 0.6 ~ 1.4
+        }
+
         // 径向：把粒子拉向光标，但收敛到 radius 处的环形轨道，而非坍缩到一点
         var radialErr = dist_mouse - targetR;
         var falloff = (1 - dist_mouse/D);
         var radial = Math.sign(radialErr) * Math.min(Math.abs(radialErr), strength) * falloff;
 
-        // 切向（法向量旋转 90°）：制造绕光标的圆周运动
-        var tangVec = {x: -normVec.y, y: normVec.x};
+        // 切向（法向量旋转 90° 后按粒子各自方向取反）+ 随机速度系数：绕光标的随机方向圆周运动
+        var tangVec = {x: -normVec.y * p.gatherDir, y: normVec.x * p.gatherDir};
 
         var step = {
-          x: normVec.x * radial + tangVec.x * swirl * falloff,
-          y: normVec.y * radial + tangVec.y * swirl * falloff
+          x: normVec.x * radial + tangVec.x * swirl * falloff * p.gatherSpeed,
+          y: normVec.y * radial + tangVec.y * swirl * falloff * p.gatherSpeed
         };
 
         if(pJS.particles.move.out_mode == 'bounce'){
