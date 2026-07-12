@@ -20,6 +20,7 @@ import { useLoginModal } from "../hooks/useLoginModal";
 import mermaid from "mermaid";
 import { useColorMode } from "../utils/darkModeUtils";
 import { AdjacentSection } from "../components/adjacent_feed.tsx";
+import { renderPlantUMLDiagrams } from "../utils/plantuml";
 
 type Feed = {
   id: number;
@@ -200,6 +201,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
         nodes: root.querySelectorAll("pre.mermaid_dark")
       });
     })
+    renderPlantUMLDiagrams();
   }, [feed, colorMode]);
 
   return (
