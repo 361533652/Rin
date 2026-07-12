@@ -20,6 +20,7 @@ import { useLoginModal } from "../hooks/useLoginModal";
 import mermaid from "mermaid";
 import { useColorMode } from "../utils/darkModeUtils";
 import { AdjacentSection } from "../components/adjacent_feed.tsx";
+import { renderPlantUMLDiagrams } from "../utils/plantuml";
 
 type Feed = {
   id: number;
@@ -38,6 +39,7 @@ type Feed = {
     id: number;
     username: string;
   };
+  cover?: string | null;
   pv: number;
   uv: number;
 };
@@ -199,6 +201,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
         nodes: root.querySelectorAll("pre.mermaid_dark")
       });
     })
+    renderPlantUMLDiagrams();
   }, [feed, colorMode]);
 
   return (
@@ -325,6 +328,12 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                     )}
                   </div>
                 </div>
+                {feed.cover && (
+                  <div className="mt-4 mb-4 overflow-hidden rounded-xl">
+                    <img src={feed.cover} alt={feed.title ?? ""}
+                      className="w-full max-h-96 object-cover object-center rounded-xl" />
+                  </div>
+                )}
                 {feed.ai_summary && aiSummaryEnabled && (
                   <div className="my-4 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-100 dark:border-purple-800/30">
                     <div className="flex items-center gap-2 mb-2">

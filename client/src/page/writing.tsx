@@ -15,6 +15,7 @@ import {Cache} from '../utils/cache';
 import {siteName} from "../utils/constants";
 import mermaid from 'mermaid';
 import { MarkdownEditor } from '../components/markdown_editor';
+import { renderPlantUMLDiagrams } from '../utils/plantuml';
 
 async function publish({
   title,
@@ -239,6 +240,7 @@ export function WritingPage({ id }: { id?: number }) {
           nodes: document.querySelectorAll("pre.mermaid_dark")
         });
       })
+      renderPlantUMLDiagrams();
     }, 100),
     []
   );
