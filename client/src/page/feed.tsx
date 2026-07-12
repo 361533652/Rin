@@ -255,7 +255,7 @@ export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) =
         )}
         {feed && !error && (
           <>
-            <main className="w-full">
+            <main className={`w-full transition-all duration-300 ${tocExpanded ? 'lg:max-w-[calc(100%-16rem)]' : ''}`}>
               <article
                 className="rounded-2xl bg-w m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
@@ -376,17 +376,17 @@ export function FeedPage({ id, clean, TOC }: { id: string, clean: (id: string) =
               {feed && <Comments id={`${feed.id}`} />}
               <div className="h-16" />
             </main>
-            <aside className={`hidden lg:flex fixed right-0 top-0 h-screen w-64 flex-col z-40 transition-transform duration-300 ease-in-out bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl ${tocExpanded ? 'translate-x-0' : 'translate-x-full'}`}>
-              <button
-                onClick={() => setTocExpanded(v => !v)}
-                className="absolute -left-8 top-20 w-8 h-12 rounded-l-lg bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl flex items-center justify-center text-gray-500 hover:text-gray-700 transition"
-              >
-                <i className={`ri-arrow-${tocExpanded ? 'right' : 'left'}-s-line text-sm`} />
-              </button>
-              <div className="pt-20 px-4 pb-4 overflow-y-auto h-full">
+            <button
+              onClick={() => setTocExpanded(v => !v)}
+              className="hidden lg:flex fixed right-0 top-20 z-50 w-8 h-12 rounded-l-lg bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-600 transition"
+            >
+              <i className={`ri-arrow-${tocExpanded ? 'right' : 'left'}-s-line text-sm`} />
+            </button>
+            {tocExpanded && (
+              <aside className="hidden lg:block fixed right-0 top-0 h-screen w-64 z-40 pt-20 px-4 pb-4 overflow-y-auto bg-white/70 dark:bg-neutral-900/70 backdrop-blur-xl [&_.bg-w]:!bg-transparent">
                 <TOC />
-              </div>
-            </aside>
+              </aside>
+            )}
           </>
         )}
       </div>
