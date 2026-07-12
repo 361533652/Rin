@@ -325,7 +325,7 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
 function RouteWithIndex({ path, children }:
   { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element, clean: (id: string) => void) => React.ReactNode }) {
   const { TOC, cleanup } = useTableOfContents(".toc-content");
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   return (
     <Route path={path}>
@@ -342,12 +342,12 @@ function RouteWithIndex({ path, children }:
           </div>
           <button
             onClick={() => setExpanded(v => !v)}
-            className="hidden lg:flex fixed right-0 top-1/2 -translate-y-1/2 z-50 w-7 h-14 rounded-l-lg bg-white/80 dark:bg-neutral-800/80 backdrop-blur-xl items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 shadow-sm border border-gray-200/30 dark:border-gray-700/30 transition-colors"
+            className="hidden lg:flex fixed right-0 top-24 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
             title={expanded ? "收起大纲" : "展开大纲"}
           >
             <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
           </button>
-          <aside className={`hidden lg:block fixed right-0 top-0 h-screen z-40 w-56 pt-20 pb-8 pl-4 pr-2 overflow-y-auto bg-white/85 dark:bg-neutral-900/85 backdrop-blur-xl shadow-lg border-l border-gray-200/20 dark:border-gray-700/20 transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
+          <aside className={`hidden lg:block fixed right-0 top-0 h-screen z-40 w-56 pt-20 pb-8 pl-4 pr-2 overflow-y-auto bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
             <TOC />
           </aside>
         </>
