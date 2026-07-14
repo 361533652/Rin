@@ -20,7 +20,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
 
     return useMemo(() => (
         <>
-            <div className="fixed top-0 left-0 right-0 z-40 bg-transparent backdrop-blur-sm">
+            <div className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-neutral-900/90 border-b border-neutral-200 dark:border-neutral-800">
                 <div className="w-screen">
                     <Padding className="mt-2 mb-2" fullWidth={true}>
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -28,7 +28,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                             <div className="w-full sm:w-auto flex justify-between items-center sm:justify-start">
                                 <Link aria-label={t('home')} href="/"
                                     className="flex items-center ml-4 lg:ml-6">
-                                    <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-2xl border-2" />
+                                    <img src={process.env.AVATAR} alt="Avatar" className="w-10 h-10 rounded-full" />
                                     <div className="hidden sm:flex flex-col justify-center items-start ml-2">
                                         <p className="text-lg font-bold dark:text-white">
                                             {process.env.NAME}
@@ -47,7 +47,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                             
                             {/* 导航菜单 - 大屏幕居中，小屏幕隐藏 */}
                             <div className="hidden sm:flex sm:w-auto justify-center flex-1">
-                                <div className="flex flex-row items-center bg-white/70 dark:bg-neutral-900/70 backdrop-blur-md rounded-full px-4 py-1 shadow-lg shadow-zinc-100 dark:shadow-zinc-800/20 mx-4 lg:mx-8">
+                                <div className="flex flex-row items-center gap-2 mx-4 lg:mx-8">
                                     <NavBar menu={false} />
                                     {children}
                                 </div>
