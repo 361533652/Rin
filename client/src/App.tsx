@@ -6,7 +6,6 @@ import Footer from './components/footer'
 import { Header } from './components/header'
 import { Padding } from './components/padding'
 import { MusicPlayer } from './components/music_player'
-import { Particles } from './components/particles'
 import { defaultSongs } from './types/music'
 import useTableOfContents from './hooks/useTableOfContents.tsx'
 import { client } from './main'
@@ -28,22 +27,8 @@ import { Tips, TipsPage } from './components/tips.tsx'
 import { useTranslation } from 'react-i18next'
 import { MomentsPage } from './page/moments'
 import { ErrorPage } from './page/error.tsx'
+import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
-
-// 平滑回到顶部：用 requestAnimationFrame 缓动，兼容不支持 scrollTo(options) 的浏览器（如旧版 Safari 会忽略 behavior: 'smooth' 直接瞬跳）
-function smoothScrollToTop(duration = 500) {
-  const startY = window.scrollY
-  if (startY === 0) return
-  const startTime = performance.now()
-  const easeInOutCubic = (t: number) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-  const step = (now: number) => {
-    const progress = Math.min((now - startTime) / duration, 1)
-    window.scrollTo(0, startY * (1 - easeInOutCubic(progress)))
-    if (progress < 1) requestAnimationFrame(step)
-  }
-  requestAnimationFrame(step)
-}
 
 function App() {
   const ref = useRef(false)
@@ -142,7 +127,6 @@ function App() {
             {favicon &&
               <link rel="icon" href={favicon} />}
           </Helmet>
-          <Particles />
           <Switch>
             <RouteMe path="/">
               <FeedsPage />
@@ -283,7 +267,7 @@ function App() {
       {/* 回到顶部按钮 */}
       <div className="fixed bottom-24 right-4 z-50">
         <button
-          onClick={() => smoothScrollToTop()}
+          onClick={() => smoothScrollTo(0)}
           className="w-12 h-12 rounded-full bg-theme/80 text-white flex items-center justify-center shadow-lg backdrop-blur-sm hover:bg-theme/60 active:bg-theme/40 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
@@ -325,11 +309,35 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
 function RouteWithIndex({ path, children }:
   { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element, clean: (id: string) => void) => React.ReactNode }) {
   const { TOC, cleanup } = useTableOfContents(".toc-content");
-  return (<RouteMe path={path} headerComponent={TOCHeader({ TOC: TOC })} paddingClassName='mx-4'>
-    {params => {
-      return children(params, TOC, cleanup)
-    }}
-  </RouteMe>)
+  const [expanded, setExpanded] = useState(true);
+
+  return (
+    <Route path={path}>
+      {params => (
+        <>
+          <Header>
+            {TOCHeader({ TOC })}
+          </Header>
+          <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-12 xl:mx-16 2xl:mx-24 duration-300">
+            <div className="max-w-4xl mx-auto w-full">
+              {children(params, TOC, cleanup)}
+              <Footer />
+            </div>
+          </div>
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="hidden lg:flex fixed right-0 top-20 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
+            title={expanded ? "收起大纲" : "展开大纲"}
+          >
+            <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
+          </button>
+          <aside className={`hidden lg:block fixed right-0 top-20 h-[calc(100vh-5rem)] z-40 w-56 pt-4 pb-8 pl-4 pr-2 overflow-y-auto bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
+            <TOC />
+          </aside>
+        </>
+      )}
+    </Route>
+  );
 }
 
 export default App

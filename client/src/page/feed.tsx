@@ -240,7 +240,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
       <div className="w-full flex flex-row justify-center ani-show">
         {error && (
           <>
-            <div className="flex flex-col wauto rounded-2xl bg-w m-2 p-6 items-center justify-center space-y-2">
+            <div className="flex flex-col wauto bg-white dark:bg-neutral-900 rounded-lg m-2 p-6 items-center justify-center space-y-2">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
               {error === "Not found" && id === "about" && (
                 <Tips value={t("about.notfound")} />
@@ -256,7 +256,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           <>
             <main className="w-full">
               <article
-                className="rounded-2xl bg-w m-2 px-6 py-4"
+                className="bg-white dark:bg-neutral-900 m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">
@@ -329,13 +329,13 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                   </div>
                 </div>
                 {feed.cover && (
-                  <div className="mt-4 mb-4 overflow-hidden rounded-xl">
+                  <div className="mt-4 mb-4 overflow-hidden rounded-lg">
                     <img src={feed.cover} alt={feed.title ?? ""}
-                      className="w-full max-h-96 object-cover object-center rounded-xl" />
+                      className="w-full max-h-96 object-cover object-center rounded-lg" />
                   </div>
                 )}
                 {feed.ai_summary && aiSummaryEnabled && (
-                  <div className="my-4 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-100 dark:border-purple-800/30">
+                  <div className="my-6 p-4 border-l-2 border-purple-300 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-900/10">
                     <div className="flex items-center gap-2 mb-2">
                       <i className="ri-sparkling-2-fill text-purple-500" />
                       <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
@@ -473,7 +473,7 @@ function CommentInput({
       });
   }
   return (
-    <div className="w-full rounded-2xl bg-w t-primary p-6 items-end flex flex-col">
+    <div className="w-full bg-white dark:bg-neutral-900 rounded-lg t-primary p-6 items-end flex flex-col">
       <div className="flex flex-col w-full items-start mb-4">
         <label htmlFor="comment">{t("comment.title")}</label>
       </div>
@@ -481,7 +481,7 @@ function CommentInput({
         <textarea
           id="comment"
           placeholder={t("comment.placeholder.title")}
-          className="bg-w w-full h-24 rounded-lg"
+          className="bg-neutral-50 dark:bg-neutral-800 w-full h-24 rounded-lg"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
@@ -554,7 +554,7 @@ function Comments({ id }: { id: string }) {
           <CommentInput id={id} onRefresh={loadComments} />
           {error && (
             <>
-              <div className="flex flex-col wauto rounded-2xl bg-w t-primary m-2 p-6 items-center justify-center">
+              <div className="flex flex-col wauto bg-white dark:bg-neutral-900 rounded-lg t-primary m-2 p-6 items-center justify-center">
                 <h1 className="text-xl font-bold t-primary">{error}</h1>
                 <button
                   className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
@@ -615,12 +615,12 @@ function CommentItem({
       })
   }
   return (
-    <div className="flex flex-row items-start rounded-xl mt-2">
+    <div className="flex flex-row items-start mt-2">
       <img
         src={comment.user.avatar || ""}
         className="w-8 h-8 rounded-full mt-4"
       />
-      <div className="flex flex-col flex-1 w-0 ml-2 bg-w rounded-xl p-4">
+      <div className="flex flex-col flex-1 w-0 ml-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4">
         <div className="flex flex-row">
           <span className="t-primary text-base font-bold">
             {comment.user.username}

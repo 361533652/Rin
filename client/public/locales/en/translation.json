@@ -6,6 +6,10 @@
   "ai_summary": {
     "title": "AI Summary"
   },
+  "sort": {
+    "updated": "By updated",
+    "created": "By created"
+  },
   "alert": "Alert",
   "alias": "Alias",
   "cover": "Cover",
