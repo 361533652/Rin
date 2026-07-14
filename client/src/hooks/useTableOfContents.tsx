@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { smoothScrollToElement } from '../utils/scroll'
 
 export interface TableOfContent {
     index: number
@@ -86,9 +87,7 @@ const useTableOfContents = (selector: string) => {
                         className={`cursor-pointer hover:opacity-50 ${activeIndex === item.index ? "text-theme" : ""}`}
                         style={{ marginLeft: item.marginLeft }}
                         onClick={() => {
-                            item.element.scrollIntoView({
-                                behavior: 'smooth'
-                            });
+                            smoothScrollToElement(item.element);
                         }}
                     >
                         {item.text}
