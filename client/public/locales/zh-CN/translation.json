@@ -6,6 +6,10 @@
   "ai_summary": {
     "title": "AI 总结"
   },
+  "sort": {
+    "updated": "按更新时间",
+    "created": "按发布时间"
+  },
   "alert": "提示",
   "alias": "别名",
   "cover": "封面",

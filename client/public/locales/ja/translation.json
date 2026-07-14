@@ -6,6 +6,10 @@
   "ai_summary": {
     "title": "AI 要約"
   },
+  "sort": {
+    "updated": "更新順",
+    "created": "公開順"
+  },
   "alert": "警告",
   "alias": "エイリアス",
   "cover": "カバー画像",

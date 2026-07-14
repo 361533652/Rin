@@ -31,6 +31,7 @@ type FeedsData = {
 }
 
 type FeedType = 'draft' | 'unlisted' | 'normal'
+type SortBy = 'updatedAt' | 'createdAt'
 
 type FeedsMap = {
     [key in FeedType]: FeedsData
@@ -42,6 +43,7 @@ export function FeedsPage() {
     const query = useMemo(() => new URLSearchParams(search), [search]);
     const profile = useContext(ProfileContext);
     const [listState, _setListState] = useState<FeedType>(query.get("type") as FeedType || 'normal')
+    const [sortBy, setSortBy] = useState<SortBy>('updatedAt')
     const [status, setStatus] = useState<'loading' | 'idle'>('idle')
     const [feeds, setFeeds] = useState<FeedsMap>({
         draft: { size: 0, data: [], hasNext: false },
@@ -82,6 +84,11 @@ export function FeedsPage() {
         fetchFeeds()
         ref.current = key
     }, [page, limit, listState, search, query])
+    const sortedFeeds = useMemo(() => {
+        const arr = [...feeds[listState].data];
+        arr.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
+        return arr;
+    }, [feeds, listState, sortBy]);
     return (
         <>
             <Helmet>
@@ -102,6 +109,13 @@ export function FeedsPage() {
                             <p className="text-sm text-neutral-500 font-normal">
                                 {t('article.total$count', { count: feeds[listState]?.size })}
                             </p>
+                            <button
+                                onClick={() => setSortBy(v => v === 'updatedAt' ? 'createdAt' : 'updatedAt')}
+                                className="text-sm text-neutral-500 hover:text-theme transition-colors flex items-center gap-1"
+                            >
+                                {sortBy === 'updatedAt' ? t('sort.updated') : t('sort.created')}
+                                <i className="ri-arrow-up-down-line" />
+                            </button>
                             {profile?.permission &&
                                 <div className="flex flex-row space-x-4">
                                     <Link href={listState === 'draft' ? '/?type=normal' : '/?type=draft'} className={`text-sm text-neutral-500 font-normal hover:text-theme transition-colors ${listState === 'draft' ? "text-theme" : ""}`}>
@@ -116,7 +130,7 @@ export function FeedsPage() {
                     </div>
                     <Waiting for={status === 'idle'}>
                         <div className="flex flex-col space-y-6 ani-show">
-                            {feeds[listState].data.map((feed) => (
+                            {sortedFeeds.map((feed) => (
                                 <FeedCard key={feed.id} {...feed} />
                             ))}
                         </div>
