@@ -20,7 +20,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
 
     return useMemo(() => (
         <>
-            <div className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-neutral-900/90 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="fixed top-0 left-0 right-0 z-40 bg-[#f5ecd9]/90 dark:bg-neutral-900/90 border-b border-neutral-300/60 dark:border-neutral-800">
                 <div className="w-screen">
                     <Padding className="mt-2 mb-2" fullWidth={true}>
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -204,7 +204,7 @@ function LanguageSwitch({ className }: { className?: string }) {
         <div className={className + " flex flex-row items-center"}>
             <Popup trigger={
                 <button title={label} aria-label={label}
-                    className="flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+                    className="flex rounded-full border dark:border-neutral-600 px-2 bg-transparent aspect-[1] items-center justify-center t-primary bg-button">
                     <i className="ri-translate-2"></i>
                 </button>
             }
@@ -307,7 +307,7 @@ function UserAvatar({ className, profile, onClose }: { className?: string, profi
                 </div>
             </> : <>
                 <button onClick={() => setIsOpened(true)} title={label} aria-label={label}
-                    className="flex rounded-full border dark:border-neutral-600 px-2 bg-w aspect-[1] items-center justify-center t-primary bg-button">
+                    className="flex rounded-full border dark:border-neutral-600 px-2 bg-transparent aspect-[1] items-center justify-center t-primary bg-button">
                     <i className="ri-user-received-line"></i>
                 </button>
             </>}
