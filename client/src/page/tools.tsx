@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useTranslation } from "react-i18next";
+import { Link } from "wouter";
 import { siteName } from "../utils/constants";
 
 export function ToolsPage() {
@@ -22,15 +23,11 @@ export function ToolsPage() {
                 </div>
 
                 <div className="wauto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">
-                    {/* 图床 - 占位工具，功能待实现 */}
-                    <div className="relative flex flex-col items-center justify-center rounded-2xl p-6 bg-w border-card hover:text-theme duration-300 cursor-pointer">
-                        <span className="absolute top-2 right-2 text-xs t-secondary px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-neutral-800">
-                            {t('coming_soon')}
-                        </span>
+                    <Link href="/img-bed" className="relative flex flex-col items-center justify-center rounded-2xl p-6 bg-w border-card hover:text-theme duration-300 cursor-pointer">
                         <i className="ri-image-2-line text-4xl mb-3" />
                         <p className="text-base font-bold t-primary">{t('image_host')}</p>
                         <p className="text-xs t-secondary mt-1 text-center">{t('image_host_desc')}</p>
-                    </div>
+                    </Link>
                 </div>
             </main>
         </>

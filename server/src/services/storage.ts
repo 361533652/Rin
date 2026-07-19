@@ -69,5 +69,33 @@ export function StorageService() {
                         file: t.File()
                     })
                 })
+                .post('/img-bed', async ({ uid, set, body: { key, file } }) => {
+                    if (!endpoint) { set.status = 500; return 'S3_ENDPOINT is not defined' }
+                    if (!accessKeyId) { set.status = 500; return 'S3_ACCESS_KEY_ID is not defined' }
+                    if (!secretAccessKey) { set.status = 500; return 'S3_SECRET_ACCESS_KEY is not defined' }
+                    if (!bucket) { set.status = 500; return 'S3_BUCKET is not defined' }
+                    if (!uid) { set.status = 401; return 'Unauthorized' }
+                    const suffix = key.includes(".") ? key.split('.').pop() : "";
+                    const hashArray = await crypto.subtle.digest(
+                        { name: 'SHA-1' },
+                        await file.arrayBuffer()
+                    );
+                    const hash = buf2hex(hashArray)
+                    const hashkey = path.join(folder, 'img-bed', hash + "." + suffix);
+                    try {
+                        const response = await s3.send(new PutObjectCommand({ Bucket: bucket, Key: hashkey, Body: file, ContentType: file.type }))
+                        console.info(response);
+                        return `${accessHost}/${hashkey}`
+                    } catch (e: any) {
+                        set.status = 400;
+                        console.error(e.message)
+                        return e.message
+                    }
+                }, {
+                    body: t.Object({
+                        key: t.String(),
+                        file: t.File()
+                    })
+                })
         );
 }

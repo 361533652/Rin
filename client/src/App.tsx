@@ -29,6 +29,7 @@ import { MomentsPage } from './page/moments'
 import { ErrorPage } from './page/error.tsx'
 import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
+import { ImageBedPage } from './page/image-bed'
 
 function App() {
   const ref = useRef(false)
@@ -184,6 +185,10 @@ function App() {
 
             <RouteMe path="/tools">
               <ToolsPage />
+            </RouteMe>
+
+            <RouteMe path="/img-bed">
+              <ImageBedPage />
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
