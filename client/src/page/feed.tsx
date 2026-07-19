@@ -240,7 +240,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
       <div className="w-full flex flex-row justify-center ani-show">
         {error && (
           <>
-            <div className="flex flex-col wauto bg-white dark:bg-neutral-900 rounded-lg m-2 p-6 items-center justify-center space-y-2">
+            <div className="flex flex-col wauto bg-[#fbf6e8] dark:bg-neutral-900 rounded-lg m-2 p-6 items-center justify-center space-y-2">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
               {error === "Not found" && id === "about" && (
                 <Tips value={t("about.notfound")} />
@@ -256,7 +256,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           <>
             <main className="w-full">
               <article
-                className="bg-white dark:bg-neutral-900 m-2 px-6 py-4"
+                className="bg-[#fbf6e8] dark:bg-neutral-900 m-2 px-6 py-4"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">
@@ -473,7 +473,7 @@ function CommentInput({
       });
   }
   return (
-    <div className="w-full bg-white dark:bg-neutral-900 rounded-lg t-primary p-6 items-end flex flex-col">
+    <div className="w-full bg-[#fbf6e8] dark:bg-neutral-900 rounded-lg t-primary p-6 items-end flex flex-col">
       <div className="flex flex-col w-full items-start mb-4">
         <label htmlFor="comment">{t("comment.title")}</label>
       </div>
@@ -554,7 +554,7 @@ function Comments({ id }: { id: string }) {
           <CommentInput id={id} onRefresh={loadComments} />
           {error && (
             <>
-              <div className="flex flex-col wauto bg-white dark:bg-neutral-900 rounded-lg t-primary m-2 p-6 items-center justify-center">
+              <div className="flex flex-col wauto bg-[#fbf6e8] dark:bg-neutral-900 rounded-lg t-primary m-2 p-6 items-center justify-center">
                 <h1 className="text-xl font-bold t-primary">{error}</h1>
                 <button
                   className="mt-2 bg-theme text-white px-4 py-2 rounded-full"

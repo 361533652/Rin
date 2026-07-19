@@ -20,7 +20,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
 
     return useMemo(() => (
         <>
-            <div className="fixed top-0 left-0 right-0 z-40 bg-white/90 dark:bg-neutral-900/90 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="fixed top-0 left-0 right-0 z-40 bg-[#f5ecd9]/90 dark:bg-neutral-900/90 border-b border-neutral-300/60 dark:border-neutral-800">
                 <div className="w-screen">
                     <Padding className="mt-2 mb-2" fullWidth={true}>
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
