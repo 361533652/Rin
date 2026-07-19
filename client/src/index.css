@@ -17,6 +17,8 @@ body {
   @apply text-gray-800;
   background-color: #f5ecd9;
   font-family: Cantarell, "Source Han Serif CN VF" !important;
+  position: relative;
+  isolation: isolate;
 }
 
 [data-color-mode="dark"] body,
@@ -30,7 +32,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   background-image:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)' opacity='0.35'/%3E%3C/svg%3E"),
@@ -44,7 +46,7 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   background:
     radial-gradient(ellipse 300px 400px at 12% 18%, rgba(139,119,80,0.08) 0%, transparent 100%),
