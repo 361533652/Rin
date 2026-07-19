@@ -274,6 +274,7 @@
   "image_host_desc": "画像をアップロードして外部リンクを生成",
   "image_host.click": "クリックしてアップロード",
   "image_host.drag": "または画像をここにドラッグ",
+  "image_host.login": "先にログインしてください",
   "copy": "コピー",
   "copied": "コピー済み",
   "coming_soon": "準備中",

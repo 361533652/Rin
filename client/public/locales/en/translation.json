@@ -274,6 +274,7 @@
   "image_host_desc": "Upload images and get external links",
   "image_host.click": "Click to upload",
   "image_host.drag": "Or drag and drop images here",
+  "image_host.login": "Please log in first to upload",
   "copy": "Copy",
   "copied": "Copied",
   "coming_soon": "Coming soon",

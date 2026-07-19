@@ -1,11 +1,15 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { headersWithAuth } from "../utils/auth";
 import { siteName } from "../utils/constants";
+import { ProfileContext } from "../state/profile";
+import { useLoginModal } from "../hooks/useLoginModal";
 
 export function ImageBedPage() {
   const { t } = useTranslation();
+  const profile = useContext(ProfileContext);
+  const { LoginModal, setIsOpened } = useLoginModal();
   const [urls, setUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [copiedIdx, setCopiedIdx] = useState(-1);
@@ -59,6 +63,18 @@ export function ImageBedPage() {
           <p className="text-sm text-neutral-500 mt-1">{t("image_host_desc")}</p>
         </div>
 
+        {!profile?.id ? (
+          <div className="wauto w-full border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-8 text-center">
+            <i className="ri-login-circle-line text-4xl text-neutral-400" />
+            <p className="text-neutral-600 dark:text-neutral-400 mt-2">{t("image_host.login")}</p>
+            <button
+              onClick={() => setIsOpened(true)}
+              className="mt-3 px-4 py-2 rounded-lg bg-theme text-white text-sm hover:opacity-90 transition-opacity"
+            >
+              {t("github_login")}
+            </button>
+          </div>
+        ) : (
         <div
           className="wauto w-full border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-8 text-center hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors cursor-pointer"
           onClick={() => inputRef.current?.click()}
@@ -87,6 +103,7 @@ export function ImageBedPage() {
             </div>
           )}
         </div>
+        )}
 
         {error && (
           <div className="wauto w-full mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400 text-sm">{error}</div>
@@ -116,6 +133,7 @@ export function ImageBedPage() {
           </div>
         )}
       </main>
+      <LoginModal />
     </>
   );
 }
