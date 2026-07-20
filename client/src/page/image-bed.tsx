@@ -57,10 +57,10 @@ export function ImageBedPage() {
       </Helmet>
       <main className="w-full flex flex-col items-center mb-8 ani-show">
         <div className="wauto py-4 w-full">
-          <h1 className="text-3xl sm:text-4xl font-bold text-black dark:text-white">
+          <h1 className="text-3xl sm:text-4xl font-bold c-text-main">
             {t("image_host")}
           </h1>
-          <p className="text-sm text-neutral-500 mt-1">{t("image_host_desc")}</p>
+          <p className="text-sm c-text-muted mt-1">{t("image_host_desc")}</p>
         </div>
 
         {!profile?.id ? (
@@ -93,7 +93,7 @@ export function ImageBedPage() {
           {uploading ? (
             <div className="flex flex-col items-center gap-2">
               <i className="ri-loader-4-line ri-spin text-4xl text-neutral-400" />
-              <p className="text-neutral-500">{t("uploading")}</p>
+              <p className="c-text-muted">{t("uploading")}</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">

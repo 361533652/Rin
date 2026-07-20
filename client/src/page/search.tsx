@@ -58,12 +58,12 @@ export function SearchPage({ keyword }: { keyword: string }) {
             </Helmet>
             <Waiting for={status === 'idle'}>
                 <main className="w-full flex flex-col justify-center items-center mb-8">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
+                    <div className="wauto text-start c-text-main py-4 text-4xl font-bold">
                         <p>
                             {t('article.search.title')}
                         </p>
                         <div className="flex flex-row justify-between">
-                            <p className="text-sm mt-4 text-neutral-500 font-normal">
+                            <p className="text-sm mt-4 c-text-muted font-normal">
                                 {t('article.total$count', { count: feeds?.size })}
                             </p>
                         </div>

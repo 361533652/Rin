@@ -61,12 +61,12 @@ export function TimelinePage() {
             </Helmet>
             <Waiting for={feeds}>
                 <main className="w-full md:w-10/12 lg:w-8/12 xl:w-6/12 2xl:w-5/12 flex flex-col mb-12 min-h-[calc(100vh-12rem)] ani-show">
-                    <div className="text-start text-black dark:text-white py-6">
+                    <div className="text-start c-text-main py-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {t('timeline')}
                         </h1>
                         <div className="mt-4">
-                            <p className="text-sm text-neutral-500 font-normal">
+                            <p className="text-sm c-text-muted font-normal">
                                 {t('article.total$count', { count: length })}
                             </p>
                         </div>
