@@ -15,7 +15,12 @@ export default {
           'light': '#f5f5f5',
           'dark': '#1c1c1e',
         },
-        'dark': "#333333"
+        'dark': "#333333",
+        'copper': {
+          DEFAULT: '#b87d4a',
+          hover: '#9e6b3c',
+          active: '#845831',
+        },
       },
       transitionProperty: {
         'height': 'height',
