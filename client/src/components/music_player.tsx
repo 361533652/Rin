@@ -218,8 +218,8 @@ export function MusicPlayer({
   const displaySrc = currentSong?.src || src;
 
   const rootClassName = compact
-    ? "w-full max-w-4xl mx-auto mt-3 px-3 py-2 bg-[#FFF8FA] dark:bg-neutral-800 rounded-full border border-[#F0D5DC] shadow-sm"
-    : "w-full max-w-2xl mx-auto mt-4 p-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-2xl border border-[#F0D5DC] shadow-sm";
+    ? "w-full max-w-[600px] mx-auto mt-3 h-11 px-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-full border border-[#F0D5DC] shadow-[0_6px_20px_rgba(216,138,154,0.10)]"
+    : "w-full max-w-[600px] mx-auto mt-4 p-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-2xl border border-[#F0D5DC] shadow-[0_6px_20px_rgba(216,138,154,0.10)]";
 
   return (
     <div className={rootClassName}>

@@ -86,7 +86,7 @@ const useTableOfContents = (selector: string) => {
                 {tableOfContents.map((item) => (
                     <li
                         key={`toc$${item.index}`}
-                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "border-[#D88A9A] bg-[#F5DDE3] text-[#C76B80] font-medium" : "border-transparent text-[#6E6862] hover:text-[#292724] hover:bg-[#F5DDE3]/40"} ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
+                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "border-[#D88A9A] bg-[#F2CED8] text-[#C76B80] font-medium" : "border-transparent text-[#6E6862] hover:text-[#292724] hover:bg-[#F2CED8]/40"} ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
                         style={{ marginLeft: item.marginLeft }}
                         onClick={() => {
                             smoothScrollToElement(item.element);

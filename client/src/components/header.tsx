@@ -81,7 +81,7 @@ function NavItem({ menu, title, selected, href, when = true, onClick }: {
         <>
             {when &&
                 <Link href={href}
-                    className={`${menu ? "" : "hidden"} md:block cursor-pointer duration-200 px-3 py-1.5 rounded-full text-sm transition-all ${selected ? "bg-[#F5DDE3] text-[#C76B80]" : "text-[#6E6862] hover:text-[#292724] hover:bg-[#F5DDE3]/50 dark:text-neutral-300 dark:hover:text-white dark:hover:bg-neutral-800/40"}`}
+                    className={`${menu ? "" : "hidden"} md:block cursor-pointer duration-200 px-3 py-1.5 rounded-xl text-sm transition-all hover:-translate-y-px ${selected ? "bg-[#F2CED8] text-[#C76B80] font-medium" : "text-[#6E6862] hover:text-[#292724] hover:bg-[#F2CED8]/40 dark:text-neutral-300 dark:hover:text-white dark:hover:bg-neutral-800/40"}`}
                     state={{ animate: true }}
                     onClick={onClick}
                 >
