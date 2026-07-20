@@ -261,7 +261,7 @@ function App() {
           onClick={() => setMusicEnabled(!musicEnabled)}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
             musicEnabled 
-              ? 'bg-copper text-white hover:bg-copper-hover active:bg-copper-active' 
+              ? 'bg-amber-700 text-white hover:bg-amber-800 active:bg-amber-900' 
               : 'bg-gray-200/80 text-gray-700 dark:bg-gray-700/80 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 active:bg-gray-200/40 dark:active:bg-gray-700/40'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
@@ -273,7 +273,7 @@ function App() {
       <div className="fixed bottom-24 right-4 z-50">
         <button
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full bg-copper text-white flex items-center justify-center shadow-lg hover:bg-copper-hover active:bg-copper-active transition-all touch-manipulation"
+          className="w-12 h-12 rounded-full bg-amber-700 text-white flex items-center justify-center shadow-lg hover:bg-amber-800 active:bg-amber-900 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
