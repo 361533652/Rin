@@ -256,12 +256,14 @@ function App() {
         </div>
       )}
       {/* 音乐播放器开关按钮 */}
+      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#b87d4a!important}`}</style>
       <div className="fixed bottom-40 right-4 z-50">
         <button
+          id="music-btn"
           onClick={() => setMusicEnabled(!musicEnabled)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
+          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all music-on ${
             musicEnabled 
-              ? 'bg-amber-700 text-white hover:bg-amber-800 active:bg-amber-900' 
+              ? 'text-white' 
               : 'bg-gray-200/80 text-gray-700 dark:bg-gray-700/80 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 active:bg-gray-200/40 dark:active:bg-gray-700/40'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
