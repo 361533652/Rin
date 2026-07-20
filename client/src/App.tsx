@@ -30,6 +30,7 @@ import { ErrorPage } from './page/error.tsx'
 import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
 import { ImageBedPage } from './page/image-bed'
+import { PaperDecoration } from './components/paper_decoration'
 
 function App() {
   const ref = useRef(false)
@@ -128,6 +129,7 @@ function App() {
             {favicon &&
               <link rel="icon" href={favicon} />}
           </Helmet>
+          <PaperDecoration />
           <Switch>
             <RouteMe path="/">
               <FeedsPage />
