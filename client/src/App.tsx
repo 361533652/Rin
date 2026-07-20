@@ -256,7 +256,7 @@ function App() {
         </div>
       )}
       {/* 音乐播放器开关按钮 */}
-      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#b87d4a!important}`}</style>
+      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#2d2520!important}`}</style>
       <div className="fixed bottom-40 right-4 z-50">
         <button
           id="music-btn"
@@ -272,7 +272,7 @@ function App() {
         </button>
       </div>
       {/* 回到顶部按钮 */}
-      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#b87d4a!important}`}</style>
+      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#2d2520!important}`}</style>
       <div className="fixed bottom-24 right-4 z-50">
         <button
           id="top-btn"
