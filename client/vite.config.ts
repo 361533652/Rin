@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      visualizer({ open: true }), // 自动开启分析页面
+      visualizer({ open: false }),
       copy({
         targets: [
           { src: 'particles.js', dest: 'dist' },
