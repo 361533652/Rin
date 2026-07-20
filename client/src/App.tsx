@@ -270,10 +270,12 @@ function App() {
         </button>
       </div>
       {/* 回到顶部按钮 */}
+      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#b87d4a!important}`}</style>
       <div className="fixed bottom-24 right-4 z-50">
         <button
+          id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full bg-amber-700 text-white flex items-center justify-center shadow-lg hover:bg-amber-800 active:bg-amber-900 transition-all touch-manipulation"
+          className="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:opacity-80 active:opacity-60 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
