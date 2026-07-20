@@ -254,9 +254,9 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
         )}
         {feed && !error && (
           <>
-            <main className="w-full">
+            <main className="w-full flex flex-col items-center">
               <article
-                className="bg-[#FFFDF8] dark:bg-neutral-900 m-2 max-w-[900px] rounded-2xl px-12 py-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+                className="bg-[#FFFDF8] dark:bg-neutral-900 m-2 w-full max-w-[900px] rounded-2xl px-12 py-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">
@@ -371,7 +371,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                   </div>
                 </div>
               </article>
-              <div className="max-w-[900px] mx-auto">
+              <div className="w-full max-w-[900px]">
                 <AdjacentSection id={id} setError={setError} />
                 {feed && <Comments id={`${feed.id}`} />}
                 <div className="h-16" />
