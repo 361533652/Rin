@@ -371,9 +371,11 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                   </div>
                 </div>
               </article>
-              <AdjacentSection id={id} setError={setError} />
-              {feed && <Comments id={`${feed.id}`} />}
-              <div className="h-16" />
+              <div className="max-w-[900px] mx-auto">
+                <AdjacentSection id={id} setError={setError} />
+                {feed && <Comments id={`${feed.id}`} />}
+                <div className="h-16" />
+              </div>
             </main>
           </>
         )}
