@@ -20,7 +20,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
 
     return useMemo(() => (
         <>
-            <div className="fixed top-0 left-0 right-0 z-40 h-16 bg-[rgba(247,243,234,0.85)] backdrop-blur-md border-b border-[#E8DDE0] dark:bg-neutral-900/80 dark:border-neutral-800">
+            <div className="fixed top-0 left-0 right-0 z-40 h-16 backdrop-blur-md border-b c-border dark:bg-neutral-900/80 dark:border-neutral-800" style={{ background: 'rgba(247,243,234,0.85)' }}>
                 <div className="w-screen">
                     <Padding className="mt-2 mb-2" fullWidth={true}>
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -30,10 +30,10 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                     className="flex items-center ml-4 lg:ml-6">
                                     <img src={process.env.AVATAR} alt="Avatar" className="w-9 h-9 rounded-full" />
                                     <div className="hidden sm:flex flex-col justify-center items-start ml-2">
-                                        <p className="text-base font-semibold text-[#292724] dark:text-white">
+                                        <p className="text-base font-semibold c-text-main dark:text-white">
                                             {process.env.NAME}
                                         </p>
-                                        <p className="text-xs text-[#8B877F]">
+                                        <p className="text-xs c-text-muted">
                                             {process.env.DESCRIPTION}
                                         </p>
                                     </div>
@@ -81,7 +81,7 @@ function NavItem({ menu, title, selected, href, when = true, onClick }: {
         <>
             {when &&
                 <Link href={href}
-                    className={`${menu ? "" : "hidden"} md:block cursor-pointer duration-200 px-3 py-1.5 rounded-xl text-sm transition-all hover:-translate-y-px ${selected ? "bg-[#F2CED8] text-[#C76B80] font-medium" : "text-[#6E6862] hover:text-[#292724] hover:bg-[#F2CED8]/40 dark:text-neutral-300 dark:hover:text-white dark:hover:bg-neutral-800/40"}`}
+                    className={`${menu ? "" : "hidden"} md:block cursor-pointer duration-200 px-3 py-1.5 rounded-xl text-sm transition-all hover:-translate-y-px ${selected ? "c-primary-bg-light c-primary-hover font-medium" : "c-text-nav hover:c-text-main hover:c-primary-bg-light/40"} dark:hover:bg-neutral-800/40`}
                     state={{ animate: true }}
                     onClick={onClick}
                 >

@@ -79,14 +79,14 @@ const useTableOfContents = (selector: string) => {
     }
 
     return {
-        TOC: () => (<div className='rounded-xl border border-[#E8DDE0] backdrop-blur-md bg-[rgba(255,253,248,0.65)] py-4 px-4 text-[#292724]'>
-            <h2 className="text-sm font-semibold mb-2 text-[#8B877F] tracking-wide">{t("index.title")}</h2>
+        TOC: () => (<div className='rounded-xl c-border backdrop-blur-md py-4 px-4 c-text-main' style={{ background: 'rgba(255,253,248,0.65)' }}>
+            <h2 className="text-sm font-semibold mb-2 c-text-muted tracking-wide">{t("index.title")}</h2>
             <ul className="max-h-[calc(100vh-10.25rem)] overflow-auto" style={{ scrollbarWidth: "none" }}>
                 {tableOfContents.length === 0 && <li>{t("index.empty.title")}</li>}
                 {tableOfContents.map((item) => (
                     <li
                         key={`toc$${item.index}`}
-                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "border-[#D88A9A] bg-[#F2CED8] text-[#C76B80] font-medium" : "border-transparent text-[#6E6862] hover:text-[#292724] hover:bg-[#F2CED8]/40"} ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
+                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "c-primary c-primary-bg-light c-primary-hover font-medium" : "border-transparent c-text-nav hover:c-text-main"} hover:bg-[var(--primary-light)] [&:hover]:bg-opacity-40 ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
                         style={{ marginLeft: item.marginLeft }}
                         onClick={() => {
                             smoothScrollToElement(item.element);

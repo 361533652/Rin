@@ -303,7 +303,7 @@ export function MusicPlayer({
               }`}
               style={{
                 background: duration
-                  ? `linear-gradient(to right, #D88A9A 0%, #D88A9A ${(currentTime / duration) * 100}%, #F5DDE3 ${(currentTime / duration) * 100}%, #F5DDE3 100%)`
+                  ? `linear-gradient(to right, var(--primary) 0%, var(--primary) ${(currentTime / duration) * 100}%, var(--primary-light) ${(currentTime / duration) * 100}%, var(--primary-light) 100%)`
                   : undefined
               }}
             />
@@ -335,7 +335,7 @@ export function MusicPlayer({
               onChange={handleSeek}
               className="w-full h-1 bg-neutral-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-theme"
               style={{
-                background: `linear-gradient(to right, #D88A9A 0%, #D88A9A ${(currentTime / duration) * 100}%, #F5DDE3 ${(currentTime / duration) * 100}%, #F5DDE3 100%)`
+                background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${(currentTime / duration) * 100}%, var(--primary-light) ${(currentTime / duration) * 100}%, var(--primary-light) 100%)`
               }}
             />
             <div className="flex justify-between text-xs text-neutral-500 dark:text-neutral-400 mt-1">

@@ -335,14 +335,14 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                   </div>
                 )}
                 {feed.ai_summary && aiSummaryEnabled && (
-                  <div className="my-6 p-4 border-l-4 border-[#8FA9C7] bg-[#F2F6FA]">
+                  <div className="my-6 p-4 border-l-4 c-accent c-accent-bg/[0.12] bg-[var(--accent-light)]">
                     <div className="flex items-center gap-2 mb-2">
-                      <i className="ri-sparkling-2-fill text-[#56708F]" />
-                      <span className="text-sm font-medium text-[#56708F]">
+                      <i className="ri-sparkling-2-fill c-accent-text" />
+                      <span className="text-sm font-medium c-accent-text">
                         {t('ai_summary.title')}
                       </span>
                     </div>
-                    <p className="text-sm text-[#56708F] leading-relaxed">
+                    <p className="text-sm c-accent-text leading-relaxed">
                       {feed.ai_summary}
                     </p>
                   </div>

@@ -1,4 +1,5 @@
 @import "./base.css";
+@import "./theme.css";
 
 /* cantarell-latin-400-normal */
 @font-face {
@@ -14,9 +15,9 @@
 }
 
 body {
-  @apply text-[#3C3A37];
-  background-color: #F7F3EA;
-  font-family: Cantarell, "Source Han Serif CN VF" !important;
+  color: var(--text-body);
+  background-color: var(--bg-page);
+  font-family: var(--font-body);
   position: relative;
   isolation: isolate;
 }
@@ -64,6 +65,39 @@ body::after {
   opacity: 0.5;
 }
 
+/* ---- Design System Utility Classes ---- */
+.c-bg-page { background-color: var(--bg-page); }
+.c-bg-card { background-color: var(--bg-card); }
+.c-bg-code { background-color: var(--bg-code); }
+.c-bg-info { background-color: var(--accent-light); }
+.c-primary { color: var(--primary); }
+.c-primary-hover { color: var(--primary-hover); }
+.c-primary-bg { background-color: var(--primary); }
+.c-primary-bg-hover { background-color: var(--primary-hover); }
+.c-primary-bg-light { background-color: var(--primary-light); }
+.c-primary-glass { background-color: var(--primary-glass); }
+.c-accent { color: var(--accent); }
+.c-accent-text { color: var(--accent-text); }
+.c-accent-bg { background-color: var(--accent); }
+.c-text-main { color: var(--text-main); }
+.c-text-body { color: var(--text-body); }
+.c-text-muted { color: var(--text-muted); }
+.c-text-faint { color: var(--text-faint); }
+.c-text-nav { color: var(--text-nav); }
+.c-border { border-color: var(--border); }
+.c-border-music { border-color: var(--border-music); }
+.c-border-primary { border-color: var(--primary); }
+.c-shadow { box-shadow: var(--shadow); }
+.c-shadow-hover { box-shadow: var(--shadow-hover); }
+.c-shadow-sakura { box-shadow: var(--shadow-sakura); }
+.c-shadow-music { box-shadow: var(--shadow-music); }
+
+/* Hover & Active states */
+.hover\:c-primary-bg-hover:hover { background-color: var(--primary-hover); }
+.hover\:c-primary:hover { color: var(--primary); }
+.hover\:c-text-main:hover { color: var(--text-main); }
+.hover\:c-bg-card:hover { background-color: var(--bg-card-hover); }
+
 textarea:focus {
   outline: none;
 }
@@ -97,7 +131,8 @@ ul {
 }
 
 .wmde-markdown code {
-  @apply text-[#C76B80] bg-[#F5DDE3];
+  color: var(--primary-hover);
+  background-color: var(--primary-light);
   font-size: 0.9em;
   padding: 0 4px;
   border-radius: 4px;

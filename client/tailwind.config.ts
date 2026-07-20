@@ -8,17 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        'theme': '#D88A9A',
-        'theme-hover': '#C76B80',
-        'theme-active': '#B45870',
-        'theme-light': '#F5DDE3',
-        'mist': '#8FA9C7',
-        'mist-light': '#F2F6FA',
-        'mist-text': '#56708F',
-        'paper': '#F7F3EA',
-        'paper-card': '#FFFDF8',
-        'paper-border': '#E8DDE0',
-        'paper-code': '#F8F6F2',
+        'theme': 'var(--primary)',
+        'theme-hover': 'var(--primary-hover)',
+        'theme-active': 'var(--primary-active)',
+        'theme-light': 'var(--primary-light)',
+        'mist': 'var(--accent)',
+        'mist-light': 'var(--accent-light)',
+        'mist-text': 'var(--accent-text)',
+        'paper': 'var(--bg-page)',
+        'paper-card': 'var(--bg-card)',
+        'paper-border': 'var(--border)',
+        'paper-code': 'var(--bg-code)',
         'copper': {
           DEFAULT: '#b87d4a',
           hover: '#9e6b3c',

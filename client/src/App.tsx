@@ -262,8 +262,8 @@ function App() {
           onClick={() => setMusicEnabled(!musicEnabled)}
           className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 ${
             musicEnabled
-              ? 'bg-[#D88A9A] text-white shadow-[0_8px_20px_rgba(216,138,154,0.25)] hover:shadow-[0_12px_28px_rgba(216,138,154,0.35)]'
-              : 'bg-[rgba(216,138,154,0.18)] text-[#8B877F] border border-[rgba(216,138,154,0.25)] backdrop-blur-md hover:text-[#D88A9A] hover:border-[#D88A9A]'
+              ? 'c-primary-bg text-white c-shadow-sakura'
+              : 'c-primary-glass c-text-muted border c-border-primary backdrop-blur-md hover:c-primary hover:c-border-primary'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
         >
@@ -275,7 +275,7 @@ function App() {
         <button
           id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-11 h-11 rounded-full bg-[rgba(216,138,154,0.18)] text-[#D88A9A] flex items-center justify-center border border-[rgba(216,138,154,0.25)] backdrop-blur-md transition-all duration-200 hover:bg-[#D88A9A] hover:text-white hover:shadow-[0_8px_20px_rgba(216,138,154,0.25)] active:scale-95 touch-manipulation"
+          className="w-11 h-11 rounded-full c-primary-glass c-primary flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 hover:c-primary-bg-hover hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>

@@ -3,7 +3,8 @@
 @tailwind utilities;
 @layer base {
     .bg-w {
-      background-color: rgb(255 253 248 / 0.95);
+      background-color: var(--bg-card);
+      opacity: 0.95;
     }
 
     [data-color-mode="dark"] .bg-w {
@@ -31,11 +32,11 @@
     }
 
     .t-primary {
-      @apply text-[#292724] dark:text-white;
+      color: var(--text-main);
     }
 
     .t-secondary {
-      @apply text-[#8B877F] dark:text-neutral-200;
+      color: var(--text-muted);
     }
 
     .wauto {

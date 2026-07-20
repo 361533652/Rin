@@ -132,7 +132,7 @@ export function Markdown({ content }: { content: string }) {
 
           if (isCodeBlock) {
             return (
-              <div className="relative group my-4 rounded-[10px] border border-[#E8DDE0] bg-[#F8F6F2] overflow-hidden">
+              <div className="relative group my-4 rounded-[10px] c-border c-bg-code overflow-hidden">
                 <SyntaxHighlighter
                   PreTag="div"
                   className="!bg-[#F8F6F2] !m-0 !p-4"
@@ -162,7 +162,7 @@ export function Markdown({ content }: { content: string }) {
             return (
               <code
                 {...rest}
-                className={`bg-[#F5DDE3] text-[#C76B80] px-[6px] rounded mx-[2px] text-[0.9em] ${className || ""
+                className={`c-primary-bg-light c-primary-hover px-[6px] rounded mx-[2px] text-[0.9em] ${className || ""
                   }`}
                 style={inlineCodeStyle}
               >
@@ -174,7 +174,7 @@ export function Markdown({ content }: { content: string }) {
         blockquote({ children, ...props }) {
           return (
             <blockquote
-              className="border-l-4 border-[#8FA9C7] bg-[#F2F6FA] pl-4 pr-4 py-3 my-4 text-[#56708F] not-italic"
+              className="border-l-4 c-accent c-bg-info pl-4 pr-4 py-3 my-4 c-accent-text not-italic"
               {...props}
             >
               {children}
@@ -223,7 +223,7 @@ export function Markdown({ content }: { content: string }) {
         a({ children, ...props }) {
           return (
             <a
-              className="text-[#56708F] hover:underline hover:text-[#8FA9C7] transition-colors"
+              className="c-accent-text hover:underline hover:c-accent transition-colors"
               {...props}
             >
               {children}
@@ -234,7 +234,7 @@ export function Markdown({ content }: { content: string }) {
           return (
             <h1
               id={children?.toString()}
-              className="text-3xl font-bold text-[#292724] mt-8 mb-4 pb-3 border-b border-[#F5DDE3]"
+              className="text-3xl font-bold c-text-main mt-8 mb-4 pb-3 border-b c-primary-bg-light/[0.5]"
               {...props}
             >
               {children}
@@ -245,7 +245,7 @@ export function Markdown({ content }: { content: string }) {
           return (
             <h2
               id={children?.toString()}
-              className="text-2xl font-bold text-[#292724] mt-8 mb-3 pl-3 border-l-[3px] border-[#D88A9A]"
+              className="text-2xl font-bold c-text-main mt-8 mb-3 pl-3 border-l-[3px] c-primary"
               {...props}
             >
               {children}
