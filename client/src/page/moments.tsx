@@ -173,12 +173,12 @@ export function MomentsPage() {
             </Helmet>
             <Waiting for={!loading}>
                 <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start text-black dark:text-white py-4 text-4xl font-bold">
+                    <div className="wauto text-start c-text-main py-4 text-4xl font-bold">
                         <p>
                             {t('moments.title')}
                         </p>
                         <div className="flex flex-row justify-between items-center">
-                            <p className="text-sm mt-4 text-neutral-500 font-normal">
+                            <p className="text-sm mt-4 c-text-muted font-normal">
                                 {t('moments.total$count', { count: length })}
                             </p>
                             {profile?.permission && (
@@ -210,7 +210,7 @@ export function MomentsPage() {
                         <Waiting for={!loadingMore}>
                             <div className="py-4 text-center">
                                 {!hasNextPage && moments && moments.length > 0 ? (
-                                    <div className="text-gray-500 pt-6">{t('no_more')}</div>
+                                    <div className="c-text-muted pt-6">{t('no_more')}</div>
                                 ) : hasNextPage ? (
                                     <button
                                         onClick={loadMore}
@@ -269,7 +269,7 @@ export function MomentsPage() {
                     <div className="flex justify-end mt-4 space-x-2">
                         <button
                             onClick={() => setIsModalOpen(false)}
-                            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-black dark:text-white rounded-lg"
+                            className="px-4 py-2 bg-secondary c-text-main rounded-lg"
                         >
                             {t('cancel')}
                         </button>

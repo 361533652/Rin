@@ -283,7 +283,7 @@ function ItemSwitch({ title, description, type, configKey }: { title: string, de
                     <p className="text-lg font-bold dark:text-white">
                         {title}
                     </p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs c-text-muted">
                         {description}
                     </p>
                 </div>
@@ -348,7 +348,7 @@ function ItemInput({ title, configKeyTitle, description, type, configKey }: { ti
                     <p className="text-lg font-bold dark:text-white">
                         {title}
                     </p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs c-text-muted">
                         {description}
                     </p>
                 </div>
@@ -435,7 +435,7 @@ function ItemButton({
                     <p className="text-lg font-bold dark:text-white">
                         {title}
                     </p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs c-text-muted">
                         {description}
                     </p>
                 </div>
@@ -479,7 +479,7 @@ function ItemWithUpload({
             <div className="flex flex-row justify-between w-full items-center">
                 <div className="flex flex-col">
                     <p className="text-lg font-bold dark:text-white">{title}</p>
-                    <p className="text-xs text-neutral-500">{description}</p>
+                    <p className="text-xs c-text-muted">{description}</p>
                 </div>
                 <div className="flex flex-row items-center justify-center space-x-4">
                     {loading && (
@@ -770,7 +770,7 @@ function AISummarySettings() {
                         <p className="text-lg font-bold dark:text-white">
                             {t('settings.ai_summary.enable.title')}
                         </p>
-                        <p className="text-xs text-neutral-500">
+                        <p className="text-xs c-text-muted">
                             {t('settings.ai_summary.enable.desc')}
                         </p>
                     </div>
@@ -792,7 +792,7 @@ function AISummarySettings() {
                                 <p className="text-lg font-bold dark:text-white">
                                     {t('settings.ai_summary.provider.title')}
                                 </p>
-                                <p className="text-xs text-neutral-500">
+                                <p className="text-xs c-text-muted">
                                     {t('settings.ai_summary.provider.desc')}
                                 </p>
                             </div>
@@ -819,7 +819,7 @@ function AISummarySettings() {
                                 <p className="text-lg font-bold dark:text-white">
                                     {t('settings.ai_summary.model.title')}
                                 </p>
-                                <p className="text-xs text-neutral-500">
+                                <p className="text-xs c-text-muted">
                                     {t('settings.ai_summary.model.desc')}
                                 </p>
                             </div>
@@ -851,7 +851,7 @@ function AISummarySettings() {
                                     {t('settings.ai_summary.api_key.title')}
                                     {apiKeySet && <span className="ml-2 text-xs text-green-500">(✓ {t('settings.ai_summary.api_key.set')})</span>}
                                 </p>
-                                <p className="text-xs text-neutral-500">
+                                <p className="text-xs c-text-muted">
                                     {t('settings.ai_summary.api_key.desc')}
                                 </p>
                             </div>
@@ -877,7 +877,7 @@ function AISummarySettings() {
                                 <p className="text-lg font-bold dark:text-white">
                                     {t('settings.ai_summary.api_url.title')}
                                 </p>
-                                <p className="text-xs text-neutral-500">
+                                <p className="text-xs c-text-muted">
                                     {t('settings.ai_summary.api_url.desc')}
                                 </p>
                             </div>
@@ -906,7 +906,7 @@ function AISummarySettings() {
                             <p className="text-lg font-bold dark:text-white">
                                 {t('settings.ai_summary.save.title')}
                             </p>
-                            <p className="text-xs text-neutral-500">
+                            <p className="text-xs c-text-muted">
                                 {t('settings.ai_summary.save.desc')}
                             </p>
                         </div>

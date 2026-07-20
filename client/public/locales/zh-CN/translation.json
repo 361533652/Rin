@@ -274,6 +274,7 @@
   "image_host_desc": "上传图片并生成外链",
   "image_host.click": "点击上传图片",
   "image_host.drag": "或将图片拖拽到此处",
+  "image_host.login": "请先登录后再上传图片",
   "copy": "复制",
   "copied": "已复制",
   "coming_soon": "敬请期待",

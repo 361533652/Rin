@@ -101,27 +101,27 @@ export function FeedsPage() {
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">
-                    <div className="text-start text-black dark:text-white py-6">
+                    <div className="text-start c-text-main py-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
                         </h1>
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
-                            <p className="text-sm text-neutral-500 font-normal">
+                            <p className="text-sm c-text-muted font-normal">
                                 {t('article.total$count', { count: feeds[listState]?.size })}
                             </p>
                             <button
                                 onClick={() => setSortBy(v => v === 'updatedAt' ? 'createdAt' : 'updatedAt')}
-                                className="text-sm text-neutral-500 hover:text-theme transition-colors flex items-center gap-1"
+                                className="text-sm c-text-muted hover:text-theme transition-colors flex items-center gap-1"
                             >
                                 {sortBy === 'updatedAt' ? t('sort.updated') : t('sort.created')}
                                 <i className="ri-arrow-up-down-line" />
                             </button>
                             {profile?.permission &&
                                 <div className="flex flex-row space-x-4">
-                                    <Link href={listState === 'draft' ? '/?type=normal' : '/?type=draft'} className={`text-sm text-neutral-500 font-normal hover:text-theme transition-colors ${listState === 'draft' ? "text-theme" : ""}`}>
+                                    <Link href={listState === 'draft' ? '/?type=normal' : '/?type=draft'} className={`text-sm c-text-muted font-normal hover:text-theme transition-colors ${listState === 'draft' ? "text-theme" : ""}`}>
                                         {t('draft_bin')}
                                     </Link>
-                                    <Link href={listState === 'unlisted' ? '/?type=normal' : '/?type=unlisted'} className={`text-sm text-neutral-500 font-normal hover:text-theme transition-colors ${listState === 'unlisted' ? "text-theme" : ""}`}>
+                                    <Link href={listState === 'unlisted' ? '/?type=normal' : '/?type=unlisted'} className={`text-sm c-text-muted font-normal hover:text-theme transition-colors ${listState === 'unlisted' ? "text-theme" : ""}`}>
                                         {t('unlisted')}
                                     </Link>
                                 </div>

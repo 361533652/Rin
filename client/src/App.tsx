@@ -30,6 +30,7 @@ import { ErrorPage } from './page/error.tsx'
 import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
 import { ImageBedPage } from './page/image-bed'
+import { PaperDecoration } from './components/paper_decoration'
 
 function App() {
   const ref = useRef(false)
@@ -128,6 +129,7 @@ function App() {
             {favicon &&
               <link rel="icon" href={favicon} />}
           </Helmet>
+          <PaperDecoration />
           <Switch>
             <RouteMe path="/">
               <FeedsPage />
@@ -256,13 +258,14 @@ function App() {
         </div>
       )}
       {/* 音乐播放器开关按钮 */}
-      <div className="fixed bottom-40 right-4 z-50">
+      <div className="fixed bottom-[30px] right-4 z-50">
         <button
+          id="music-btn"
           onClick={() => setMusicEnabled(!musicEnabled)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
-            musicEnabled 
-              ? 'bg-theme/80 text-white hover:bg-theme/60 active:bg-theme/40' 
-              : 'bg-gray-200/80 text-gray-700 dark:bg-gray-700/80 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 active:bg-gray-200/40 dark:active:bg-gray-700/40'
+          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 ${
+            musicEnabled
+              ? 'c-primary-bg text-white c-shadow-sakura'
+              : 'c-primary-glass c-text-muted border c-border-primary backdrop-blur-md hover:c-primary hover:c-border-primary'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
         >
@@ -270,10 +273,11 @@ function App() {
         </button>
       </div>
       {/* 回到顶部按钮 */}
-      <div className="fixed bottom-24 right-4 z-50">
+      <div className="fixed bottom-[100px] right-4 z-50">
         <button
+          id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full bg-theme/80 text-white flex items-center justify-center shadow-lg backdrop-blur-sm hover:bg-theme/60 active:bg-theme/40 transition-all touch-manipulation"
+          className="w-11 h-11 rounded-full c-primary-glass c-primary flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 hover:c-primary-bg-hover hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
@@ -331,12 +335,12 @@ function RouteWithIndex({ path, children }:
           </div>
           <button
             onClick={() => setExpanded(v => !v)}
-            className="hidden lg:flex fixed right-0 top-20 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
+            className="hidden lg:flex fixed right-4 top-20 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
             title={expanded ? "收起大纲" : "展开大纲"}
           >
             <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
           </button>
-          <aside className={`hidden lg:block fixed right-0 top-20 h-[calc(100vh-5rem)] z-40 w-56 pt-4 pb-8 pl-4 pr-2 overflow-y-auto bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
+          <aside className={`hidden lg:block fixed right-4 top-20 h-[calc(100vh-5rem)] z-40 w-56 pt-4 pb-8 pl-4 pr-2 overflow-y-auto bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
             <TOC />
           </aside>
         </>

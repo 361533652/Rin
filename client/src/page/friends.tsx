@@ -109,7 +109,7 @@ export function FriendsPage() {
                             <p>
                                 {profile.permission ? t('friends.create') : t('friends.apply')}
                             </p>
-                            <div className="text-sm mt-4 text-neutral-500 font-normal">
+                            <div className="text-sm mt-4 c-text-muted font-normal">
                                 <Input value={name} setValue={setName} placeholder={t('sitename')} />
                                 <Input value={desc} setValue={setDesc} placeholder={t('description')} className="mt-2" />
                                 <Input value={avatar} setValue={setAvatar} placeholder={t('avatar.url')} className="mt-2" />
@@ -132,7 +132,7 @@ function FriendList({ title, show, friends }: { title: string, show: boolean, fr
         {
             show && <>
                 <div className="wauto text-start py-4">
-                    <p className="text-sm mt-4 text-neutral-500 font-normal">
+                    <p className="text-sm mt-4 c-text-muted font-normal">
                         {title}
                     </p>
                 </div>
@@ -211,9 +211,9 @@ function Friend({ friend }: { friend: FriendItem }) {
                     <img className={"rounded-full " + (friend.health.length > 0 ? "grayscale" : "")} src={friend.avatar} alt={friend.name} />
                 </div>
                 <p className="text-base text-center">{friend.name}</p>
-                {friend.health.length == 0 && <p className="text-sm text-neutral-500 text-center">{friend.desc}</p>}
+                {friend.health.length == 0 && <p className="text-sm c-text-muted text-center">{friend.desc}</p>}
                 {friend.accepted !== 1 && <p className={`${friend.accepted === 0 ? "t-primary" : "text-theme"}`}>{statusOption[friend.accepted + 1].label}</p>}
-                {friend.health.length > 0 && <p className="text-sm text-gray-500 text-center">{errorHumanize(friend.health)}</p>}
+                {friend.health.length > 0 && <p className="text-sm c-text-muted text-center">{errorHumanize(friend.health)}</p>}
                 {(profile?.permission || profile?.id === friend.uid) && <>
                     <button onClick={(e) => { e.preventDefault(); setIsOpen(true) }} className="absolute top-0 right-0 m-2 px-2 py-1 bg-secondary t-primary rounded-full bg-button">
                         <i className="ri-settings-line"></i>

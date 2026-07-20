@@ -16,17 +16,17 @@ export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary
     const coverImage = cover || avatar
     return useMemo(() => (
         <>
-            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-lg bg-[#fbf6e8] dark:bg-neutral-900 my-2 p-6 hover:bg-[#f5ecd9] dark:hover:bg-neutral-800/50 transition-colors duration-200">
+            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 p-6 c-shadow hover:c-shadow-hover hover:-translate-y-0.5 transition-all duration-200" style={{ '--bg-card-hover': '#FFFDF8', '--shadow-hover': '0 12px 40px rgba(80,60,40,0.10)' } as React.CSSProperties}>
                 {coverImage &&
-                    <div className="mb-4 rounded-lg overflow-hidden">
+                    <div className="mb-4 rounded-xl overflow-hidden max-h-48">
                         <img src={coverImage} alt=""
-                            className="object-cover object-center w-full max-h-80 sm:max-h-96 hover:scale-[1.02] transition-transform duration-500" />
+                            className="object-cover object-center w-full h-48" />
                     </div>}
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white text-pretty overflow-hidden mb-3">
+                <h1 className="text-xl font-bold c-text-main dark:text-white text-pretty overflow-hidden mb-3">
                     {title}
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm" title={new Date(createdAt).toLocaleString()}>
+                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm" title={new Date(createdAt).toLocaleString()}>
                         {createdAt === updatedAt ? timeago(createdAt) : t('feed_card.published$time', { time: timeago(createdAt) })}
                     </span>
                     {createdAt !== updatedAt &&
@@ -42,7 +42,7 @@ export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary
                         </span>}
                     </div>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 text-pretty overflow-hidden mb-4 line-clamp-3">
+                <p className="text-[#6E6862] dark:text-gray-300 text-pretty overflow-hidden mb-4 line-clamp-3">
                     {summary}
                 </p>
                 {hashtags.length > 0 &&

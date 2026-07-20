@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Song } from '../types/music';
 
-type ThemeMode = 'light' | 'dark' | 'system';
-
 interface MusicPlayerProps {
   src?: string; // 音乐文件 URL
   title?: string; // 歌曲名称
@@ -28,31 +26,6 @@ export function MusicPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
-  const [modeState, setModeState] = useState<ThemeMode>('system');
-
-  // 初始化主题模式
-  useEffect(() => {
-    const mode = localStorage.getItem('theme') as ThemeMode || 'system';
-    setModeState(mode);
-    setMode(mode);
-  }, [])
-
-  const setMode = (mode: ThemeMode) => {
-    setModeState(mode);
-    localStorage.setItem('theme', mode);
-
-    if (mode !== 'system' || (!('theme' in localStorage) && window.matchMedia(`(prefers-color-scheme: ${mode})`).matches)) {
-      document.documentElement.setAttribute('data-color-mode', mode);
-    } else {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      if (mediaQuery.matches) {
-        document.documentElement.setAttribute('data-color-mode', 'dark');
-      } else {
-        document.documentElement.setAttribute('data-color-mode', 'light');
-      }
-    }
-    window.dispatchEvent(new Event("colorSchemeChange"));
-  };
 
   // 初始化当前歌曲
   useEffect(() => {
@@ -218,8 +191,8 @@ export function MusicPlayer({
   const displaySrc = currentSong?.src || src;
 
   const rootClassName = compact
-    ? "w-full max-w-4xl mx-auto mt-3 px-3 py-2 bg-w dark:bg-neutral-800 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-sm"
-    : "w-full max-w-2xl mx-auto mt-4 p-4 bg-w dark:bg-neutral-800 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm";
+    ? "w-full max-w-[600px] mx-auto mt-3 h-11 px-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-full border border-[#F0D5DC] shadow-[0_6px_20px_rgba(216,138,154,0.10)]"
+    : "w-full max-w-[600px] mx-auto mt-4 p-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-2xl border border-[#F0D5DC] shadow-[0_6px_20px_rgba(216,138,154,0.10)]";
 
   return (
     <div className={rootClassName}>
@@ -314,37 +287,6 @@ export function MusicPlayer({
                 }`}
               />
             </div>
-
-            {/* 主题切换按钮 */}
-            <div className="inline-flex rounded-full border border-zinc-200 p-[2px] dark:border-zinc-700 bg-white/80 dark:bg-neutral-900/80 shadow-sm">
-              <button 
-                onClick={() => setMode('light')}
-                aria-label="Toggle light mode"
-                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
-                  modeState === 'light' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
-                }`}
-              >
-                <i className="ri-sun-line text-xs" />
-              </button>
-              <button 
-                onClick={() => setMode('system')}
-                aria-label="Toggle system mode"
-                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
-                  modeState === 'system' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
-                }`}
-              >
-                <i className="ri-computer-line text-xs" />
-              </button>
-              <button 
-                onClick={() => setMode('dark')}
-                aria-label="Toggle dark mode"
-                className={`rounded-inherit inline-flex h-[24px] w-[24px] items-center justify-center border-0 transition-colors ${
-                  modeState === 'dark' ? "bg-theme text-white rounded-full" : "text-neutral-600 dark:text-neutral-400"
-                }`}
-              >
-                <i className="ri-moon-line text-xs" />
-              </button>
-            </div>
           </div>
 
           {/* 第二行：进度条（在小屏幕上独占一行） */}
@@ -361,7 +303,7 @@ export function MusicPlayer({
               }`}
               style={{
                 background: duration
-                  ? `linear-gradient(to right, #fc466b 0%, #fc466b ${(currentTime / duration) * 100}%, #e5e7eb ${(currentTime / duration) * 100}%, #e5e7eb 100%)`
+                  ? `linear-gradient(to right, var(--primary) 0%, var(--primary) ${(currentTime / duration) * 100}%, var(--primary-light) ${(currentTime / duration) * 100}%, var(--primary-light) 100%)`
                   : undefined
               }}
             />
@@ -393,7 +335,7 @@ export function MusicPlayer({
               onChange={handleSeek}
               className="w-full h-1 bg-neutral-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-theme"
               style={{
-                background: `linear-gradient(to right, #fc466b 0%, #fc466b ${(currentTime / duration) * 100}%, #e5e7eb ${(currentTime / duration) * 100}%, #e5e7eb 100%)`
+                background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${(currentTime / duration) * 100}%, var(--primary-light) ${(currentTime / duration) * 100}%, var(--primary-light) 100%)`
               }}
             />
             <div className="flex justify-between text-xs text-neutral-500 dark:text-neutral-400 mt-1">
