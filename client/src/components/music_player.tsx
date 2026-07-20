@@ -287,6 +287,7 @@ export function MusicPlayer({
                 }`}
               />
             </div>
+          </div>
 
           {/* 第二行：进度条（在小屏幕上独占一行） */}
           <div className="w-full">
