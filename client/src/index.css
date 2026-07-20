@@ -35,10 +35,10 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 200px 200px;
-  opacity: 0.03;
+  opacity: 0.04;
 }
 body::after {
   content: "";
@@ -46,9 +46,17 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 200px 300px at 92% 8%, rgba(216,138,154,0.06) 0%, transparent 100%),
-    radial-gradient(ellipse 120px 160px at 15% 75%, rgba(143,169,199,0.04) 0%, transparent 100%);
+  background-image:
+    /* 樱花花瓣 — 右上角 */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='30' r='8' fill='%23D88A9A' opacity='0.9'/%3E%3Ccircle cx='28' cy='38' r='8' fill='%23D88A9A' opacity='0.9'/%3E%3Ccircle cx='52' cy='38' r='8' fill='%23D88A9A' opacity='0.9'/%3E%3Ccircle cx='32' cy='50' r='8' fill='%23D88A9A' opacity='0.9'/%3E%3Ccircle cx='48' cy='50' r='8' fill='%23D88A9A' opacity='0.9'/%3E%3Ccircle cx='40' cy='54' r='7' fill='%23D88A9A' opacity='0.5'/%3E%3C/svg%3E"),
+    /* 猫爪印 — 左下 */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cellipse cx='20' cy='16' rx='5' ry='7' fill='%238FA9C7'/%3E%3Cellipse cx='40' cy='16' rx='5' ry='7' fill='%238FA9C7'/%3E%3Cellipse cx='15' cy='28' rx='5' ry='6' fill='%238FA9C7'/%3E%3Cellipse cx='45' cy='28' rx='5' ry='6' fill='%238FA9C7'/%3E%3Cellipse cx='30' cy='34' rx='9' ry='8' fill='%238FA9C7'/%3E%3C/svg%3E"),
+    /* 星点 — 散落 */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='30' cy='40' r='1.5' fill='%23D88A9A'/%3E%3Ccircle cx='160' cy='70' r='1' fill='%238FA9C7'/%3E%3Ccircle cx='100' cy='50' r='1.2' fill='%23D88A9A'/%3E%3Ccircle cx='50' cy='140' r='1' fill='%238FA9C7'/%3E%3Ccircle cx='140' cy='160' r='1.5' fill='%23D88A9A'/%3E%3Ccircle cx='80' cy='180' r='1' fill='%238FA9C7'/%3E%3Ccircle cx='170' cy='20' r='1' fill='%238FA9C7'/%3E%3Ccircle cx='20' cy='100' r='1.2' fill='%23D88A9A'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-position: 92% 8%, 8% 85%, 0 0;
+  background-size: 240px 240px, 180px 180px, 200px 200px;
+  opacity: 0.10;
 }
 @media (prefers-color-scheme: dark) {
   body::before {
