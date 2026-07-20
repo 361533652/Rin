@@ -256,15 +256,14 @@ function App() {
         </div>
       )}
       {/* 音乐播放器开关按钮 */}
-      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#7a6f5e!important;opacity:0.85}`}</style>
       <div className="fixed bottom-40 right-4 z-50">
         <button
           id="music-btn"
           onClick={() => setMusicEnabled(!musicEnabled)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm transition-all music-on ${
-            musicEnabled 
-              ? 'text-white' 
-              : 'bg-gray-200/80 text-gray-700 dark:bg-gray-700/80 dark:text-gray-300 hover:bg-gray-200/60 dark:hover:bg-gray-700/60 active:bg-gray-200/40 dark:active:bg-gray-700/40'
+          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${
+            musicEnabled
+              ? 'bg-[#E8C1CC] text-white shadow-[0_8px_20px_rgba(216,138,154,0.25)] hover:bg-[#D88A9A]'
+              : 'bg-[#FFFDF8] text-[#8B877F] border border-[#E8DDE0] shadow-sm hover:scale-110'
           }`}
           aria-label={musicEnabled ? '关闭音乐播放器' : '开启音乐播放器'}
         >
@@ -272,12 +271,11 @@ function App() {
         </button>
       </div>
       {/* 回到顶部按钮 */}
-      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#7a6f5e!important;opacity:0.85}`}</style>
       <div className="fixed bottom-24 right-4 z-50">
         <button
           id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-sm hover:opacity-70 active:opacity-55 transition-all touch-manipulation"
+          className="w-11 h-11 rounded-full bg-[#E8C1CC] text-white flex items-center justify-center shadow-[0_8px_20px_rgba(216,138,154,0.25)] transition-all duration-200 hover:scale-110 hover:bg-[#D88A9A] active:scale-95 touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>

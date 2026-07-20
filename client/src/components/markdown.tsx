@@ -132,10 +132,10 @@ export function Markdown({ content }: { content: string }) {
 
           if (isCodeBlock) {
             return (
-              <div className="relative group">
+              <div className="relative group my-4 rounded-[10px] border border-[#E8DDE0] bg-[#F8F6F2] overflow-hidden">
                 <SyntaxHighlighter
                   PreTag="div"
-                  className="rounded"
+                  className="!bg-[#F8F6F2] !m-0 !p-4"
                   language={language}
                   style={
                     colorMode === "dark"
@@ -162,7 +162,7 @@ export function Markdown({ content }: { content: string }) {
             return (
               <code
                 {...rest}
-                className={`bg-[#eff1f3] dark:bg-[#4a5061] h-[24px] px-[4px] rounded-md mx-[2px] py-[2px] text-neutral-800 dark:text-neutral-300 ${className || ""
+                className={`bg-[#F5DDE3] text-[#C76B80] px-[6px] rounded mx-[2px] text-[0.9em] ${className || ""
                   }`}
                 style={inlineCodeStyle}
               >
@@ -174,7 +174,7 @@ export function Markdown({ content }: { content: string }) {
         blockquote({ children, ...props }) {
           return (
             <blockquote
-              className="border-l-4 border-gray-300 dark:border-gray-500 pl-4 italic text-gray-500 dark:text-gray-400"
+              className="border-l-4 border-[#8FA9C7] bg-[#F2F6FA] pl-4 pr-4 py-3 my-4 text-[#56708F] not-italic"
               {...props}
             >
               {children}
@@ -223,7 +223,7 @@ export function Markdown({ content }: { content: string }) {
         a({ children, ...props }) {
           return (
             <a
-              className="text-[#0686c8] dark:text-[#2590f1] hover:underline"
+              className="text-[#56708F] hover:underline hover:text-[#8FA9C7] transition-colors"
               {...props}
             >
               {children}
@@ -234,7 +234,7 @@ export function Markdown({ content }: { content: string }) {
           return (
             <h1
               id={children?.toString()}
-              className="text-3xl font-bold mt-4"
+              className="text-3xl font-bold text-[#292724] mt-8 mb-4 pb-3 border-b border-[#F5DDE3]"
               {...props}
             >
               {children}
@@ -245,7 +245,7 @@ export function Markdown({ content }: { content: string }) {
           return (
             <h2
               id={children?.toString()}
-              className="text-2xl font-bold mt-4"
+              className="text-2xl font-bold text-[#292724] mt-8 mb-3 pl-3 border-l-[3px] border-[#D88A9A]"
               {...props}
             >
               {children}

@@ -218,8 +218,8 @@ export function MusicPlayer({
   const displaySrc = currentSong?.src || src;
 
   const rootClassName = compact
-    ? "w-full max-w-4xl mx-auto mt-3 px-3 py-2 bg-w dark:bg-neutral-800 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-sm"
-    : "w-full max-w-2xl mx-auto mt-4 p-4 bg-w dark:bg-neutral-800 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm";
+    ? "w-full max-w-4xl mx-auto mt-3 px-3 py-2 bg-[#FFF8FA] dark:bg-neutral-800 rounded-full border border-[#F0D5DC] shadow-sm"
+    : "w-full max-w-2xl mx-auto mt-4 p-4 bg-[#FFF8FA] dark:bg-neutral-800 rounded-2xl border border-[#F0D5DC] shadow-sm";
 
   return (
     <div className={rootClassName}>
@@ -361,7 +361,7 @@ export function MusicPlayer({
               }`}
               style={{
                 background: duration
-                  ? `linear-gradient(to right, #fc466b 0%, #fc466b ${(currentTime / duration) * 100}%, #e5e7eb ${(currentTime / duration) * 100}%, #e5e7eb 100%)`
+                  ? `linear-gradient(to right, #D88A9A 0%, #D88A9A ${(currentTime / duration) * 100}%, #F5DDE3 ${(currentTime / duration) * 100}%, #F5DDE3 100%)`
                   : undefined
               }}
             />
@@ -393,7 +393,7 @@ export function MusicPlayer({
               onChange={handleSeek}
               className="w-full h-1 bg-neutral-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-theme"
               style={{
-                background: `linear-gradient(to right, #fc466b 0%, #fc466b ${(currentTime / duration) * 100}%, #e5e7eb ${(currentTime / duration) * 100}%, #e5e7eb 100%)`
+                background: `linear-gradient(to right, #D88A9A 0%, #D88A9A ${(currentTime / duration) * 100}%, #F5DDE3 ${(currentTime / duration) * 100}%, #F5DDE3 100%)`
               }}
             />
             <div className="flex justify-between text-xs text-neutral-500 dark:text-neutral-400 mt-1">

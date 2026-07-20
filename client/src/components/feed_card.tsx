@@ -16,7 +16,7 @@ export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary
     const coverImage = cover || avatar
     return useMemo(() => (
         <>
-            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-lg bg-[#fbf6e8] dark:bg-neutral-900 my-2 p-6 hover:bg-[#f5ecd9] dark:hover:bg-neutral-800/50 transition-colors duration-200">
+            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl bg-[#FFFDF8] dark:bg-neutral-900 my-2 p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(216,138,154,0.12)] hover:-translate-y-0.5 transition-all duration-200">
                 {coverImage &&
                     <div className="mb-4 rounded-lg overflow-hidden">
                         <img src={coverImage} alt=""
