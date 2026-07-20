@@ -256,7 +256,7 @@ function App() {
         </div>
       )}
       {/* 音乐播放器开关按钮 */}
-      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#2d2520!important}`}</style>
+      <style>{`#music-btn.music-on,#music-btn.music-on:hover,#music-btn.music-on:active{background:#7a6f5e!important;opacity:0.85}`}</style>
       <div className="fixed bottom-40 right-4 z-50">
         <button
           id="music-btn"
@@ -272,12 +272,12 @@ function App() {
         </button>
       </div>
       {/* 回到顶部按钮 */}
-      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#2d2520!important}`}</style>
+      <style>{`#top-btn,#top-btn:hover,#top-btn:active,#top-btn:focus{background:#7a6f5e!important;opacity:0.85}`}</style>
       <div className="fixed bottom-24 right-4 z-50">
         <button
           id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:opacity-80 active:opacity-60 transition-all touch-manipulation"
+          className="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-sm hover:opacity-70 active:opacity-55 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
