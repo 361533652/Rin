@@ -273,7 +273,7 @@ function App() {
       <div className="fixed bottom-24 right-4 z-50">
         <button
           onClick={() => smoothScrollTo(0)}
-          className="w-12 h-12 rounded-full bg-theme/80 text-white flex items-center justify-center shadow-lg backdrop-blur-sm hover:bg-theme/60 active:bg-theme/40 transition-all touch-manipulation"
+          className="w-12 h-12 rounded-full bg-[#a0845c]/85 text-white flex items-center justify-center shadow-lg hover:bg-[#a0845c]/65 active:bg-[#a0845c]/45 transition-all touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>

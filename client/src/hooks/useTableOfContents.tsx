@@ -7,6 +7,7 @@ export interface TableOfContent {
     text: string
     marginLeft: number
     element: HTMLElement
+    level: number
 }
 
 const useTableOfContents = (selector: string) => {
@@ -31,7 +32,8 @@ const useTableOfContents = (selector: string) => {
         const tocData = Array.from(headers).map<TableOfContent>((header, i) => ({
             index: i,
             text: header.textContent || '',
-            marginLeft: (Number(header.tagName.charAt(1)) - 1) * 10,
+            marginLeft: (Number(header.tagName.charAt(1)) - 1) * 16,
+            level: Number(header.tagName.charAt(1)),
             element: header, // have to down little bit
         }))
         setTableOfContents(tocData)
@@ -84,7 +86,7 @@ const useTableOfContents = (selector: string) => {
                 {tableOfContents.map((item) => (
                     <li
                         key={`toc$${item.index}`}
-                        className={`cursor-pointer hover:opacity-50 ${activeIndex === item.index ? "text-theme" : ""}`}
+                        className={`cursor-pointer hover:opacity-50 ${activeIndex === item.index ? "text-theme" : ""} ${item.level === 1 ? "font-semibold text-sm" : item.level >= 3 ? "text-xs text-neutral-500 dark:text-neutral-400" : "text-sm"}`}
                         style={{ marginLeft: item.marginLeft }}
                         onClick={() => {
                             smoothScrollToElement(item.element);
