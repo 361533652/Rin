@@ -40,5 +40,6 @@ dist-ssr
 # WorkBuddy 工作区数据
 .workbuddy/
 
-# 本地分析用 UML 图（只留本地，不进仓库）
+# 本地分析用 UML 图 + WorkBuddy 生成的临时文档（只留本地，不进仓库）
 docs/uml/
+docs/ARCHITECTURE.md
