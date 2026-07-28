@@ -104,6 +104,9 @@ textarea:focus {
 }
 
 .wmde-markdown {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   @apply bg-w;
   font-family: Cantarell, "Source Han Serif CN VF" !important;
   max-width: 100%;
