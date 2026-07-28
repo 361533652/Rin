@@ -106,6 +106,9 @@ textarea:focus {
 .wmde-markdown {
   @apply bg-w;
   font-family: Cantarell, "Source Han Serif CN VF" !important;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .w-md-editor {
@@ -117,6 +120,8 @@ textarea:focus {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 ol {

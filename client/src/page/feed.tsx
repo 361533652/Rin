@@ -256,7 +256,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           <>
             <main className="w-full">
               <article
-                className="bg-[#FFFDF8] dark:bg-neutral-900 m-2 w-full max-w-[900px] mx-auto rounded-2xl px-12 py-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+                className="bg-[#FFFDF8] dark:bg-neutral-900 m-2 w-full max-w-[900px] mx-auto rounded-2xl px-4 py-6 sm:px-12 sm:py-12 overflow-x-hidden shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">
