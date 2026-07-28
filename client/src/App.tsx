@@ -277,7 +277,7 @@ function App() {
         <button
           id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-11 h-11 rounded-full c-primary-glass c-primary flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 hover:c-primary-bg-hover hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
+          className="w-11 h-11 rounded-full c-primary-glass c-primary flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 [@media(hover:hover)]:hover:c-primary-bg-hover [@media(hover:hover)]:hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
           aria-label="回到顶部"
         >
           <span className="text-xs font-bold">TOP</span>
