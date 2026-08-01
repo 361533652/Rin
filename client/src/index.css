@@ -47,8 +47,8 @@ body::after {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 760px 860px at 88% 4%, rgba(216,138,154,0.22) 0%, transparent 62%),
-    radial-gradient(ellipse 720px 820px at 5% 88%, rgba(143,169,199,0.22) 0%, transparent 62%);
+    radial-gradient(ellipse 880px 980px at 88% 4%, rgba(216,138,154,0.30) 0%, transparent 62%),
+    radial-gradient(ellipse 840px 960px at 4% 78%, rgba(143,169,199,0.32) 0%, transparent 62%);
   opacity: 1;
 }
 @media (prefers-color-scheme: dark) {
@@ -57,8 +57,8 @@ body::after {
   }
   body::after {
     background:
-      radial-gradient(ellipse 760px 860px at 88% 4%, rgba(216,138,154,0.32) 0%, transparent 62%),
-      radial-gradient(ellipse 720px 820px at 5% 88%, rgba(143,169,199,0.30) 0%, transparent 62%);
+      radial-gradient(ellipse 880px 980px at 88% 4%, rgba(216,138,154,0.40) 0%, transparent 62%),
+      radial-gradient(ellipse 840px 960px at 4% 78%, rgba(143,169,199,0.42) 0%, transparent 62%);
     opacity: 0.6;
   }
 }
@@ -67,8 +67,8 @@ body::after {
 }
 [data-color-mode="dark"] body::after {
   background:
-    radial-gradient(ellipse 760px 860px at 88% 4%, rgba(216,138,154,0.32) 0%, transparent 62%),
-    radial-gradient(ellipse 720px 820px at 5% 88%, rgba(143,169,199,0.30) 0%, transparent 62%);
+    radial-gradient(ellipse 880px 980px at 88% 4%, rgba(216,138,154,0.40) 0%, transparent 62%),
+    radial-gradient(ellipse 840px 960px at 4% 78%, rgba(143,169,199,0.42) 0%, transparent 62%);
   opacity: 0.6;
 }
 
