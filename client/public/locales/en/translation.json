@@ -111,7 +111,7 @@
   },
   "github_login": "Github Login",
   "hashtags": "Hashtags",
-  "home": "Home",
+  "home": {"stats": {"total_articles": "{{count}} articles", "total_tags": "{{count}} tags"}}}
   "index": {
     "back": "Back to Home",
     "empty": {
