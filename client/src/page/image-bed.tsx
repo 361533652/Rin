@@ -113,7 +113,7 @@ export function ImageBedPage() {
           <div className="wauto w-full mt-6 space-y-4">
             {urls.map((url, i) => (
               <div key={i} className="flex flex-row items-start gap-3 p-3 bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
-                <img src={url} alt="" className="w-16 h-16 rounded object-cover shrink-0" />
+                <img src={url} alt={url} className="w-16 h-16 rounded object-cover shrink-0" />
                 <div className="flex-1 min-w-0">
                   <input
                     readOnly
