@@ -26,6 +26,7 @@
 
   --shadow: 0 8px 30px rgba(80, 60, 40, 0.06);
   --shadow-hover: 0 12px 40px rgba(80, 60, 40, 0.10);
+  --shadow-hero: 0 16px 48px rgba(80, 60, 40, 0.14), 0 4px 14px rgba(216, 138, 154, 0.12);
   --shadow-sakura: 0 8px 20px rgba(216, 138, 154, 0.25);
   --shadow-music: 0 6px 20px rgba(216, 138, 154, 0.10);
 
@@ -67,6 +68,7 @@
 
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.20);
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.30);
+  --shadow-hero: 0 16px 48px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(216, 138, 154, 0.15);
   --shadow-sakura: 0 8px 20px rgba(216, 138, 154, 0.15);
   --shadow-music: 0 6px 20px rgba(0, 0, 0, 0.15);
 

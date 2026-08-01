@@ -116,7 +116,11 @@ export function FeedsPage() {
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">
-                    {showHero && <HomeHero totalArticles={feeds.normal.size} totalTags={totalTags} />}
+                    {showHero &&
+                        <div className="ani-show">
+                            <HomeHero totalArticles={feeds.normal.size} totalTags={totalTags} />
+                        </div>
+                    }
                     <div className="text-start c-text-main py-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
