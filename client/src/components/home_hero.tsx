@@ -13,7 +13,7 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
     const { key, icon } = greeting()
 
     return (
-        <section className="relative rounded-2xl border c-border c-shadow-hero overflow-hidden">
+        <section className="relative rounded-2xl border c-border c-shadow overflow-hidden">
             {/* 基底渐变 */}
             <div className="absolute inset-0" style={{ background: 'var(--hero-gradient)' }} />
 

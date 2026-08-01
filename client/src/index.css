@@ -96,7 +96,6 @@ body::after {
 .c-border-primary { border-color: var(--primary); }
 .c-shadow { box-shadow: var(--shadow); }
 .c-shadow-hover { box-shadow: var(--shadow-hover); }
-.c-shadow-hero { box-shadow: var(--shadow-hero); }
 .c-shadow-sakura { box-shadow: var(--shadow-sakura); }
 .c-shadow-music { box-shadow: var(--shadow-music); }
 
