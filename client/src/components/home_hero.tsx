@@ -14,7 +14,7 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
 
     return (
         <section className="rounded-2xl c-bg-card border c-border c-shadow overflow-hidden ani-show">
-            <div className="flex flex-col items-center text-center px-6 py-8 sm:py-10">
+            <div className="flex flex-col items-start px-6 py-8 sm:px-8 sm:py-10">
                 <p className="text-sm font-medium c-primary">
                     <i className={`${icon} mr-1.5 align-[-1px]`} />
                     {t(`home_hero.${key}`)}
@@ -28,7 +28,7 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
                     </p>
                 }
             </div>
-            <div className="border-t c-border flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 py-4">
+            <div className="border-t c-border flex flex-wrap items-center gap-x-6 gap-y-2 px-6 sm:px-8 py-4">
                 <HeroStat icon="ri-article-line" label={t('home_hero.articles$count', { count: totalArticles })} />
                 <HeroStat icon="ri-hashtag" label={t('home_hero.tags$count', { count: totalTags })} />
             </div>
