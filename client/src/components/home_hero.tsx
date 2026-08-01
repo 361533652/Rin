@@ -14,28 +14,21 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
 
     return (
         <section className="rounded-2xl c-bg-card border c-border c-shadow overflow-hidden ani-show">
-            <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 p-6 sm:p-8">
-                <img
-                    src={process.env.AVATAR}
-                    alt={process.env.NAME}
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full c-shadow-sakura"
-                />
-                <div className="text-center sm:text-left">
-                    <p className="text-sm font-medium c-primary">
-                        <i className={`${icon} mr-1.5 align-[-1px]`} />
-                        {t(`home_hero.${key}`)}
+            <div className="flex flex-col items-center text-center px-6 py-8 sm:py-10">
+                <p className="text-sm font-medium c-primary">
+                    <i className={`${icon} mr-1.5 align-[-1px]`} />
+                    {t(`home_hero.${key}`)}
+                </p>
+                <h1 className="text-2xl sm:text-3xl font-bold c-text-main mt-2">
+                    {process.env.NAME}
+                </h1>
+                {process.env.DESCRIPTION &&
+                    <p className="text-sm c-text-muted mt-2 max-w-md">
+                        {process.env.DESCRIPTION}
                     </p>
-                    <h1 className="text-2xl sm:text-3xl font-bold c-text-main mt-1.5">
-                        {process.env.NAME}
-                    </h1>
-                    {process.env.DESCRIPTION &&
-                        <p className="text-sm c-text-muted mt-1.5">
-                            {process.env.DESCRIPTION}
-                        </p>
-                    }
-                </div>
+                }
             </div>
-            <div className="border-t c-border flex flex-wrap items-center gap-x-6 gap-y-2 px-6 sm:px-8 py-4">
+            <div className="border-t c-border flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 py-4">
                 <HeroStat icon="ri-article-line" label={t('home_hero.articles$count', { count: totalArticles })} />
                 <HeroStat icon="ri-hashtag" label={t('home_hero.tags$count', { count: totalTags })} />
             </div>
