@@ -6,6 +6,7 @@
     "client"
   ],
   "private": true,
+  "packageManager": "bun@1.2.13",
   "scripts": {
     "dev": "turbo dev",
     "dev:client": "bun --filter './client' dev",
