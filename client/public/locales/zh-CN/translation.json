@@ -111,11 +111,15 @@
   },
   "github_login": "Github 登录",
   "hashtags": "标签",
-  "home": {
-    "stats": {
-      "total_articles": "{{count}} 篇文章",
-      "total_tags": "{{count}} 个标签"
-    }
+  "home_hero": {
+    "morning": "早上好",
+    "afternoon": "下午好",
+    "evening": "晚上好",
+    "night": "夜深了",
+    "articles$count_one": "{{count}} 篇文章",
+    "articles$count_other": "{{count}} 篇文章",
+    "tags$count_one": "{{count}} 个标签",
+    "tags$count_other": "{{count}} 个标签"
   },
   "index": {
     "back": "返回首页",

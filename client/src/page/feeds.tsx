@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
 import { FeedCard } from "../components/feed_card"
-import { HomeBanner } from "../components/home_banner"
+import { HomeHero } from "../components/home_hero"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { ProfileContext } from "../state/profile"
@@ -38,11 +38,6 @@ type FeedsMap = {
     [key in FeedType]: FeedsData
 }
 
-interface HomeStats {
-    totalArticles: number
-    totalTags: number
-}
-
 export function FeedsPage() {
     const { t } = useTranslation()
     const search = useSearch();
@@ -51,7 +46,7 @@ export function FeedsPage() {
     const [listState, _setListState] = useState<FeedType>(query.get("type") as FeedType || 'normal')
     const [sortBy, setSortBy] = useState<SortBy>('updatedAt')
     const [status, setStatus] = useState<'loading' | 'idle'>('idle')
-    const [homeStats, setHomeStats] = useState<HomeStats | null>(null)
+    const [totalTags, setTotalTags] = useState<number>(0)
     const [feeds, setFeeds] = useState<FeedsMap>({
         draft: { size: 0, data: [], hasNext: false },
         unlisted: { size: 0, data: [], hasNext: false },
@@ -66,11 +61,7 @@ export function FeedsPage() {
         if (tagRef.current) return
         client.tag.index.get().then(({ data }) => {
             if (data && typeof data !== 'string') {
-                const totalTags = data.length
-                setHomeStats(prev => ({
-                    totalArticles: prev?.totalArticles || 0,
-                    totalTags
-                }))
+                setTotalTags(data.length)
             }
         })
         tagRef.current = true
@@ -96,12 +87,6 @@ export function FeedsPage() {
                         [type]: data
                     }))
                     setStatus('idle')
-                    if (type === 'normal' && listState === 'normal') {
-                        setHomeStats(prev => ({
-                            totalArticles: data.size,
-                            totalTags: prev?.totalTags || 0
-                        }))
-                    }
                 }
             })
         }
@@ -118,7 +103,7 @@ export function FeedsPage() {
         arr.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
         return arr;
     }, [feeds, listState, sortBy]);
-    const showBanner = listState === 'normal' && (feeds.normal.size > 0 || homeStats)
+    const showHero = listState === 'normal' && page === 1 && (feeds.normal.size > 0 || totalTags > 0)
     return (
         <>
             <Helmet>
@@ -131,15 +116,17 @@ export function FeedsPage() {
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">
-                    {showBanner && <HomeBanner stats={homeStats!} />}
+                    {showHero && <HomeHero totalArticles={feeds.normal.size} totalTags={totalTags} />}
                     <div className="text-start c-text-main py-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
                         </h1>
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
-                            <p className="text-sm c-text-muted font-normal">
-                                {t('article.total$count', { count: feeds[listState]?.size })}
-                            </p>
+                            {listState !== 'normal' &&
+                                <p className="text-sm c-text-muted font-normal">
+                                    {t('article.total$count', { count: feeds[listState]?.size })}
+                                </p>
+                            }
                             <button
                                 onClick={() => setSortBy(v => v === 'updatedAt' ? 'createdAt' : 'updatedAt')}
                                 className="text-sm c-text-muted hover:text-theme transition-colors flex items-center gap-1"

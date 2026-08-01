@@ -111,7 +111,16 @@
   },
   "github_login": "Github Login",
   "hashtags": "Hashtags",
-  "home": {"stats": {"total_articles": "{{count}} articles", "total_tags": "{{count}} tags"}}}
+  "home_hero": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening",
+    "night": "Good night",
+    "articles$count_one": "{{count}} article",
+    "articles$count_other": "{{count}} articles",
+    "tags$count_one": "{{count}} tag",
+    "tags$count_other": "{{count}} tags"
+  },
   "index": {
     "back": "Back to Home",
     "empty": {

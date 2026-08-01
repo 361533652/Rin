@@ -112,6 +112,16 @@
   "github_login": "Github ログイン",
   "hashtags": "ラベル",
   "home": "ホーム",
+  "home_hero": {
+    "morning": "おはようございます",
+    "afternoon": "こんにちは",
+    "evening": "こんばんは",
+    "night": "おやすみなさい",
+    "articles$count_one": "記事 {{count}} 件",
+    "articles$count_other": "記事 {{count}} 件",
+    "tags$count_one": "タグ {{count}} 件",
+    "tags$count_other": "タグ {{count}} 件"
+  },
   "index": {
     "back": "ホームに戻る",
     "empty": {
