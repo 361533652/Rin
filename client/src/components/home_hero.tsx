@@ -13,11 +13,19 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
     const { key, icon } = greeting()
 
     return (
-        <section className="relative rounded-2xl border c-border c-shadow overflow-hidden ani-show"
-            style={{ background: 'var(--hero-gradient)' }}>
-            {/* 右上角樱花枝装饰 */}
-            <SakuraBranch className="absolute -top-3 -right-2 sm:top-0 sm:right-2 opacity-60 sm:opacity-80" />
+        <section className="relative rounded-2xl border c-border c-shadow overflow-hidden ani-show">
+            {/* 基底渐变 */}
+            <div className="absolute inset-0" style={{ background: 'var(--hero-gradient)' }} />
 
+            {/* 右上淡樱粉光晕 */}
+            <div className="absolute -top-28 -right-20 w-80 h-80 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(circle, rgba(216,138,154,0.30) 0%, transparent 70%)' }} />
+
+            {/* 左下雾蓝光晕 */}
+            <div className="absolute -bottom-28 -left-20 w-80 h-80 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(circle, rgba(143,169,199,0.22) 0%, transparent 70%)' }} />
+
+            {/* 主内容层 */}
             <div className="relative flex flex-col items-start px-6 py-8 sm:px-8 sm:py-10">
                 <p className="text-sm font-medium c-primary">
                     <i className={`${icon} mr-1.5 align-[-1px]`} />
@@ -32,7 +40,9 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
                     </p>
                 }
             </div>
-            <div className="relative border-t c-border flex flex-wrap items-center gap-3 px-6 sm:px-8 py-4">
+
+            {/* 统计毛玻璃层 */}
+            <div className="relative border-t border-white/50 dark:border-white/10 bg-white/45 dark:bg-black/25 backdrop-blur-sm flex flex-wrap items-center gap-3 px-6 sm:px-8 py-4">
                 <HeroStat icon="ri-article-line" label={t('home_hero.articles$count', { count: totalArticles })}
                     className="c-primary-bg-light c-primary-hover" />
                 <HeroStat icon="ri-hashtag" label={t('home_hero.tags$count', { count: totalTags })}
@@ -48,42 +58,5 @@ function HeroStat({ icon, label, className }: { icon: string; label: string; cla
             <i className={icon} />
             {label}
         </span>
-    )
-}
-
-function SakuraBranch({ className }: { className?: string }) {
-    return (
-        <svg className={className} width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            {/* 花枝 */}
-            <path d="M118 4 C 90 18, 80 40, 72 66" stroke="#D88A9A" strokeWidth="2" strokeLinecap="round" />
-            <path d="M94 22 C 86 26, 80 34, 78 42" stroke="#D88A9A" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M82 46 C 72 50, 66 56, 64 62" stroke="#D88A9A" strokeWidth="1.5" strokeLinecap="round" />
-            {/* 花朵 */}
-            <g fill="#E8B7C2">
-                <g transform="translate(72 66)">
-                    <ellipse cx="0" cy="-7" rx="4.5" ry="7" />
-                    <ellipse cx="6" cy="0" rx="7" ry="4.5" />
-                    <ellipse cx="-6" cy="0" rx="7" ry="4.5" />
-                    <ellipse cx="0" cy="7" rx="4.5" ry="7" />
-                    <circle r="3" fill="#B45870" />
-                </g>
-                <g transform="translate(78 42)">
-                    <ellipse cx="0" cy="-6" rx="3.8" ry="5.8" />
-                    <ellipse cx="5" cy="0" rx="5.8" ry="3.8" />
-                    <ellipse cx="-5" cy="0" rx="5.8" ry="3.8" />
-                    <ellipse cx="0" cy="6" rx="3.8" ry="5.8" />
-                    <circle r="2.5" fill="#B45870" />
-                </g>
-                <g transform="translate(94 22)">
-                    <ellipse cx="0" cy="-5" rx="3.2" ry="4.8" />
-                    <ellipse cx="4" cy="0" rx="4.8" ry="3.2" />
-                    <ellipse cx="-4" cy="0" rx="4.8" ry="3.2" />
-                    <ellipse cx="0" cy="5" rx="3.2" ry="4.8" />
-                    <circle r="2" fill="#B45870" />
-                </g>
-            </g>
-            {/* 花苞 */}
-            <circle cx="64" cy="62" r="3.5" fill="#E8B7C2" />
-        </svg>
     )
 }
