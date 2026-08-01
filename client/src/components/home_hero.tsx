@@ -17,14 +17,6 @@ export function HomeHero({ totalArticles, totalTags }: { totalArticles: number; 
             {/* 基底渐变 */}
             <div className="absolute inset-0" style={{ background: 'var(--hero-gradient)' }} />
 
-            {/* 右上淡樱粉光晕 */}
-            <div className="absolute -top-28 -right-20 w-80 h-80 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(216,138,154,0.30) 0%, transparent 70%)' }} />
-
-            {/* 左下雾蓝光晕 */}
-            <div className="absolute -bottom-28 -left-20 w-80 h-80 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(circle, rgba(143,169,199,0.22) 0%, transparent 70%)' }} />
-
             {/* 主内容层 */}
             <div className="relative flex flex-col items-start px-6 py-8 sm:px-8 sm:py-10">
                 <p className="text-sm font-medium c-primary">
