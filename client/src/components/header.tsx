@@ -29,6 +29,14 @@ export function Header({ children }: { children?: React.ReactNode }) {
                                 <Link aria-label={t('home')} href="/"
                                     className="flex items-center ml-4 lg:ml-6">
                                     <img src={process.env.AVATAR} alt="Avatar" className="w-9 h-9 rounded-full" />
+                                    <div className="hidden sm:flex flex-col justify-center items-start ml-2">
+                                        <p className="text-base font-semibold c-text-main dark:text-white">
+                                            {process.env.NAME}
+                                        </p>
+                                        <p className="text-xs c-text-muted">
+                                            {process.env.DESCRIPTION}
+                                        </p>
+                                    </div>
                                 </Link>
                                 
                                 {/* 移动端菜单按钮 - 显示在头像右侧 */}

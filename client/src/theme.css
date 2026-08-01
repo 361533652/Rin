@@ -29,8 +29,6 @@
   --shadow-sakura: 0 8px 20px rgba(216, 138, 154, 0.25);
   --shadow-music: 0 6px 20px rgba(216, 138, 154, 0.10);
 
-  --hero-gradient: linear-gradient(135deg, #FFFDF8 0%, #FDF3F1 45%, #F8E4E9 100%);
-
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -69,6 +67,4 @@
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.30);
   --shadow-sakura: 0 8px 20px rgba(216, 138, 154, 0.15);
   --shadow-music: 0 6px 20px rgba(0, 0, 0, 0.15);
-
-  --hero-gradient: linear-gradient(135deg, #2A2725 0%, #33231F 50%, #3B2225 100%);
 }
