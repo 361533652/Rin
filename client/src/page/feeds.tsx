@@ -97,7 +97,6 @@ export function FeedsPage() {
                     }))
                     setStatus('idle')
                     if (type === 'normal' && listState === 'normal') {
-                        const articles = data.data || []
                         setHomeStats(prev => ({
                             totalArticles: data.size,
                             totalTags: prev?.totalTags || 0
