@@ -111,7 +111,12 @@
   },
   "github_login": "Github 登录",
   "hashtags": "标签",
-  "home": "首页",
+  "home": {
+    "stats": {
+      "total_articles": "{{count}} 篇文章",
+      "total_tags": "{{count}} 个标签"
+    }
+  },
   "index": {
     "back": "返回首页",
     "empty": {
