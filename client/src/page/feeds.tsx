@@ -7,9 +7,8 @@ import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { ProfileContext } from "../state/profile"
 import { headersWithAuth } from "../utils/auth"
-import { siteName} from "../utils/constants"
+import { siteName } from "../utils/constants"
 import { tryInt } from "../utils/int"
-import { timeago } from "../utils/timeago"
 import { useTranslation } from "react-i18next";
 
 interface FeedItem {
@@ -42,8 +41,6 @@ type FeedsMap = {
 interface HomeStats {
     totalArticles: number
     totalTags: number
-    lastUpdated: string
-    recentArticle: { id: string; title: string } | null
 }
 
 export function FeedsPage() {
@@ -72,9 +69,7 @@ export function FeedsPage() {
                 const totalTags = data.length
                 setHomeStats(prev => ({
                     totalArticles: prev?.totalArticles || 0,
-                    totalTags,
-                    lastUpdated: '',
-                    recentArticle: null
+                    totalTags
                 }))
             }
         })
@@ -105,9 +100,7 @@ export function FeedsPage() {
                         const articles = data.data || []
                         setHomeStats(prev => ({
                             totalArticles: data.size,
-                            totalTags: prev?.totalTags || 0,
-                            lastUpdated: prev?.lastUpdated || '',
-                            recentArticle: articles.length > 0 ? { id: articles[0].id, title: articles[0].title } : null
+                            totalTags: prev?.totalTags || 0
                         }))
                     }
                 }

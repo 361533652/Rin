@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface HomeStats {
     totalArticles: number
     totalTags: number
-    lastUpdated: string
-    recentArticle: { id: string; title: string } | null
 }
 
 export function HomeBanner({ stats }: { stats: HomeStats }) {
