@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react"
 import {Helmet} from 'react-helmet'
 import {Link} from "wouter"
+import {EmptyState} from "../components/empty_state"
 import {Waiting} from "../components/loading"
 import {client} from "../main"
 import {headersWithAuth} from "../utils/auth"
@@ -81,14 +82,20 @@ export function TimelinePage() {
                                     {t('article.total_short$count', { count: feeds[+year]?.length })}
                                 </span>
                             </h2>
-                            <div className="flex flex-col space-y-4">
-                                {feeds[+year]?.map(({ id, title, createdAt }) => (
-                                    <FeedItem key={id} id={id.toString()} title={title || t('unlisted')}
-                                              createdAt={new Date(createdAt)}/>
-                                ))}
+                            <div className="relative pl-6">
+                                <div className="absolute left-[3px] top-2 bottom-2 w-0.5 bg-[var(--border)]" aria-hidden="true" />
+                                <div className="flex flex-col space-y-4">
+                                    {feeds[+year]?.map(({ id, title, createdAt }) => (
+                                        <FeedItem key={id} id={id.toString()} title={title || t('unlisted')}
+                                                  createdAt={new Date(createdAt)}/>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     ))}
+                    {feeds && Object.keys(feeds).length === 0 && (
+                        <EmptyState icon="ri-time-line" title={t('empty.timeline')} hint={t('empty.timeline_hint')} />
+                    )}
                 </main>
             </Waiting>
         </>
@@ -98,12 +105,10 @@ export function TimelinePage() {
 export function FeedItem({ id, title, createdAt }: { id: string, title: string, createdAt: Date }) {
     const formatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit' });
     return (
-        <div className="flex flex-row pl-8">
-            <div className="flex flex-row items-center">
-                <div className="w-2 h-2 bg-theme rounded-full"></div>
-            </div>
-            <div className="flex-1 rounded-2xl m-2 duration-300 flex flex-row items-center space-x-4   ">
-                <span className="t-secondary text-sm" title={new Date(createdAt).toLocaleString()}>
+        <div className="relative">
+            <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-theme ring-4 ring-[var(--primary-light)]" aria-hidden="true" />
+            <div className="flex-1 rounded-xl bg-w px-4 py-3 flex flex-row items-center gap-3 duration-200 hover:c-bg-card">
+                <span className="t-secondary text-sm tabular-nums" title={new Date(createdAt).toLocaleString()}>
                     {formatter.format(new Date(createdAt))}
                 </span>
                 <Link href={`/feed/${id}`} target="_blank" className="text-base t-primary hover:text-theme text-pretty overflow-hidden">

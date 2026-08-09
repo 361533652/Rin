@@ -24,6 +24,9 @@
       "title$keyword": "搜尋：{{keyword}}"
     },
     "title": "文章",
+    "author": "作者",
+    "reading_time$min": "{{min}} 分鐘閱讀",
+    "read_more": "閱讀全文",
     "top": {
       "confirm": "確定置頂這篇文章嗎？",
       "success": "置頂成功",
@@ -46,6 +49,9 @@
   "clear": "清除",
   "close": "關閉",
   "comment": {
+    "email_invalid": "信箱格式不正確",
+    "email_placeholder": "信箱",
+    "email_required": "請填寫信箱",
     "empty": "留言内容不能為空",
     "placeholder": {
       "title": "說點什麼吧"
@@ -82,6 +88,20 @@
   "draft": "草稿",
   "draft_bin": "草稿箱",
   "edit": "編輯",
+  "empty": {
+    "articles": "還沒有文章",
+    "articles_hint": "寫點什麼，讓這裡熱鬧起來吧",
+    "timeline": "時間軸還是空的",
+    "timeline_hint": "發布第一篇文章後，這裡會出現時間軸",
+    "moments": "還沒有動態",
+    "moments_hint": "記錄此刻的想法吧",
+    "friends": "還沒有友情連結",
+    "friends_hint": "等待第一位朋友加入",
+    "hashtags": "還沒有標籤",
+    "hashtags_hint": "給文章打上標籤，方便分類瀏覽",
+    "search": "沒有找到相關內容",
+    "search_hint": "換個關鍵字試試？"
+  },
   "error": {
     "api_url": "Pages 環境變數中 API_URL 應為 Worker 地址，請檢查 Pages 環境變數中 API_URL 是否正確",
     "api_url_slash": "Pages 環境變數中 API_URL 應為 Worker 地址，請檢查 Pages 環境變數中 API_URL 是否正確，且 API_URL 末尾不能有 /",
@@ -121,6 +141,7 @@
   },
   "listed": "列出在文章中",
   "load_more": "載入更多",
+  "loading": "載入中",
   "login": {
     "oauth_only": "請登入後繼續",
     "password": {
@@ -269,6 +290,7 @@
   "tags": "標籤",
   "timeline": "時間軸",
   "tools": "工具",
+  "tools_desc": "常用工具",
   "back_to_site": "回到主站",
   "image_host": "圖床",
   "image_host_desc": "上傳圖片並生成外鏈",

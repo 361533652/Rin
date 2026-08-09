@@ -10,6 +10,7 @@ import { useSearch } from "wouter"
 import { useAlert, useConfirm } from "../components/dialog"
 import Modal from "react-modal"
 import { MarkdownEditor } from "../components/markdown_editor"
+import { EmptyState } from "../components/empty_state"
 import { Waiting } from "../components/loading"
 import { MomentItem } from "../components/moment_item"
 
@@ -196,16 +197,18 @@ export function MomentsPage() {
                         {moments && moments.length > 0 ? (
                             <div className="space-y-6">
                                 {moments.map((moment) => (
-                                    <MomentItem 
-                                        key={moment.id} 
-                                        moment={moment} 
+                                    <MomentItem
+                                        key={moment.id}
+                                        moment={moment}
                                         onDelete={handleDelete}
                                         onEdit={handleEdit}
                                         canManage={profile?.permission || false}
                                     />
                                 ))}
                             </div>
-                        ) : null}
+                        ) : (
+                            <EmptyState icon="ri-chat-3-line" title={t('empty.moments')} hint={t('empty.moments_hint')} />
+                        )}
                         
                         <Waiting for={!loadingMore}>
                             <div className="py-4 text-center">

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
 import Select from 'react-select';
 import { ShowAlertType, useAlert, useConfirm } from "../components/dialog";
+import { EmptyState } from "../components/empty_state";
 import { Input } from "../components/input";
 import { Waiting } from "../components/loading";
 import { client } from "../main";
@@ -103,6 +104,9 @@ export function FriendsPage() {
                 <FriendList title={t('friends.review.waiting')} show={waitList.length > 0} friends={waitList} />
                 <FriendList title={t('friends.review.rejected')} show={refusedList.length > 0} friends={refusedList} />
                 <FriendList title={t('friends.my_apply')} show={profile?.permission !== true && apply !== undefined} friends={apply ? [apply] : []} />
+                {friendsAvailable.length === 0 && friendsUnavailable.length === 0 && (
+                    <EmptyState icon="ri-user-heart-line" title={t('empty.friends')} hint={t('empty.friends_hint')} />
+                )}
                 {profile && (profile.permission || config.get("friend_apply_enable")) &&
                     <div className="wauto t-primary flex text-start text-2xl font-bold mt-8">
                         <div className="md:basis-1/2 bg-w rounded-xl p-4">
@@ -131,10 +135,14 @@ function FriendList({ title, show, friends }: { title: string, show: boolean, fr
     return (<>
         {
             show && <>
-                <div className="wauto text-start py-4">
-                    <p className="text-sm mt-4 c-text-muted font-normal">
+                <div className="wauto flex flex-row items-center gap-3 pt-8 pb-2">
+                    <span className="w-1.5 h-5 rounded-full bg-theme/70" />
+                    <h2 className="text-xl font-bold t-primary">
                         {title}
-                    </p>
+                    </h2>
+                    <span className="text-xs t-secondary bg-theme-light/70 px-2 py-0.5 rounded-full">
+                        {friends.length}
+                    </span>
                 </div>
                 <div className="wauto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {friends.map((friend) => (

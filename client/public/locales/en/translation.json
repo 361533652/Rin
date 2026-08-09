@@ -24,6 +24,9 @@
       "title$keyword": "Search: {{keyword}}"
     },
     "title": "Articles",
+    "author": "Author",
+    "reading_time$min": "{{min}} min read",
+    "read_more": "Read more",
     "top": {
       "confirm": "Are you sure you want to top this article?",
       "success": "Topped successfully",
@@ -46,6 +49,9 @@
   "clear": "Clear",
   "close": "Close",
   "comment": {
+    "email_invalid": "Invalid email format",
+    "email_placeholder": "Email",
+    "email_required": "Email is required",
     "empty": "Comment cannot be empty",
     "placeholder": {
       "title": "Say something..."
@@ -82,6 +88,20 @@
   "draft": "Draft",
   "draft_bin": "Draft Bin",
   "edit": "Edit",
+  "empty": {
+    "articles": "No articles yet",
+    "articles_hint": "Write something to fill this space",
+    "timeline": "The timeline is still empty",
+    "timeline_hint": "It will appear here after your first article",
+    "moments": "No moments yet",
+    "moments_hint": "Capture what's on your mind",
+    "friends": "No friends yet",
+    "friends_hint": "Waiting for the first friend to join",
+    "hashtags": "No hashtags yet",
+    "hashtags_hint": "Tag your articles for easier browsing",
+    "search": "No matching articles found",
+    "search_hint": "Try a different keyword?"
+  },
   "error": {
     "api_url": "API_URL in Pages environment variables should be the Worker address. Please check if API_URL in Pages environment variables is correct.",
     "api_url_slash": "API_URL in Pages environment variables should be the Worker address. Please check if API_URL in Pages environment variables is correct and ensure API_URL does not end with a slash (/).",
@@ -121,6 +141,7 @@
   },
   "listed": "Listed in articles",
   "load_more": "Load More",
+  "loading": "Loading...",
   "login": {
     "oauth_only": "Please log in to continue",
     "password": {
@@ -269,6 +290,7 @@
   "tags": "Tags",
   "timeline": "Timeline",
   "tools": "Tools",
+  "tools_desc": "Useful tools",
   "back_to_site": "Back to site",
   "image_host": "Image Host",
   "image_host_desc": "Upload images and get external links",

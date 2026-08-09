@@ -16,10 +16,11 @@ export function ToolsPage() {
                 <meta property="og:url" content={document.URL} />
             </Helmet>
             <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                <div className="wauto flex flex-row items-center py-4 w-full">
+                <div className="wauto flex flex-col items-start py-4 w-full">
                     <div className="text-start c-text-main text-4xl font-bold">
                         <p>{t('tools')}</p>
                     </div>
+                    <p className="text-sm t-secondary mt-2">{t('tools_desc')}</p>
                 </div>
 
                 <div className="wauto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">

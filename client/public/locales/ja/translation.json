@@ -24,6 +24,9 @@
       "title$keyword": "検索: {{keyword}}"
     },
     "title": "記事",
+    "author": "著者",
+    "reading_time$min": "{{min}} 分で読めます",
+    "read_more": "続きを読む",
     "top": {
       "confirm": "この記事をトップにしてもよろしいですか？",
       "success": "トップに成功しました",
@@ -46,6 +49,9 @@
   "clear": "クリア",
   "close": "閉じる",
   "comment": {
+    "email_invalid": "メールアドレスの形式が正しくありません",
+    "email_placeholder": "メール",
+    "email_required": "メールアドレスを入力してください",
     "empty": "コメント内容は空にできません",
     "placeholder": {
       "title": "何か言ってください..."
@@ -82,6 +88,20 @@
   "draft": "下書き",
   "draft_bin": "下書き",
   "edit": "編集",
+  "empty": {
+    "articles": "まだ記事がありません",
+    "articles_hint": "何か書いてみましょう",
+    "timeline": "タイムラインはまだ空です",
+    "timeline_hint": "最初の記事を公開すると、ここに表示されます",
+    "moments": "まだ動態がありません",
+    "moments_hint": "今の気持ちを記録しましょう",
+    "friends": "まだ友人がいません",
+    "friends_hint": "最初の友人の参加を待っています",
+    "hashtags": "まだラベルがありません",
+    "hashtags_hint": "記事にラベルを付けて分類しやすくしましょう",
+    "search": "該当する記事が見つかりません",
+    "search_hint": "別のキーワードで試してみましょう"
+  },
   "error": {
     "api_url": "Pages 環境変数のAPI_URLはWorkerアドレスである必要があります。Pages環境変数のAPI_URLが正しいか確認してください。",
     "api_url_slash": "Pages 環境変数のAPI_URLはWorkerアドレスである必要があります。Pages環境変数のAPI_URLが正しいか、またAPI_URLの末尾にスラッシュ（/）がないか確認してください。",
@@ -121,6 +141,7 @@
   },
   "listed": "記事にリスト",
   "load_more": "もっと読み込む",
+  "loading": "読み込み中",
   "login": {
     "oauth_only": "続行するにはログインしてください",
     "password": {
@@ -269,6 +290,7 @@
   "tags": "タグ",
   "timeline": "タイムライン",
   "tools": "ツール",
+  "tools_desc": "よく使うツール",
   "back_to_site": "メインサイトに戻る",
   "image_host": "画像ホスティング",
   "image_host_desc": "画像をアップロードして外部リンクを生成",
