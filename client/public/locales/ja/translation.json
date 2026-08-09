@@ -49,6 +49,9 @@
   "clear": "クリア",
   "close": "閉じる",
   "comment": {
+    "email_invalid": "メールアドレスの形式が正しくありません",
+    "email_placeholder": "メール（必須・アバター用・公開されません）",
+    "email_required": "メールアドレスを入力してください",
     "empty": "コメント内容は空にできません",
     "placeholder": {
       "title": "何か言ってください..."

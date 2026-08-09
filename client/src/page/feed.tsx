@@ -16,10 +16,10 @@ import { siteName } from "../utils/constants";
 import { timeago } from "../utils/timeago";
 import { Button } from "../components/button";
 import { Tips } from "../components/tips";
-import { useLoginModal } from "../hooks/useLoginModal";
 import mermaid from "mermaid";
 import { useColorMode } from "../utils/darkModeUtils";
 import { AdjacentSection } from "../components/adjacent_feed.tsx";
+import { Identicon } from "../components/identicon";
 import { renderPlantUMLDiagrams } from "../utils/plantuml";
 
 type Feed = {
@@ -452,24 +452,22 @@ function CommentInput({
 }) {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const { showAlert, AlertUI } = useAlert();
   const profile = useContext(ProfileContext);
-  const { LoginModal, setIsOpened } = useLoginModal()
   function errorHumanize(error: string) {
     if (error === "Unauthorized") return t("login.required");
     else if (error === "Content is required") return t("comment.empty");
+    else if (error === "Email is required") return t("comment.email_required");
+    else if (error === "Invalid email") return t("comment.email_invalid");
     return error;
   }
   function submit() {
-    if (!profile) {
-      setIsOpened(true)
-      return;
-    }
     client.feed
       .comment({ feed: id })
       .post(
-        { content },
+        { content, email: email || undefined },
         {
           headers: headersWithAuth(),
         }
@@ -491,33 +489,30 @@ function CommentInput({
       <div className="flex flex-col w-full items-start mb-4">
         <label htmlFor="comment">{t("comment.title")}</label>
       </div>
-      {profile ? (<>
-        <textarea
-          id="comment"
-          placeholder={t("comment.placeholder.title")}
-          className="bg-[#F8F6F2] w-full h-24 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+      {!profile && (
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t("comment.email_placeholder")}
+          className="bg-[#F8F6F2] w-full mb-3 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none px-3 py-2"
         />
-        <button
-          className="mt-4 bg-theme text-white px-4 py-2 rounded-full"
-          onClick={submit}
-        >
-          {t("comment.submit")}
-        </button>
-      </>) : (
-        <div className="flex flex-row w-full items-center justify-center space-x-2 py-12">
-          <button
-            className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
-            onClick={() => setIsOpened(true)}
-          >
-            {t("login.required")}
-          </button>
-        </div>
       )}
+      <textarea
+        id="comment"
+        placeholder={t("comment.placeholder.title")}
+        className="bg-[#F8F6F2] w-full h-24 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <button
+        className="mt-4 bg-theme text-white px-4 py-2 rounded-full"
+        onClick={submit}
+      >
+        {t("comment.submit")}
+      </button>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       <AlertUI />
-      <LoginModal />
     </div>
   );
 }
@@ -532,7 +527,9 @@ type Comment = {
     username: string;
     avatar: string | null;
     permission: number | null;
-  };
+  } | null;
+  guestId?: string;
+  nickname?: string;
 };
 
 function Comments({ id }: { id: string }) {
@@ -630,14 +627,18 @@ function CommentItem({
   }
   return (
     <div className="flex flex-row items-start mt-2">
-      <img
-        src={comment.user.avatar || ""}
-        className="w-8 h-8 rounded-full mt-4"
-      />
+      {comment.user ? (
+        <img
+          src={comment.user.avatar || ""}
+          className="w-8 h-8 rounded-full mt-4"
+        />
+      ) : comment.guestId ? (
+        <Identicon seed={comment.guestId} size={32} className="mt-4" />
+      ) : null}
       <div className="flex flex-col flex-1 w-0 ml-2 bg-[#F8F6F2] rounded-lg p-4">
         <div className="flex flex-row">
           <span className="t-primary text-base font-bold">
-            {comment.user.username}
+            {comment.user ? comment.user.username : comment.nickname}
           </span>
           <div className="flex-1 w-0" />
           <span
@@ -649,7 +650,7 @@ function CommentItem({
         </div>
         <p className="t-primary break-words">{comment.content}</p>
         <div className="flex flex-row justify-end">
-          {(profile?.permission || profile?.id == comment.user.id) && (
+          {(profile?.permission || (comment.user && profile?.id == comment.user.id)) && (
             <Popup
               arrow={false}
               trigger={

@@ -9,6 +9,15 @@ import { Config } from "../utils/config";
 import { getDB, getEnv } from "../utils/di";
 import { notify } from "../utils/webhook";
 
+async function md5Hex(input: string): Promise<string> {
+    const digest = await crypto.subtle.digest('MD5', new TextEncoder().encode(input));
+    return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 export function CommentService() {
     const db: DB = getDB();
     const env: Env = getEnv();
@@ -20,7 +29,6 @@ export function CommentService() {
                     const feedId = parseInt(feed);
                     const comment_list = await db.query.comments.findMany({
                         where: eq(comments.feedId, feedId),
-                        columns: { feedId: false, userId: false },
                         with: {
                             user: {
                                 columns: { id: true, username: true, avatar: true, permission: true }
@@ -28,43 +36,65 @@ export function CommentService() {
                         },
                         orderBy: [desc(comments.createdAt)]
                     });
-                    return comment_list;
+                    return await Promise.all(comment_list.map(async (c) => ({
+                        id: c.id,
+                        content: c.content,
+                        createdAt: c.createdAt,
+                        updatedAt: c.updatedAt,
+                        user: c.user,
+                        guestId: c.email ? await md5Hex(c.email) : undefined,
+                        nickname: c.email ? c.email.split('@')[0] : undefined,
+                    })));
                 })
-                .post('/:feed', async ({ uid, set, params: { feed }, body: { content } }) => {
-                    if (!uid) {
-                        set.status = 401;
-                        return 'Unauthorized';
-                    }
+                .post('/:feed', async ({ uid, set, params: { feed }, body: { content, email } }) => {
                     if (!content) {
                         set.status = 400;
                         return 'Content is required';
                     }
                     const feedId = parseInt(feed);
-                    const userId = parseInt(uid);
-                    const user = await db.query.users.findFirst({ where: eq(users.id, userId) });
-                    if (!user) {
-                        set.status = 400;
-                        return 'User not found';
-                    }
                     const exist = await db.query.feeds.findFirst({ where: eq(feeds.id, feedId) });
                     if (!exist) {
                         set.status = 400;
                         return 'Feed not found';
                     }
 
+                    let userId: number | null = null;
+                    let displayName = '';
+                    if (uid) {
+                        const user = await db.query.users.findFirst({ where: eq(users.id, parseInt(uid)) });
+                        if (!user) {
+                            set.status = 400;
+                            return 'User not found';
+                        }
+                        userId = user.id;
+                        displayName = user.username;
+                    } else {
+                        if (!email) {
+                            set.status = 400;
+                            return 'Email is required';
+                        }
+                        if (!isValidEmail(email)) {
+                            set.status = 400;
+                            return 'Invalid email';
+                        }
+                        displayName = email.split('@')[0];
+                    }
+
                     await db.insert(comments).values({
                         feedId,
                         userId,
+                        email: email ?? null,
                         content
                     });
 
                     const webhookUrl = await ServerConfig().get(Config.webhookUrl) || env.WEBHOOK_URL;
                     // notify
-                    await notify(webhookUrl, `${env.FRONTEND_URL}/feed/${feedId}\n${user.username} 评论了: ${exist.title}\n${content}`);
+                    await notify(webhookUrl, `${env.FRONTEND_URL}/feed/${feedId}\n${displayName} 评论了: ${exist.title}\n${content}`);
                     return 'OK';
                 }, {
                     body: t.Object({
-                        content: t.String()
+                        content: t.String(),
+                        email: t.Optional(t.String())
                     })
                 })
         )

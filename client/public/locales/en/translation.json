@@ -49,6 +49,9 @@
   "clear": "Clear",
   "close": "Close",
   "comment": {
+    "email_invalid": "Invalid email format",
+    "email_placeholder": "Email (required, for your avatar — never shown publicly)",
+    "email_required": "Email is required",
     "empty": "Comment cannot be empty",
     "placeholder": {
       "title": "Say something..."
