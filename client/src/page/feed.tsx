@@ -204,6 +204,12 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
     renderPlantUMLDiagrams();
   }, [feed, colorMode]);
 
+  // 估算阅读时长（CJK 按字数 /300，西文按词数 /200），纯展示用
+  const readingMinutes = feed
+    ? Math.max(1, Math.round((feed.content.match(/[一-鿿]/g) || []).length / 300 +
+        feed.content.replace(/[一-鿿]/g, " ").trim().split(/\s+/).filter(Boolean).length / 200))
+    : 0;
+
   return (
     <Waiting for={feed || error}>
       {feed && (
@@ -261,7 +267,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
               >
                 <div className="flex justify-between">
                   <div>
-                    <div className="mt-1 mb-1 flex gap-1">
+                    <div className="mt-1 mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                       <p
                         className="text-gray-400 text-[12px]"
                         title={new Date(feed.createdAt).toLocaleString()}
@@ -281,6 +287,11 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                           })}
                         </p>
                       )}
+
+                      <span className="text-gray-400 text-[12px] flex items-center gap-0.5">
+                        <i className="ri-time-line" />
+                        {t("article.reading_time$min", { min: readingMinutes })}
+                      </span>
                     </div>
                     {counterEnabled && <p className='text-[12px] text-gray-400 font-normal link-line'>
                       <span> {t("count.pv")} </span>
@@ -358,14 +369,17 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                       ))}
                     </div>
                   )}
-                  <div className="flex flex-row items-center">
+                  <div className="mt-6 pt-6 border-t border-[var(--border)] flex flex-row items-center gap-3">
                     <img
                       src={feed.user.avatar || "/avatar.png"}
-                      className="w-8 h-8 rounded-full"
+                      className="w-10 h-10 rounded-full"
                     />
-                    <div className="ml-2">
-                      <span className="text-gray-400 text-sm cursor-default">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium t-primary">
                         {feed.user.username}
+                      </span>
+                      <span className="text-xs t-secondary">
+                        {t("article.author")}
                       </span>
                     </div>
                   </div>

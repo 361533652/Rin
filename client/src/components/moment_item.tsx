@@ -29,27 +29,27 @@ export function MomentItem({
     const { createdAt, updatedAt } = moment;
     
     return (
-        <div className="bg-w p-4 rounded-lg">
+        <div className="bg-w p-5 rounded-xl border-l-4 border-[var(--primary)] shadow-sm">
             <div className="flex justify-between">
                 <div className="flex items-center space-x-3">
-                    <img 
-                        src={moment.user.avatar} 
-                        alt={moment.user.username} 
-                        className="w-8 h-8 rounded-full object-cover"
+                    <img
+                        src={moment.user.avatar}
+                        alt={moment.user.username}
+                        className="w-9 h-9 rounded-full object-cover"
                     />
                     <div>
-                        <p className="t-primary">
+                        <p className="t-primary font-medium">
                             {moment.user.username}
                         </p>
-                        <p className="space-x-2 t-secondary text-sm"> 
-                            <span title={new Date(createdAt).toLocaleString()}> 
-                                {createdAt === updatedAt ? timeago(createdAt) : t('feed_card.published$time', { time: timeago(createdAt) })} 
-                            </span> 
-                            {createdAt !== updatedAt && 
-                                <span title={new Date(updatedAt).toLocaleString()}> 
-                                    {t('feed_card.updated$time', { time: timeago(updatedAt) })} 
-                                </span> 
-                            } 
+                        <p className="space-x-2 t-secondary text-sm">
+                            <span title={new Date(createdAt).toLocaleString()}>
+                                {createdAt === updatedAt ? timeago(createdAt) : t('feed_card.published$time', { time: timeago(createdAt) })}
+                            </span>
+                            {createdAt !== updatedAt &&
+                                <span title={new Date(updatedAt).toLocaleString()}>
+                                    {t('feed_card.updated$time', { time: timeago(updatedAt) })}
+                                </span>
+                            }
                         </p>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ export function MomentItem({
                     </div>
                 )}
             </div>
-            <div className="text-black dark:text-white mt-2">
+            <div className="mt-4 pt-4 border-t border-[var(--border)] text-black dark:text-white">
                 <Markdown content={moment.content} />
             </div>
         </div>

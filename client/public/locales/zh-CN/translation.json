@@ -24,6 +24,8 @@
       "title$keyword": "搜索：{{keyword}}"
     },
     "title": "文章",
+    "author": "作者",
+    "reading_time$min": "{{min}} 分钟阅读",
     "top": {
       "confirm": "确定置顶这篇文章吗？",
       "success": "置顶成功",
@@ -82,6 +84,20 @@
   "draft": "草稿",
   "draft_bin": "草稿箱",
   "edit": "编辑",
+  "empty": {
+    "articles": "还没有文章",
+    "articles_hint": "写点什么，让这里热闹起来吧",
+    "timeline": "时间线还是空的",
+    "timeline_hint": "发布第一篇文章后，这里会出现时间轴",
+    "moments": "还没有动态",
+    "moments_hint": "记录此刻的想法吧",
+    "friends": "还没有友链",
+    "friends_hint": "等待第一位朋友加入",
+    "hashtags": "还没有标签",
+    "hashtags_hint": "给文章打上标签，方便分类浏览",
+    "search": "没有找到相关内容",
+    "search_hint": "换个关键词试试？"
+  },
   "error": {
     "api_url": "Pages 环境变量中 API_URL 应为 Worker 地址，请检查 Pages 环境变量中 API_URL 是否正确",
     "api_url_slash": "Pages 环境变量中 API_URL 应为 Worker 地址，请检查 Pages 环境变量中 API_URL 是否正确，且 API_URL 末尾不能有 /",
@@ -269,6 +285,7 @@
   "tags": "标签",
   "timeline": "时间轴",
   "tools": "工具",
+  "tools_desc": "常用工具",
   "back_to_site": "回到主站",
   "image_host": "图床",
   "image_host_desc": "上传图片并生成外链",

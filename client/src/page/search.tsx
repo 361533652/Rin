@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useTranslation } from "react-i18next"
 import { Link, useSearch } from "wouter"
 import { FeedCard } from "../components/feed_card"
+import { EmptyState } from "../components/empty_state"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { headersWithAuth } from "../utils/auth"
@@ -60,7 +61,7 @@ export function SearchPage({ keyword }: { keyword: string }) {
                 <main className="w-full flex flex-col justify-center items-center mb-8">
                     <div className="wauto text-start c-text-main py-4 text-4xl font-bold">
                         <p>
-                            {t('article.search.title')}
+                            {title}
                         </p>
                         <div className="flex flex-row justify-between">
                             <p className="text-sm mt-4 c-text-muted font-normal">
@@ -69,26 +70,30 @@ export function SearchPage({ keyword }: { keyword: string }) {
                         </div>
                     </div>
                     <Waiting for={status === 'idle'}>
-                        <div className="wauto flex flex-col">
-                            {feeds?.data.map(({ id, ...feed }: any) => (
-                                <FeedCard key={id} id={id} {...feed} />
-                            ))}
-                        </div>
-                        <div className="wauto flex flex-row items-center mt-4 ani-show">
-                            {page > 1 &&
-                                <Link href={`?page=${(page - 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
-                                    {t('previous')}
-                                </Link>
-                            }
-                            <div className="flex-1" />
-                            {feeds?.hasNext &&
-                                <Link href={`?page=${(page + 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
-                                    {t('next')}
-                                </Link>
-                            }
-                        </div>
+                        {feeds && feeds.data.length > 0 ? (<>
+                            <div className="wauto flex flex-col">
+                                {feeds.data.map(({ id, ...feed }: any) => (
+                                    <FeedCard key={id} id={id} {...feed} />
+                                ))}
+                            </div>
+                            <div className="wauto flex flex-row items-center mt-4 ani-show">
+                                {page > 1 &&
+                                    <Link href={`?page=${(page - 1)}`}
+                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                        {t('previous')}
+                                    </Link>
+                                }
+                                <div className="flex-1" />
+                                {feeds.hasNext &&
+                                    <Link href={`?page=${(page + 1)}`}
+                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme`}>
+                                        {t('next')}
+                                    </Link>
+                                }
+                            </div>
+                        </>) : (
+                            <EmptyState icon="ri-search-line" title={t('empty.search')} hint={t('empty.search_hint')} />
+                        )}
                     </Waiting>
                 </main>
             </Waiting>

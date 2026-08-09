@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
 import { FeedCard } from "../components/feed_card"
+import { EmptyState } from "../components/empty_state"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { ProfileContext } from "../state/profile"
@@ -101,7 +102,7 @@ export function FeedsPage() {
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">
-                    <div className="text-start c-text-main py-6">
+                    <div className="text-start c-text-main py-6 border-b border-[var(--border)] mb-6">
                         <h1 className="text-3xl sm:text-4xl font-bold">
                             {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
                         </h1>
@@ -129,26 +130,30 @@ export function FeedsPage() {
                         </div>
                     </div>
                     <Waiting for={status === 'idle'}>
-                        <div className="flex flex-col space-y-6 ani-show">
-                            {sortedFeeds.map((feed) => (
-                                <FeedCard key={feed.id} {...feed} />
-                            ))}
-                        </div>
-                        <div className="flex flex-row justify-between items-center mt-8 ani-show">
-                            {page > 1 &&
-                                <Link href={`/?type=${listState}&page=${(page - 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
-                                    {t('previous')}
-                                </Link>
-                            }
-                            {page <= 1 && <div className="w-24"></div>}
-                            {feeds[listState]?.hasNext &&
-                                <Link href={`/?type=${listState}&page=${(page + 1)}`}
-                                    className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
-                                    {t('next')}
-                                </Link>
-                            }
-                        </div>
+                        {sortedFeeds.length > 0 ? (<>
+                            <div className="flex flex-col space-y-6 ani-show">
+                                {sortedFeeds.map((feed) => (
+                                    <FeedCard key={feed.id} {...feed} />
+                                ))}
+                            </div>
+                            <div className="flex flex-row justify-between items-center mt-8 ani-show">
+                                {page > 1 &&
+                                    <Link href={`/?type=${listState}&page=${(page - 1)}`}
+                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
+                                        {t('previous')}
+                                    </Link>
+                                }
+                                {page <= 1 && <div className="w-24"></div>}
+                                {feeds[listState]?.hasNext &&
+                                    <Link href={`/?type=${listState}&page=${(page + 1)}`}
+                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
+                                        {t('next')}
+                                    </Link>
+                                }
+                            </div>
+                        </>) : (
+                            <EmptyState icon="ri-quill-pen-line" title={t('empty.articles')} hint={t('empty.articles_hint')} />
+                        )}
                     </Waiting>
                 </main>
             </Waiting>
