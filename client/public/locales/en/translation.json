@@ -26,6 +26,7 @@
     "title": "Articles",
     "author": "Author",
     "reading_time$min": "{{min}} min read",
+    "read_more": "Read more",
     "top": {
       "confirm": "Are you sure you want to top this article?",
       "success": "Topped successfully",

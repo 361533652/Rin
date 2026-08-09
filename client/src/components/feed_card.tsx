@@ -16,17 +16,18 @@ export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary
     const coverImage = cover || avatar
     return useMemo(() => (
         <>
-            <Link href={`/feed/${id}`} target="_blank" className="w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 p-6 c-shadow hover:c-shadow-hover hover:-translate-y-1.5 hover:scale-[1.015] transition-all duration-300 hover:border-[#D8A0AD]" style={{ '--bg-card-hover': '#FFFDF8', '--shadow-hover': '0 18px 50px rgba(80,60,40,0.16)' } as React.CSSProperties}>
+            <Link href={`/feed/${id}`} target="_blank" className="group w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 p-6 c-shadow hover:c-shadow-hover hover:-translate-y-1.5 hover:scale-[1.015] transition-all duration-300 hover:border-[#D8A0AD]" style={{ '--bg-card-hover': '#FFFDF8', '--shadow-hover': '0 18px 50px rgba(80,60,40,0.16)' } as React.CSSProperties}>
                 {coverImage &&
                     <div className="mb-4 rounded-xl overflow-hidden max-h-48">
                         <img src={coverImage} alt={title}
-                            className="object-cover object-center w-full h-48" />
+                            className="object-cover object-center w-full h-48 transition-transform duration-500 group-hover:scale-105" />
                     </div>}
                 <h1 className="text-xl font-bold c-text-main dark:text-white text-pretty overflow-hidden mb-3">
                     {title}
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm" title={new Date(createdAt).toLocaleString()}>
+                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm flex items-center" title={new Date(createdAt).toLocaleString()}>
+                        <i className="ri-time-line mr-1" />
                         {createdAt === updatedAt ? timeago(createdAt) : t('feed_card.published$time', { time: timeago(createdAt) })}
                     </span>
                     {createdAt !== updatedAt &&

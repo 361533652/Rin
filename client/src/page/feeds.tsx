@@ -1,14 +1,16 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
-import { FeedCard } from "../components/feed_card"
 import { EmptyState } from "../components/empty_state"
+import { HashTag } from "../components/hashtag"
+import { FeedCard } from "../components/feed_card"
 import { Waiting } from "../components/loading"
 import { client } from "../main"
 import { ProfileContext } from "../state/profile"
 import { headersWithAuth } from "../utils/auth"
 import { siteName } from "../utils/constants"
 import { tryInt } from "../utils/int"
+import { timeago } from "../utils/timeago"
 import { useTranslation } from "react-i18next";
 
 interface FeedItem {
@@ -103,9 +105,17 @@ export function FeedsPage() {
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">
                     <div className="text-start c-text-main py-6 border-b border-[var(--border)] mb-6">
-                        <h1 className="text-3xl sm:text-4xl font-bold">
-                            {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
-                        </h1>
+                        <div className="flex flex-row items-center gap-3">
+                            <span className="w-1.5 h-8 rounded-full bg-theme" />
+                            <h1 className="text-3xl sm:text-4xl font-bold">
+                                {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
+                            </h1>
+                        </div>
+                        {listState === 'normal' && process.env.DESCRIPTION && (
+                            <p className="text-base t-secondary mt-3 max-w-2xl leading-relaxed">
+                                {process.env.DESCRIPTION}
+                            </p>
+                        )}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
                             <p className="text-sm c-text-muted font-normal">
                                 {t('article.total$count', { count: feeds[listState]?.size })}
@@ -131,8 +141,9 @@ export function FeedsPage() {
                     </div>
                     <Waiting for={status === 'idle'}>
                         {sortedFeeds.length > 0 ? (<>
+                            {listState === 'normal' && <FeaturedCard feed={sortedFeeds[0]} />}
                             <div className="flex flex-col space-y-6 ani-show">
-                                {sortedFeeds.map((feed) => (
+                                {sortedFeeds.slice(listState === 'normal' ? 1 : 0).map((feed) => (
                                     <FeedCard key={feed.id} {...feed} />
                                 ))}
                             </div>
@@ -158,5 +169,49 @@ export function FeedsPage() {
                 </main>
             </Waiting>
         </>
+    )
+}
+
+function FeaturedCard({ feed }: { feed: FeedItem }) {
+    const { t } = useTranslation()
+    const coverImage = feed.cover || feed.avatar
+    return (
+        <Link href={`/feed/${feed.id}`} target="_blank"
+            className="group block w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 overflow-hidden c-shadow hover:c-shadow-hover border border-transparent hover:border-[#D8A0AD] transition-all duration-300">
+            {coverImage &&
+                <div className="relative aspect-[21/9] overflow-hidden bg-[var(--primary-light)]/30">
+                    <img src={coverImage} alt={feed.title}
+                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+                </div>
+            }
+            <div className="p-6 sm:p-8">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
+                    {feed.top === 1 &&
+                        <span className="text-theme text-xs px-2 py-1 bg-theme/10 rounded-full">
+                            {t('article.top.title')}
+                        </span>
+                    }
+                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm flex items-center">
+                        <i className="ri-time-line mr-1" />
+                        {feed.createdAt === feed.updatedAt ? timeago(feed.createdAt) : t('feed_card.published$time', { time: timeago(feed.createdAt) })}
+                    </span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-bold c-text-main dark:text-white text-pretty mb-3">
+                    {feed.title}
+                </h2>
+                <p className="text-[#6E6862] dark:text-gray-300 text-pretty mb-4 line-clamp-3">
+                    {feed.summary}
+                </p>
+                <div className="flex flex-row flex-wrap justify-start gap-2 mb-5">
+                    {feed.hashtags.map(({ name }, index) => (
+                        <HashTag key={index} name={name} />
+                    ))}
+                </div>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-theme">
+                    {t('article.read_more')}
+                    <i className="ri-arrow-right-line" />
+                </span>
+            </div>
+        </Link>
     )
 }

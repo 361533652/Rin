@@ -26,6 +26,7 @@
     "title": "記事",
     "author": "著者",
     "reading_time$min": "{{min}} 分で読めます",
+    "read_more": "続きを読む",
     "top": {
       "confirm": "この記事をトップにしてもよろしいですか？",
       "success": "トップに成功しました",

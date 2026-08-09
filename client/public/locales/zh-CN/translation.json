@@ -26,6 +26,7 @@
     "title": "文章",
     "author": "作者",
     "reading_time$min": "{{min}} 分钟阅读",
+    "read_more": "阅读全文",
     "top": {
       "confirm": "确定置顶这篇文章吗？",
       "success": "置顶成功",
