@@ -138,6 +138,7 @@
   },
   "listed": "列出在文章中",
   "load_more": "加载更多",
+  "loading": "加载中",
   "login": {
     "oauth_only": "请登录后继续",
     "password": {

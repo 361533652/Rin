@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { Helmet } from 'react-helmet'
 import { Link, useSearch } from "wouter"
 import { EmptyState } from "../components/empty_state"
@@ -53,40 +53,74 @@ export function FeedsPage() {
         unlisted: { size: 0, data: [], hasNext: false },
         normal: { size: 0, data: [], hasNext: false }
     })
-    const page = tryInt(1, query.get("page"))
+    const [loadingMore, setLoadingMore] = useState(false)
+    const [hasNext, setHasNext] = useState(false)
+    const [page, setPage] = useState(1)
     const limit = tryInt(10, query.get("limit"), process.env.PAGE_SIZE)
     const ref = useRef("")
+    const sentinelRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
-        const key = `${query.get("page")} ${query.get("type")}`
-        if (ref.current == key) return
         const type = query.get("type") as FeedType || 'normal'
-        
-        const fetchFeeds = () => {
-            client.feed.index.get({
-                query: {
-                    page: page,
-                    limit: limit,
-                    type: type
-                },
-                headers: headersWithAuth()
-            }).then(({ data }) => {
-                if (data && typeof data !== 'string') {
-                    setFeeds(prevFeeds => ({
-                        ...prevFeeds,
-                        [type]: data
-                    }))
-                    setStatus('idle')
-                }
-            })
-        }
-        
         if (type !== listState) {
             _setListState(type)
         }
+        const key = `${type} ${sortBy}`
+        if (ref.current === key) return
         setStatus('loading')
-        fetchFeeds()
+        setLoadingMore(false)
+        setPage(1)
+        client.feed.index.get({
+            query: {
+                page: 1,
+                limit: limit,
+                type: type
+            },
+            headers: headersWithAuth()
+        }).then(({ data }) => {
+            if (data && typeof data !== 'string') {
+                setFeeds(prevFeeds => ({
+                    ...prevFeeds,
+                    [type]: data
+                }))
+                setHasNext(data.hasNext)
+            }
+            setStatus('idle')
+        })
         ref.current = key
-    }, [page, limit, listState, search, query])
+    }, [listState, sortBy, limit, query])
+    const loadMore = useCallback(() => {
+        if (loadingMore || !hasNext) return
+        setLoadingMore(true)
+        client.feed.index.get({
+            query: {
+                page: page + 1,
+                limit: limit,
+                type: listState
+            },
+            headers: headersWithAuth()
+        }).then(({ data }) => {
+            if (data && typeof data !== 'string') {
+                setFeeds(prevFeeds => ({
+                    ...prevFeeds,
+                    [listState]: {
+                        ...data,
+                        data: [...prevFeeds[listState].data, ...data.data]
+                    }
+                }))
+                setHasNext(data.hasNext)
+                setPage(p => p + 1)
+            }
+        }).finally(() => setLoadingMore(false))
+    }, [loadingMore, hasNext, page, listState, limit])
+    useEffect(() => {
+        const el = sentinelRef.current
+        if (!el) return
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) loadMore()
+        }, { rootMargin: '300px' })
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [loadMore])
     const sortedFeeds = useMemo(() => {
         const arr = [...feeds[listState].data];
         arr.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
@@ -111,11 +145,6 @@ export function FeedsPage() {
                                 {listState === 'draft' ? t('draft_bin') : listState === 'normal' ? t('article.title') : t('unlisted')}
                             </h1>
                         </div>
-                        {listState === 'normal' && process.env.DESCRIPTION && (
-                            <p className="text-base t-secondary mt-3 max-w-2xl leading-relaxed">
-                                {process.env.DESCRIPTION}
-                            </p>
-                        )}
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 gap-3">
                             <p className="text-sm c-text-muted font-normal">
                                 {t('article.total$count', { count: feeds[listState]?.size })}
@@ -147,20 +176,20 @@ export function FeedsPage() {
                                     <FeedCard key={feed.id} {...feed} />
                                 ))}
                             </div>
-                            <div className="flex flex-row justify-between items-center mt-8 ani-show">
-                                {page > 1 &&
-                                    <Link href={`/?type=${listState}&page=${(page - 1)}`}
-                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
-                                        {t('previous')}
-                                    </Link>
-                                }
-                                {page <= 1 && <div className="w-24"></div>}
-                                {feeds[listState]?.hasNext &&
-                                    <Link href={`/?type=${listState}&page=${(page + 1)}`}
-                                        className={`text-sm font-normal rounded-full px-4 py-2 text-white bg-theme hover:bg-theme/90 transition-colors`}>
-                                        {t('next')}
-                                    </Link>
-                                }
+                            <div ref={sentinelRef} className="flex flex-row justify-center items-center py-10 text-sm c-text-muted">
+                                {loadingMore ? (
+                                    <span className="flex items-center gap-2">
+                                        <i className="ri-loader-4-line animate-spin" />
+                                        {t('loading')}
+                                    </span>
+                                ) : hasNext ? (
+                                    <span className="flex items-center gap-1">
+                                        <i className="ri-arrow-down-line" />
+                                        {t('load_more')}
+                                    </span>
+                                ) : (
+                                    t('no_more')
+                                )}
                             </div>
                         </>) : (
                             <EmptyState icon="ri-quill-pen-line" title={t('empty.articles')} hint={t('empty.articles_hint')} />

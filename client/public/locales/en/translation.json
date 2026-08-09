@@ -138,6 +138,7 @@
   },
   "listed": "Listed in articles",
   "load_more": "Load More",
+  "loading": "Loading...",
   "login": {
     "oauth_only": "Please log in to continue",
     "password": {
