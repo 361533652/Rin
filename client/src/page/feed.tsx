@@ -495,7 +495,7 @@ function CommentInput({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t("comment.email_placeholder")}
-          className="bg-[#F8F6F2] w-full mb-3 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none px-3 py-2"
+          className="focus-visible:outline-none bg-secondary focus-visible:outline-theme w-full py-2 px-4 rounded-xl bg-w t-primary mb-3"
         />
       )}
       <textarea

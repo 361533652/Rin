@@ -50,7 +50,7 @@
   "close": "閉じる",
   "comment": {
     "email_invalid": "メールアドレスの形式が正しくありません",
-    "email_placeholder": "メール（必須・アバター用・公開されません）",
+    "email_placeholder": "メール",
     "email_required": "メールアドレスを入力してください",
     "empty": "コメント内容は空にできません",
     "placeholder": {

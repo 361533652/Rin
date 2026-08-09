@@ -50,7 +50,7 @@
   "close": "關閉",
   "comment": {
     "email_invalid": "信箱格式不正確",
-    "email_placeholder": "信箱（必填，用於產生頭像，不會公開顯示）",
+    "email_placeholder": "信箱",
     "email_required": "請填寫信箱",
     "empty": "留言内容不能為空",
     "placeholder": {
