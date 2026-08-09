@@ -501,7 +501,7 @@ function CommentInput({
       <textarea
         id="comment"
         placeholder={t("comment.placeholder.title")}
-        className="bg-[#F8F6F2] w-full h-24 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none"
+        className="bg-[#F8F6F2] w-full h-24 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none px-3 py-2"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
