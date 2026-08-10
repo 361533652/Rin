@@ -20,14 +20,14 @@ import { createS3Client } from "../utils/s3";
 export function RSSService() {
     const env: Env = getEnv();
     const endpoint = env.S3_ENDPOINT;
-    const accessHost = env.S3_ACCESS_HOST || endpoint;
-    const folder = env.S3_CACHE_FOLDER || 'cache/';
+    const accessHost = env.CACHE_ACCESS_HOST || endpoint;
+    const folder = env.CACHE_FOLDER || 'cache/';
     return new Elysia({ aot: false })
         .get('/sub/:name', async ({ set, params: { name } }) => {
             const host = `${(accessHost.startsWith("http://") || accessHost.startsWith("https://") ? '' :'https://')}${accessHost}`;
             if (!host) {
                 set.status = 500;
-                return 'S3_ACCESS_HOST is not defined'
+                return 'CACHE_ACCESS_HOST is not defined'
             }
             if (name === 'feed.xml') {
                 name = 'rss.xml';
@@ -61,7 +61,7 @@ export function RSSService() {
 export async function rssCrontab(env: Env) {
     const frontendUrl = `${env.FRONTEND_URL.startsWith("http://") || env.FRONTEND_URL.startsWith("https://") ? "" : "https://"}${env.FRONTEND_URL}`;
     const db = drizzle(env.DB, { schema: schema });
-    const accessHost = env.S3_ACCESS_HOST || env.S3_ENDPOINT;
+    const accessHost = env.IMG_ACCESS_HOST || env.S3_ENDPOINT;
     const faviconKey = getFaviconKey();
 
     let feedConfig: any = {
@@ -88,7 +88,7 @@ export async function rssCrontab(env: Env) {
 
     for (const [_mimeType, ext] of Object.entries(FAVICON_ALLOWED_TYPES)) {
         const originFaviconKey = path.join(
-            env.S3_FOLDER || "",
+            env.IMG_FOLDER || "",
             `originFavicon${ext}`,
         );
         try {
@@ -152,8 +152,8 @@ export async function rssCrontab(env: Env) {
     }
     // save rss.xml to s3
     console.log("save rss.xml to s3");
-    const bucket = env.S3_BUCKET;
-    const folder = env.S3_CACHE_FOLDER || "cache/";
+    const bucket = env.CACHE_BUCKET;
+    const folder = env.CACHE_FOLDER || "cache/";
     const s3 = createS3Client();
     async function save(name: string, data: string) {
         const hashkey = path.join(folder, name);

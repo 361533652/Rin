@@ -27,12 +27,18 @@
 ```ini
 SEO_BASE_URL=<SEO 基础地址，用于 SEO 索引，默认为 FRONTEND_URL>
 SEO_CONTAINS_KEY=<SEO 索引时只索引以 SEO_BASE_URL 开头或包含SEO_CONTAINS_KEY 关键字的链接，默认为空>
-S3_FOLDER=<S3 图片资源存储的文件夹，默认为 'images/'>
-S3_CACHE_FOLDER=<S3 缓存文件夹（用于 SEO、高频请求缓存），默认为 'cache/'>
-S3_BUCKET=<S3 存储桶名称>
 S3_REGION=<S3 存储桶所在区域，如使用 Cloudflare R2 填写 auto 即可>
 S3_ENDPOINT=<S3 存储桶接入点地址>
-S3_ACCESS_HOST=<S3 存储桶访问地址，末尾无'/'>
+S3_FORCE_PATH_STYLE=false
+IMG_BUCKET=<图片桶名称（图床/文章插图/favicon）>
+IMG_FOLDER=images/
+IMG_ACCESS_HOST=<图片桶访问地址，末尾无'/'>
+FILE_BUCKET=<文件桶名称（文件托管）>
+FILE_FOLDER=files/
+FILE_ACCESS_HOST=<文件桶访问地址，末尾无'/'>
+CACHE_BUCKET=<缓存桶名称（RSS/SEO/配置缓存）>
+CACHE_FOLDER=cache/
+CACHE_ACCESS_HOST=<缓存桶访问地址，末尾无'/'>
 ```
 
 同时添加以下加密环境变量（加密，添加到 Secrets）：
@@ -191,12 +197,18 @@ WORKER_NAME=<Cloudflare Worker 名称，默认rin-server>
 FRONTEND_URL=<前端地址，用于Webhook通知时拼接地址，可不填>
 SEO_BASE_URL=<SEO 基础地址，用于 SEO 索引，默认为 FRONTEND_URL>
 SEO_CONTAINS_KEY=<SEO 索引时只索引以 SEO_BASE_URL 开头或包含SEO_CONTAINS_KEY 关键字的链接，默认为空>
-S3_FOLDER=<S3 图片资源存储的文件夹，默认为 'images/'>
-S3_CACHE_FOLDER=<S3 缓存文件夹（用于 SEO、高频请求缓存），默认为 'cache/'>
-S3_BUCKET=<S3 存储桶名称>
 S3_REGION=<S3 存储桶所在区域，如使用 Cloudflare R2 填写 auto 即可>
 S3_ENDPOINT=<S3 存储桶接入点地址>
-S3_ACCESS_HOST=<S3 存储桶访问地址，末尾无'/'>
+S3_FORCE_PATH_STYLE=false
+IMG_BUCKET=<图片桶名称（图床/文章插图/favicon）>
+IMG_FOLDER=images/
+IMG_ACCESS_HOST=<图片桶访问地址，末尾无'/'>
+FILE_BUCKET=<文件桶名称（文件托管）>
+FILE_FOLDER=files/
+FILE_ACCESS_HOST=<文件桶访问地址，末尾无'/'>
+CACHE_BUCKET=<缓存桶名称（RSS/SEO/配置缓存）>
+CACHE_FOLDER=cache/
+CACHE_ACCESS_HOST=<缓存桶访问地址，末尾无'/'>
 ```
 
 > [!TIP]
@@ -246,18 +258,22 @@ https://<你的后端地址>/user/github/callback
 Cloudflare 面板中点击 `R2` > `创建存储桶`，填写名称，选择距离自己近的位置：
 ![1000000665](https://github.com/openRin/Rin/assets/36541432/17c5ad7b-8a3a-49b2-845a-8d043484aa63)
 
-创建存储桶之后进入存储桶详情页 > `设置`，复制 S3 API 地址，去除末尾的存储桶名称后填入 `S3_ENDPOINT`，如：
+Rin 按用途拆分为多个桶，至少需要创建 **图片桶**（图床/文章插图/favicon）、**文件桶**（文件托管）、**缓存桶**（RSS/SEO/配置缓存）。创建存储桶之后进入存储桶详情页 > `设置`，复制 S3 API 地址，去除末尾的存储桶名称后填入 `S3_ENDPOINT`（各桶共用同一个接入点地址），如：
 
 ```ini
-S3_BUCKET=image # 桶名称
 S3_REGION=auto # 地区 auto 不用修改
 S3_ENDPOINT=https://8879900e5e1219fb745c9f69b086565a.r2.cloudflarestorage.com
+IMG_BUCKET=image # 图片桶名称
+FILE_BUCKET=file # 文件桶名称
+CACHE_BUCKET=cache # 缓存桶名称
 ```
 
-然后在`公开访问`处绑定一个域名用于访问资源，绑定的域名对应于`S3_ACCESS_HOST`环境变量：
+然后在各桶`公开访问`处分别绑定一个域名用于访问资源，绑定的域名对应各用途的 `IMG_ACCESS_HOST`、`FILE_ACCESS_HOST`、`CACHE_ACCESS_HOST` 环境变量：
 
 ```ini
-S3_ACCESS_HOST=https://image.xeu.life
+IMG_ACCESS_HOST=https://image.xeu.life
+FILE_ACCESS_HOST=https://file.xeu.life
+CACHE_ACCESS_HOST=https://cache.xeu.life
 ```
 
 > 这里记得启用 **公共开发 URL**，否则前端会提示CORS跨域、后端1101等问题。[参考](https://developers.cloudflare.com/r2/buckets/public-buckets/#managed-public-buckets-through-r2dev)
@@ -273,7 +289,7 @@ S3_ACCESS_HOST=https://image.xeu.life
 ```
 
 > [!TIP]
-> 在所有环境变量调试完毕后可点击加密按钮加密环境变量（只保留 FRONTEND_URL 和 S3_FOLDER），这样下次部署时加密的环境变量就不会覆盖/删除了
+> 在所有环境变量调试完毕后可点击加密按钮加密环境变量（只保留 FRONTEND_URL 和各桶的 BUCKET/FOLDER/ACCESS_HOST 明文变量），这样下次部署时加密的环境变量就不会覆盖/删除了
 
 # 操作视频
 由于时间原因未对以下视频做剪辑与后期说明处理，如果对于部署流程不了解或疑惑可参考视频步骤

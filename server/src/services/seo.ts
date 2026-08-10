@@ -6,13 +6,13 @@ import { getEnv } from "../utils/di";
 export function SEOService() {
     const env: Env = getEnv();
     const endpoint = env.S3_ENDPOINT;
-    const accessHost = env.S3_ACCESS_HOST || endpoint;
-    const folder = env.S3_CACHE_FOLDER || 'cache/';
+    const accessHost = env.CACHE_ACCESS_HOST || endpoint;
+    const folder = env.CACHE_FOLDER || 'cache/';
     return new Elysia({ aot: false })
         .get('/seo/*', async ({ set, params, query }) => {
             if (!accessHost) {
                 set.status = 500;
-                return 'S3_ACCESS_HOST is not defined'
+                return 'CACHE_ACCESS_HOST is not defined'
             }
             let url = params['*'];
             // query concat
