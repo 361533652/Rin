@@ -30,6 +30,7 @@ import { ErrorPage } from './page/error.tsx'
 import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
 import { ImageBedPage } from './page/image-bed'
+import { FileBedPage } from './page/file-bed'
 import { PaperDecoration } from './components/paper_decoration'
 
 function App() {
@@ -191,6 +192,10 @@ function App() {
 
             <RouteMe path="/img-bed">
               <ImageBedPage />
+            </RouteMe>
+
+            <RouteMe path="/file-bed">
+              <FileBedPage />
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">

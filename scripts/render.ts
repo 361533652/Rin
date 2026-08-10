@@ -9,9 +9,9 @@ const region = env.S3_REGION;
 const endpoint = env.S3_ENDPOINT;
 const accessKeyId = env.S3_ACCESS_KEY_ID;
 const secretAccessKey = env.S3_SECRET_ACCESS_KEY;
-const accessHost = env.S3_ACCESS_HOST || endpoint;
-const bucket = env.S3_BUCKET;
-const folder = env.S3_CACHE_FOLDER || 'cache/';
+const accessHost = env.CACHE_ACCESS_HOST || endpoint;
+const bucket = env.CACHE_BUCKET;
+const folder = env.CACHE_FOLDER || 'cache/';
 const forcePathStyle = env.S3_FORCE_PATH_STYLE === "true";
 if (!baseUrl) {
     throw new Error('SEO_BASE_URL is not defined');
@@ -29,7 +29,7 @@ if (!secretAccessKey) {
     throw new Error('S3_SECRET_ACCESS_KEY is not defined');
 }
 if (!bucket) {
-    throw new Error('S3_BUCKET is not defined');
+    throw new Error('CACHE_BUCKET is not defined');
 }
 const s3 = new S3Client({
     region: region,

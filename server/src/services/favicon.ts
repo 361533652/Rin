@@ -14,14 +14,14 @@ export const FAVICON_ALLOWED_TYPES: { [key: string]: string } = {
 };
 export function getFaviconKey() {
     const env = getEnv();
-    return path.join(env.S3_FOLDER || "", "favicon.webp");
+    return path.join(env.IMG_FOLDER || "", "favicon.webp");
 }
 
 export function FaviconService() {
     const env = getEnv();
     const s3 = createS3Client();
-    const bucket = env.S3_BUCKET;
-    const accessHost = env.S3_ACCESS_HOST || env.S3_ENDPOINT;
+    const bucket = env.IMG_BUCKET;
+    const accessHost = env.IMG_ACCESS_HOST || env.S3_ENDPOINT;
     const faviconKey = getFaviconKey();
     return new Elysia({ aot: false })
         .use(setup())
@@ -55,7 +55,7 @@ export function FaviconService() {
                     FAVICON_ALLOWED_TYPES,
                 )) {
                     originFaviconKey = path.join(
-                        env.S3_FOLDER || "",
+                        env.IMG_FOLDER || "",
                         `originFavicon${ext}`,
                     );
                     const response = await fetch(
@@ -102,7 +102,7 @@ export function FaviconService() {
                         });
                     }
                     const originFaviconKey = path.join(
-                        env.S3_FOLDER || "",
+                        env.IMG_FOLDER || "",
                         `originFavicon${FAVICON_ALLOWED_TYPES[file.type]}`,
                     );
 

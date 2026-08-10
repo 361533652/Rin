@@ -24,8 +24,8 @@ export class CacheImpl {
         this.db = getDB();
         this.env = getEnv();
         this.cache = new Map<string, any>();
-        const slash = this.env.S3_ACCESS_HOST.endsWith('/') ? '' : '/';
-        this.cacheUrl = this.env.S3_ACCESS_HOST + slash + path.join(this.env.S3_CACHE_FOLDER || 'cache', `${type}.json`);
+        const slash = this.env.CACHE_ACCESS_HOST.endsWith('/') ? '' : '/';
+        this.cacheUrl = this.env.CACHE_ACCESS_HOST + slash + path.join(this.env.CACHE_FOLDER || 'cache', `${type}.json`);
     }
 
     async load() {
@@ -139,9 +139,9 @@ export class CacheImpl {
     }
 
     async save() {
-        const cacheKey = path.join(this.env.S3_CACHE_FOLDER, `${this.type}.json`);
+        const cacheKey = path.join(this.env.CACHE_FOLDER, `${this.type}.json`);
         await this.s3.send(new PutObjectCommand({
-            Bucket: this.env.S3_BUCKET,
+            Bucket: this.env.CACHE_BUCKET,
             Key: cacheKey,
             Body: JSON.stringify(Object.fromEntries(this.cache))
         })).then(() => {

@@ -13,12 +13,12 @@
 ```ini
 SEO_BASE_URL=<SEO 基础地址，用于 SEO 索引，默认为 FRONTEND_URL>
 SEO_CONTAINS_KEY=<SEO 索引时只索引以 SEO_BASE_URL 开头或包含SEO_CONTAINS_KEY 关键字的链接，默认为空>
-S3_FOLDER=<S3 图片资源存储的文件夹，默认为 'images/'>
-S3_CACHE_FOLDER=<S3 缓存文件夹（用于 SEO、高频请求缓存），默认为 'cache/'>
-S3_BUCKET=<S3 存储桶名称>
 S3_REGION=<S3 存储桶所在区域，如使用 Cloudflare R2 填写 auto 即可>
 S3_ENDPOINT=<S3 存储桶接入点地址>
-S3_ACCESS_HOST=<S3 存储桶访问地址>
+S3_FORCE_PATH_STYLE=false
+CACHE_BUCKET=<缓存桶名称（RSS/SEO/配置缓存）>
+CACHE_FOLDER=cache/
+CACHE_ACCESS_HOST=<缓存桶访问地址>
 ```
 
 以及以下环境变量（加密）：

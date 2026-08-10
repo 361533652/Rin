@@ -39,10 +39,10 @@ jobs:
           FRONTEND_URL: ${{ vars.FRONTEND_URL }}
           SEO_BASE_URL: ${{ vars.SEO_BASE_URL }}
           SEO_CONTAINS_KEY: ${{ vars.SEO_CONTAINS_KEY }}
-          S3_ACCESS_HOST: ${{ vars.S3_ACCESS_HOST }}
-          S3_BUCKET: ${{ vars.S3_BUCKET }}
-          S3_CACHE_FOLDER: ${{ vars.S3_CACHE_FOLDER }}
           S3_FORCE_PATH_STYLE: ${{ vars.S3_FORCE_PATH_STYLE }}
+          CACHE_BUCKET: ${{ vars.CACHE_BUCKET }}
+          CACHE_FOLDER: ${{ vars.CACHE_FOLDER }}
+          CACHE_ACCESS_HOST: ${{ vars.CACHE_ACCESS_HOST }}
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: |
           cd Rin/
