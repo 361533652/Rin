@@ -5,11 +5,6 @@ import Elysia from "elysia";
 import { FAVICON_ALLOWED_TYPES, getFaviconKey } from "./favicon";
 import { Feed } from "feed";
 import path from 'path';
-import rehypeStringify from "rehype-stringify";
-import remarkGfm from "remark-gfm";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
 import type { Env } from "../db/db";
 import * as schema from "../db/schema";
 import { feeds, users } from "../db/schema";
@@ -61,6 +56,32 @@ export function RSSService() {
 export async function rssCrontab(env: Env) {
     const frontendUrl = `${env.FRONTEND_URL.startsWith("http://") || env.FRONTEND_URL.startsWith("https://") ? "" : "https://"}${env.FRONTEND_URL}`;
     const db = drizzle(env.DB, { schema: schema });
+    const cacheBucket = env.CACHE_BUCKET;
+    const cacheFolder = env.CACHE_FOLDER || "cache/";
+    const cacheAccessHost = env.CACHE_ACCESS_HOST || env.S3_ENDPOINT;
+    const s3 = createS3Client();
+
+    // 只在有文章创建/更新时重新生成，避免每次全量渲染超过免费计划 CPU 上限（10ms）
+    const markerKey = path.join(cacheFolder, ".rss-last.json");
+    const latestFeed = await db.query.feeds.findMany({
+        columns: { updatedAt: true },
+        where: and(eq(feeds.draft, 0), eq(feeds.listed, 1)),
+        orderBy: [desc(feeds.updatedAt)],
+        limit: 1,
+    });
+    const latestTs = latestFeed.length ? new Date(latestFeed[0].updatedAt).getTime() : 0;
+    let lastTs = 0;
+    try {
+        const markerRes = await fetch(new Request(`${cacheAccessHost}/${markerKey}`));
+        if (markerRes.ok) lastTs = ((await markerRes.json()) as any).updatedAt || 0;
+    } catch (e: any) {
+        console.error('RSS marker read failed:', e.message);
+    }
+    if (latestTs <= lastTs) {
+        console.log('RSS: no feed update, skip regeneration');
+        return;
+    }
+
     const accessHost = env.IMG_ACCESS_HOST || env.S3_ENDPOINT;
     const faviconKey = getFaviconKey();
 
@@ -127,45 +148,39 @@ export async function rssCrontab(env: Env) {
     });
     for (const f of feed_list) {
         const { summary, content, user, ...other } = f;
-        const file = await unified()
-            .use(remarkParse)
-            .use(remarkGfm)
-            .use(remarkRehype)
-            .use(rehypeStringify)
-            .process(content);
-        let contentHtml = file.toString();
+        // 不再渲染 markdown→HTML（CPU 大头），content 直接用摘要，避免超免费计划 CPU 上限
+        const description =
+            summary.length > 0
+                ? summary
+                : content.length > 100
+                  ? content.slice(0, 100)
+                  : content;
         feed.addItem({
             title: other.title || "No title",
             id: other.id?.toString() || "0",
             link: `${frontendUrl}/feed/${other.id}`,
             date: other.createdAt,
-            description:
-                summary.length > 0
-                    ? summary
-                    : content.length > 100
-                      ? content.slice(0, 100)
-                      : content,
-            content: contentHtml,
+            description,
+            content: description,
             author: [{ name: user.username }],
             image: extractImage(content),
         });
     }
     // save rss.xml to s3
     console.log("save rss.xml to s3");
-    const bucket = env.CACHE_BUCKET;
-    const folder = env.CACHE_FOLDER || "cache/";
-    const s3 = createS3Client();
+    let allSaved = true;
     async function save(name: string, data: string) {
-        const hashkey = path.join(folder, name);
+        const hashkey = path.join(cacheFolder, name);
         try {
             await s3.send(
                 new PutObjectCommand({
-                    Bucket: bucket,
+                    Bucket: cacheBucket,
                     Key: hashkey,
                     Body: data,
                 }),
             );
         } catch (e: any) {
+            allSaved = false;
             console.error(e.message);
         }
     }
@@ -174,5 +189,19 @@ export async function rssCrontab(env: Env) {
     await save("atom.xml", feed.atom1());
     console.log("Saved rss.json to s3");
     await save("rss.json", feed.json1());
+    // 全部保存成功才推进生成标记，保证失败会重试
+    if (allSaved) {
+        try {
+            await s3.send(
+                new PutObjectCommand({
+                    Bucket: cacheBucket,
+                    Key: markerKey,
+                    Body: JSON.stringify({ updatedAt: latestTs }),
+                }),
+            );
+        } catch (e: any) {
+            console.error(e.message);
+        }
+    }
     console.log("Saved rss.xml to s3");
 }

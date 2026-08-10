@@ -160,7 +160,7 @@ export function FriendService() {
         )
 }
 
-export async function friendCrontab(env: Env, ctx: ExecutionContext) {
+export async function friendCrontab(env: Env, _ctx: ExecutionContext) {
     const config = ServerConfig()
     const enable = await config.getOrDefault('friend_crontab', true)
     const ua = await config.get('friend_ua') || 'Rin-Check/0.1.0'
@@ -171,26 +171,38 @@ export async function friendCrontab(env: Env, ctx: ExecutionContext) {
     const db = drizzle(env.DB, { schema: schema })
     const friend_list = await db.query.friends.findMany()
     console.info(`total friends: ${friend_list.length}`)
+    // 限并发批量检查，避免串行逐个 fetch 拖长墙钟；fetch 超时防止死链卡住
+    const CONCURRENCY = 8
+    const TIMEOUT_MS = 10_000
     let health = 0
     let unhealthy = 0
-    for (const friend of friend_list) {
+
+    async function check(friend: (typeof friend_list)[number]) {
         console.info(`checking ${friend.name}: ${friend.url}`)
         try {
-            const response = await fetch(new Request(friend.url, { method: 'GET', headers: { 'User-Agent': ua } }))
+            const response = await fetch(new Request(friend.url, {
+                method: 'GET',
+                headers: { 'User-Agent': ua },
+                signal: AbortSignal.timeout(TIMEOUT_MS),
+            }))
             console.info(`response status: ${response.status}`)
-            console.info(`response statusText: ${response.statusText}`)
             if (response.ok) {
-                ctx.waitUntil(db.update(schema.friends).set({ health: "" }).where(eq(schema.friends.id, friend.id)))
+                await db.update(schema.friends).set({ health: "" }).where(eq(schema.friends.id, friend.id))
                 health++
             } else {
-                ctx.waitUntil(db.update(schema.friends).set({ health: `${response.status}` }).where(eq(schema.friends.id, friend.id)))
+                await db.update(schema.friends).set({ health: `${response.status}` }).where(eq(schema.friends.id, friend.id))
                 unhealthy++
             }
         } catch (e: any) {
             console.error(e.message)
-            ctx.waitUntil(db.update(schema.friends).set({ health: e.message }).where(eq(schema.friends.id, friend.id)))
+            await db.update(schema.friends).set({ health: e.message }).where(eq(schema.friends.id, friend.id))
             unhealthy++
         }
+    }
+
+    for (let i = 0; i < friend_list.length; i += CONCURRENCY) {
+        const batch = friend_list.slice(i, i + CONCURRENCY)
+        await Promise.allSettled(batch.map(check))
     }
     console.info(`update friends health done. Total: ${health + unhealthy}, Healthy: ${health}, Unhealthy: ${unhealthy}`)
 }

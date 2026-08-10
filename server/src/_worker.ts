@@ -47,7 +47,9 @@ export default {
             Container.set("client.config", new CacheImpl("client.config"));
         }
 
-        await friendCrontab(env, ctx)
-        await rssCrontab(env)
+        // 并行执行两个定时任务（waitUntil 只延长墙钟、不增加 CPU 预算，
+        // 减负主要靠 rss 条件生成 + 摘要化、友链并发）
+        ctx.waitUntil(friendCrontab(env, ctx))
+        ctx.waitUntil(rssCrontab(env))
     },
 }
