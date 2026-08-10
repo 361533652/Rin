@@ -64,6 +64,15 @@ function sanitizeFilename(name: string): string {
         .slice(0, 120);
     return cleaned || 'file';
 }
+
+// 格式化 S3 错误：记录错误码与 HTTP 状态，便于排查 R2/S3 兼容问题
+function s3Err(e: any): string {
+    const code = e?.code || e?.name || '';
+    const status = e?.$metadata?.httpStatusCode;
+    console.error('[storage]', { code, status, message: e?.message });
+    return code ? `${e.message} (${code}${status ? `, HTTP ${status}` : ''})` : e.message;
+}
+
 export function StorageService() {
     const env: Env = getEnv();
     const endpoint = env.S3_ENDPOINT;
@@ -111,8 +120,7 @@ export function StorageService() {
                         return `${imgAccessHost}/${hashkey}`
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({
@@ -138,8 +146,7 @@ export function StorageService() {
                         return `${imgAccessHost}/${hashkey}`
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({
@@ -152,9 +159,12 @@ export function StorageService() {
                     if (err) return err
                     if (!fileBucket) { set.status = 500; return 'FILE_BUCKET is not defined' }
                     if (!uid) { set.status = 401; return 'Unauthorized' }
-                    const uploadId = crypto.randomUUID()
+                    // folderId 只用于对象键的唯一目录；
+                    // 真正的 uploadId 必须用 R2 在 CreateMultipartUpload 返回的 UploadId，
+                    // 否则后续 UploadPart/Complete 会报 NoSuchUpload
+                    const folderId = crypto.randomUUID()
                     const name = sanitizeFilename(body.key)
-                    const key = `${filePrefix}${uploadId}/${name}`
+                    const key = `${filePrefix}${folderId}/${name}`
                     try {
                         const response = await s3.send(new CreateMultipartUploadCommand({
                             Bucket: fileBucket,
@@ -163,11 +173,11 @@ export function StorageService() {
                             ContentDisposition: dispositionFor(name),
                         }))
                         console.info(response)
-                        return { uploadId, key }
+                        if (!response.UploadId) { set.status = 500; return 'Failed to get UploadId from R2' }
+                        return { uploadId: response.UploadId, key }
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({ key: t.String() })
@@ -178,7 +188,9 @@ export function StorageService() {
                     if (!Number.isInteger(partNumber) || partNumber < 1 || partNumber > 10000) {
                         set.status = 400; return 'Invalid part number'
                     }
-                    if (!body.key.startsWith(`${filePrefix}${params.uploadId}/`)) {
+                    // key 由 initiate 生成并回传，目录组件是 folderId 而非 uploadId；
+                    // R2 会对 (bucket, key, uploadId) 三元组做校验，这里仅做基础前缀检查
+                    if (!body.key.startsWith(filePrefix)) {
                         set.status = 400; return 'Invalid key'
                     }
                     if (body.file.size > PART_SIZE) {
@@ -195,8 +207,7 @@ export function StorageService() {
                         return { partNumber, etag: response.ETag }
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({
@@ -206,7 +217,9 @@ export function StorageService() {
                 })
                 .post('/files/multipart/:uploadId/complete', async ({ uid, set, params, body }) => {
                     if (!uid) { set.status = 401; return 'Unauthorized' }
-                    if (!body.key.startsWith(`${filePrefix}${params.uploadId}/`)) {
+                    // key 由 initiate 生成并回传，目录组件是 folderId 而非 uploadId；
+                    // R2 会对 (bucket, key, uploadId) 三元组做校验，这里仅做基础前缀检查
+                    if (!body.key.startsWith(filePrefix)) {
                         set.status = 400; return 'Invalid key'
                     }
                     if (!body.parts.length) { set.status = 400; return 'No parts' }
@@ -227,8 +240,7 @@ export function StorageService() {
                         return `${fileAccessHost}/${body.key}`
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({
@@ -242,7 +254,9 @@ export function StorageService() {
                 })
                 .delete('/files/multipart/:uploadId', async ({ uid, set, params, body }) => {
                     if (!uid) { set.status = 401; return 'Unauthorized' }
-                    if (!body.key.startsWith(`${filePrefix}${params.uploadId}/`)) {
+                    // key 由 initiate 生成并回传，目录组件是 folderId 而非 uploadId；
+                    // R2 会对 (bucket, key, uploadId) 三元组做校验，这里仅做基础前缀检查
+                    if (!body.key.startsWith(filePrefix)) {
                         set.status = 400; return 'Invalid key'
                     }
                     try {
@@ -254,8 +268,7 @@ export function StorageService() {
                         return 'ok'
                     } catch (e: any) {
                         set.status = 400;
-                        console.error(e.message)
-                        return e.message
+                        return s3Err(e)
                     }
                 }, {
                     body: t.Object({ key: t.String() })
