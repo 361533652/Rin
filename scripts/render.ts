@@ -74,6 +74,12 @@ async function fetchPage(url: string) {
         console.error(`Failed to fetch ${url}`);
         return;
     }
+    // SPA 内容异步加载，networkidle2 可能在正文渲染完成前就空闲；
+    // 额外等待 #root 里出现实际内容（正文通常远超 500 字符），最多 15s，空页则超时兜底
+    await page.waitForFunction(
+        () => (document.querySelector('#root')?.textContent?.length || 0) > 500,
+        { timeout: 15000 }
+    ).catch(() => {});
     if (response.ok() && response.headers()['content-type']?.includes('text/html')) {
         const html = await page.content();
         await saveFile(url, html);
