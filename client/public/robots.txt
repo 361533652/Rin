@@ -3,3 +3,5 @@ Disallow: /writing/
 
 User-agent: *
 Allow: /
+
+Sitemap: https://rin.361533.xyz/sub/sitemap.xml

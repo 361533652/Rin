@@ -27,13 +27,19 @@ export function RSSService() {
             if (name === 'feed.xml') {
                 name = 'rss.xml';
             }
-            if (['rss.xml', 'atom.xml', 'rss.json'].includes(name)) {
+            const fileTypes: Record<string, string> = {
+                'rss.xml': 'application/rss+xml; charset=UTF-8',
+                'atom.xml': 'application/atom+xml; charset=UTF-8',
+                'rss.json': 'application/feed+json; charset=UTF-8',
+                'sitemap.xml': 'application/xml; charset=UTF-8',
+            };
+            const contentType = fileTypes[name];
+            if (contentType) {
                 const key = path.join(folder, name);
                 try {
                     const url = `${host}/${key}`;
                     console.log(`Fetching ${url}`);
                     const response = await fetch(new Request(url))
-                    const contentType = name === 'rss.xml' ? 'application/rss+xml; charset=UTF-8' : name === 'atom.xml' ? 'application/atom+xml; charset=UTF-8' : 'application/feed+json; charset=UTF-8';
                     return new Response(response.body, {
                         status: response.status,
                         statusText: response.statusText,
@@ -77,7 +83,15 @@ export async function rssCrontab(env: Env) {
     } catch (e: any) {
         console.error('RSS marker read failed:', e.message);
     }
-    if (latestTs <= lastTs) {
+    // sitemap.xml 缺失时（如首次部署该功能）也强制重新生成一次
+    let sitemapExists = true;
+    try {
+        const headRes = await fetch(new Request(`${cacheAccessHost}/${path.join(cacheFolder, 'sitemap.xml')}`), { method: 'HEAD' });
+        sitemapExists = headRes.ok;
+    } catch (e: any) {
+        console.error('RSS sitemap HEAD failed:', e.message);
+    }
+    if (latestTs <= lastTs && sitemapExists) {
         console.log('RSS: no feed update, skip regeneration');
         return;
     }
@@ -189,6 +203,22 @@ export async function rssCrontab(env: Env) {
     await save("atom.xml", feed.atom1());
     console.log("Saved rss.json to s3");
     await save("rss.json", feed.json1());
+
+    // 生成 sitemap.xml（全量已发布且列出的文章 + 主要静态页），由 /sub/sitemap.xml 提供
+    const allListed = await db.query.feeds.findMany({
+        where: and(eq(feeds.draft, 0), eq(feeds.listed, 1)),
+        columns: { id: true, updatedAt: true },
+    });
+    const isoDate = (d: Date) => d.toISOString().slice(0, 10);
+    const staticPages = ['/', '/timeline', '/moments', '/friends', '/hashtags', '/tools', '/about'];
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticPages.map((p) => `  <url><loc>${frontendUrl}${p}</loc></url>`).join('\n')}
+${allListed.map((f) => `  <url><loc>${frontendUrl}/feed/${f.id}</loc><lastmod>${isoDate(new Date(f.updatedAt))}</lastmod></url>`).join('\n')}
+</urlset>`;
+    console.log("save sitemap.xml to s3");
+    await save("sitemap.xml", sitemap);
+
     // 全部保存成功才推进生成标记，保证失败会重试
     if (allSaved) {
         try {
