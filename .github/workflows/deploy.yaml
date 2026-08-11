@@ -61,3 +61,12 @@ jobs:
           cd Rin/
           bun install --frozen-lockfile
           bun scripts/migrator.ts
+
+      - name: Update SEO transform rule (best effort, 不阻塞部署)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          FRONTEND_URL: ${{ vars.FRONTEND_URL }}
+        run: |
+          cd Rin/
+          bun scripts/update-seo-rule.ts \
+            || echo "::warning::SEO 转换规则更新失败，见上方输出（不影响本次部署）"
