@@ -44,6 +44,18 @@ type Feed = {
   uv: number;
 };
 
+// 生成 SEO description：去掉 markdown 图片/链接/符号，折叠空白换行，截断到 150 字符
+// （搜索引擎只展示前 150-160 字符，原始 markdown 和换行会被原样显示，必须清洗）
+function makeDescription(content: string, maxLength = 150): string {
+  return content
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")   // 图片 ![alt](url)
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // 链接 [text](url) → 保留文字
+    .replace(/[#>*_`~-]/g, " ")             // markdown 语法符号
+    .replace(/\s+/g, " ")                    // 折叠空白/换行
+    .trim()
+    .substring(0, maxLength);
+}
+
 
 
 export function FeedPage({ id, clean }: { id: string, clean: (id: string) => void }) {
@@ -221,26 +233,15 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           <meta property="og:type" content="article" />
           <meta property="og:url" content={document.URL} />
           <meta
-            name="og:description"
-            content={
-              feed.content.length > 200
-                ? feed.content.substring(0, 200)
-                : feed.content
-            }
+            property="og:description"
+            content={makeDescription(feed.content)}
           />
           <meta name="author" content={feed.user.username} />
           <meta
             name="keywords"
             content={feed.hashtags.map(({ name }) => name).join(", ")}
           />
-          <meta
-            name="description"
-            content={
-              feed.content.length > 200
-                ? feed.content.substring(0, 200)
-                : feed.content
-            }
-          />
+          <meta name="description" content={makeDescription(feed.content)} />
         </Helmet>
       )}
       <div className="w-full flex flex-row justify-center ani-show">
@@ -372,6 +373,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                   <div className="mt-6 pt-6 border-t border-[var(--border)] flex flex-row items-center gap-3">
                     <img
                       src={feed.user.avatar || "/avatar.png"}
+                      alt={feed.user.username}
                       className="w-10 h-10 rounded-full"
                     />
                     <div className="flex flex-col">
@@ -630,6 +632,7 @@ function CommentItem({
       {comment.user ? (
         <img
           src={comment.user.avatar || ""}
+          alt={comment.user.username}
           className="w-8 h-8 rounded-full mt-4"
         />
       ) : comment.guestId ? (

@@ -52,9 +52,9 @@ export function AdjacentCard({data, type}: { data: AdjacentFeed | null | undefin
             <p className={`t-secondary w-full ${direction}`}>
                 {type === "previous" ? "Previous" : "Next"}
             </p>
-            <h1 className={`text-xl text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
+            <h3 className={`text-xl text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
                 {t('no_more')}
-            </h1>
+            </h3>
         </div>);
     }
     return (
@@ -63,9 +63,9 @@ export function AdjacentCard({data, type}: { data: AdjacentFeed | null | undefin
             <p className={`t-secondary w-full ${direction}`}>
                 {type === "previous" ? "Previous" : "Next"}
             </p>
-            <h1 className={`text-xl font-bold text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
+            <h3 className={`text-xl font-bold text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
                 {data.title}
-            </h1>
+            </h3>
             <p className={`space-x-2 ${direction}`}>
                 <span className="text-gray-400 text-sm" title={new Date(data.createdAt).toLocaleString()}>
                     {data.createdAt === data.updatedAt ? timeago(data.createdAt) : t('feed_card.published$time', {time: timeago(data.createdAt)})}
