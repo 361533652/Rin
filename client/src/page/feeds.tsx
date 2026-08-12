@@ -130,6 +130,7 @@ export function FeedsPage() {
         <>
             <Helmet>
                 <title>{`${t('article.title')} - ${process.env.NAME}`}</title>
+                <meta name="description" content={siteName} />
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={t('article.title')} />
                 <meta property="og:image" content={process.env.AVATAR} />
