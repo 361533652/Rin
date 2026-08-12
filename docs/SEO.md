@@ -47,10 +47,18 @@ Worker 选择为部署的 Worker，点击保存。
 
 随后点击侧边栏菜单 > `规则` > `转换规则` > `重写 URL` > `创建规则`，规则名称随意，自定义筛选表达式为：
 > [!NOTE]
-> 该筛选表达式只为 Google 做了收录优化，如需其他搜索引擎的优化请自行查找其对应的爬虫 UA 填写
+> 默认覆盖主流搜索引擎爬虫（Google/Bing/百度/Yandex/搜狗/字节/神马/DuckDuckGo），如需其他爬虫按相同格式追加 `or http.user_agent contains "..."`。
+>
+> **粘贴注意**：表达式必须**纯 ASCII 半角**字符，不能用中文输入法输入的空格/引号；粘贴后确保是**单行、末尾无空格/换行**。若面板提示不支持，优先改用**可视化构建器**（见下文「可视化方式」），不要死磕表达式。
+>
+> **免费版限制**：`matches`（正则）运算符需要 Business/Enterprise 套餐，免费版只能用 `contains` 的 or 串联。
 ```
-(http.host eq "<前端域名，如xeu.life>" and http.user_agent contains "Googlebot")
+(http.host eq "<前端域名，如xeu.life>" and (http.user_agent contains "Googlebot" or http.user_agent contains "Bingbot" or http.user_agent contains "Baiduspider" or http.user_agent contains "YandexBot" or http.user_agent contains "Sogou" or http.user_agent contains "Bytespider" or http.user_agent contains "YisouSpider" or http.user_agent contains "DuckDuckBot") and not starts_with(http.request.uri.path, "/sub/") and not starts_with(http.request.uri.path, "/seo/") and not starts_with(http.request.uri.path, "/assets/") and not starts_with(http.request.uri.path, "/locales/") and http.request.uri.path ne "/robots.txt" and http.request.uri.path ne "/particles.js")
 ```
+> [!TIP]
+> 对比单爬虫规则，只把 `http.user_agent contains "Googlebot"` 扩成 `( ... or ... )`，前后 `http.host eq` 与排除条件（`/sub/` sitemap/RSS、`/seo/` 预渲染、静态资源、robots.txt）保持不变，避免预渲染 URL 被二次重写。
+>
+> **可视化方式**：编辑规则时点「Edit expression」切到纯文本模式替换；若坚持用可视化构建器，则字段 `User Agent` → `contains` → 各爬虫值用 **Or** 连接，再 And 上 `Hostname` 等于 `<前端域名>` 及各排除条件。
 重写路径设置为 `Dynamic`，值为：
 ```
 concat("/seo",http.request.uri.path)
@@ -61,3 +69,18 @@ concat("/seo",http.request.uri.path)
 ![转换规则](https://github.com/openRin/Rin/assets/36541432/657e9546-1dc0-4390-9bfc-5d3eb725e792)
 
 点击部署，即可完成 SEO 配置。
+
+## 各平台提交清单
+
+预渲染管线本身与平台无关，以下任一平台都消费同一份 sitemap 与同一套 `/seo/*` 缓存，按需在对应平台注册域名并提交 sitemap 即可：
+
+| 平台 | 注册入口 | 提交地址 | 备注 |
+|---|---|---|---|
+| Google | [Google Search Console](https://search.google.com/search-console) | `https://rin.361533.xyz/sub/sitemap.xml` | 已验证 TXT，sitemap 待提交 |
+| Bing | [Bing Webmaster Tools](https://www.bing.com/webmasters) | 同上 | 支持从 Search Console 一键导入，另支持 [IndexNow](https://www.indexnow.org/) 主动推送新文章 |
+| 百度 | [百度搜索资源平台](https://ziyuan.baidu.com/) | 同上 | 已验证 meta（`codeva-c04lEKLb72`）；需要站点可被大陆网络访问（Cloudflare 免费版在国内延迟高但可爬）；建议开启站点「普通收录-手动提交」 |
+| Yandex | [Yandex Webmaster](https://webmaster.yandex.ru/) | 同上 | 已验证 meta（`ecf80709671d13a7`）；俄语区，可选 |
+| 搜狗 | [搜狗站长平台](http://zhanzhang.sogou.com/) | 同上 | 可选 |
+| 神马/UC | [神马站长平台](https://zhanzhang.sm.cn/) | 同上 | 可选 |
+
+**提交后验证**：用 `site:rin.361533.xyz` 在各平台站内查询确认收录；若某平台长时间未收录，先在该平台的「抓取/URL 检查」工具里确认它拿到的 HTML 是否超过空壳大小（>5KB 即有预渲染内容），避免排查时绕回预渲染链路。
