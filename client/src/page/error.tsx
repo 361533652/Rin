@@ -19,7 +19,7 @@ export function ErrorPage({error}: {error?: string}) {
                     <h1 className="text-xl font-bold t-primary">{error}</h1>
                     <Button
                         title={t("index.back")}
-                        onClick={() => (window.location.href = "/")}
+                        onClick={() => (window.location.href = "/blog")}
                     />
                 </div>
             </div>

@@ -210,7 +210,7 @@ export async function rssCrontab(env: Env) {
         columns: { id: true, updatedAt: true },
     });
     const isoDate = (d: Date) => d.toISOString().slice(0, 10);
-    const staticPages = ['/', '/timeline', '/moments', '/friends', '/hashtags', '/tools', '/about'];
+    const staticPages = ['/', '/blog', '/timeline', '/moments', '/friends', '/hashtags', '/tools', '/about'];
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticPages.map((p) => `  <url><loc>${frontendUrl}${p}</loc></url>`).join('\n')}

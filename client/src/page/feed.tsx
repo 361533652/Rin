@@ -115,7 +115,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
               showAlert(error.value as string);
             } else {
               showAlert(t("delete.success"));
-              setLocation("/");
+              setLocation("/blog");
             }
           });
       })
@@ -285,7 +285,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
               )}
               <Button
                 title={t("index.back")}
-                onClick={() => (window.location.href = "/")}
+                onClick={() => (window.location.href = "/blog")}
               />
             </div>
           </>

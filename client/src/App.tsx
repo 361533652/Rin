@@ -15,6 +15,7 @@ import { FeedsPage } from './page/feeds'
 import { FriendsPage } from './page/friends'
 import { HashtagPage } from './page/hashtag.tsx'
 import { HashtagsPage } from './page/hashtags.tsx'
+import { HomePage } from './page/home'
 import { Settings } from "./page/settings.tsx"
 import { TimelinePage } from './page/timeline'
 import { WritingPage } from './page/writing'
@@ -132,7 +133,13 @@ function App() {
           </Helmet>
           <PaperDecoration />
           <Switch>
-            <RouteMe path="/">
+            {/* 落地页：站点门户，进入主站 /blog */}
+            <Route path="/">
+              <HomePage />
+            </Route>
+
+            {/* 主站：文章列表 */}
+            <RouteMe path="/blog">
               <FeedsPage />
             </RouteMe>
 

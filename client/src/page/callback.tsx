@@ -9,7 +9,7 @@ export function CallbackPage() {
         const token = searchParams.get('token');
         if (token) {
             setCookie('token', token, { expires: 7, path: '/' })
-            setLocation("/");
+            setLocation("/blog");
         }
     }, [searchParams]);
     return (<>

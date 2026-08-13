@@ -44,7 +44,7 @@ export function TipsPage({ children }: { children: React.ReactNode }) {
                 {children}
                 <Button
                     title={t("index.back")}
-                    onClick={() => (window.location.href = "/")}
+                    onClick={() => (window.location.href = "/blog")}
                 />
             </div>
         </div>

@@ -26,7 +26,7 @@ export function Header({ children }: { children?: React.ReactNode }) {
                         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4">
                             {/* Logo 部分 - 大屏幕显示完整信息，小屏幕显示头像和菜单按钮 */}
                             <div className="w-full sm:w-auto flex justify-between items-center sm:justify-start">
-                                <Link aria-label={t('home')} href="/"
+                                <Link aria-label={t('article.title')} href="/blog"
                                     className="flex items-center ml-4 lg:ml-6">
                                     <img src={process.env.AVATAR} alt="Avatar" className="w-9 h-9 rounded-full" />
                                     <div className="hidden sm:flex flex-col justify-center items-start ml-2">
@@ -175,7 +175,7 @@ function NavBar({ menu, onClick }: { menu: boolean, onClick?: () => void }) {
     return (
         <>
             <NavItem menu={menu} onClick={onClick} title={t('article.title')}
-                selected={location === "/" || location.startsWith('/feed')} href="/" />
+                selected={location === "/blog" || location.startsWith('/feed')} href="/blog" />
             <NavItem menu={menu} onClick={onClick} title={t('timeline')} selected={location === "/timeline"} href="/timeline" />
             <NavItem menu={menu} onClick={onClick} title={t('moments.title')} selected={location === "/moments"} href="/moments" />
             <NavItem menu={menu} onClick={onClick} title={t('hashtags')} selected={location === "/hashtags"} href="/hashtags" />
