@@ -51,6 +51,7 @@ export function SearchPage({ keyword }: { keyword: string }) {
         <>
             <Helmet>
                 <title>{`${title} - ${process.env.NAME}`}</title>
+                <meta name="description" content={`${title} - ${siteName}`} />
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={title} />
                 <meta property="og:image" content={process.env.AVATAR} />

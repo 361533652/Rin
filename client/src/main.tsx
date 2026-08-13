@@ -37,6 +37,7 @@ i18n
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Helmet>
+      <html lang={i18n.language} />
       <title>{siteName}</title>
     </Helmet>
     <App />

@@ -50,7 +50,7 @@ async function saveFile(filename: string, data: string) {
         fileName += 'index.html';
     }
     try {
-        await s3.send(new PutObjectCommand({ Bucket: bucket, Key: fileName, Body: data, ContentType: 'text/html' }))
+        await s3.send(new PutObjectCommand({ Bucket: bucket, Key: fileName, Body: data, ContentType: 'text/html', CacheControl: 'public, max-age=3600' }))
         console.info(`Saved ${accessHost}/${fileName}.`)
     } catch (e: any) {
         console.error(e.message)

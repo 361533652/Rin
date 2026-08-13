@@ -91,6 +91,7 @@ export function FriendsPage() {
     return (<>
         <Helmet>
             <title>{`${t('friends.title')} - ${process.env.NAME}`}</title>
+            <meta name="description" content={`${t('friends.title')} - ${siteName}`} />
             <meta property="og:site_name" content={siteName} />
             <meta property="og:title" content={t('friends.title')} />
             <meta property="og:image" content={process.env.AVATAR} />

@@ -54,6 +54,7 @@ export function TimelinePage() {
         <>
             <Helmet>
                 <title>{`${t('timeline')} - ${process.env.NAME}`}</title>
+                <meta name="description" content={`${t('timeline')} - ${siteName}`} />
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={t('timeline')} />
                 <meta property="og:image" content={process.env.AVATAR} />

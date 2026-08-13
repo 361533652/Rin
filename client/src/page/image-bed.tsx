@@ -51,6 +51,7 @@ export function ImageBedPage() {
     <>
       <Helmet>
         <title>{`${t("image_host")} - ${process.env.NAME}`}</title>
+        <meta name="description" content={`${t("image_host")} - ${siteName}`} />
         <meta property="og:site_name" content={siteName} />
         <meta property="og:title" content={t("image_host")} />
         <meta property="og:url" content={document.URL} />

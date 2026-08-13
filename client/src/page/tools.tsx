@@ -9,6 +9,7 @@ export function ToolsPage() {
         <>
             <Helmet>
                 <title>{`${t('tools')} - ${process.env.NAME}`}</title>
+                <meta name="description" content={`${t('tools')} - ${siteName}`} />
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={t('tools')} />
                 <meta property="og:image" content={process.env.AVATAR} />

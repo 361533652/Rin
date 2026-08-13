@@ -47,13 +47,13 @@ Worker 选择为部署的 Worker，点击保存。
 
 随后点击侧边栏菜单 > `规则` > `转换规则` > `重写 URL` > `创建规则`，规则名称随意，自定义筛选表达式为：
 > [!NOTE]
-> 默认覆盖主流搜索引擎爬虫（Google/Bing/百度/Yandex/搜狗/字节/神马/DuckDuckGo），如需其他爬虫按相同格式追加 `or http.user_agent contains "..."`。
+> 默认覆盖主流搜索引擎爬虫（Google/Bing/百度/Yandex/搜狗/360/字节/神马/DuckDuckGo），如需其他爬虫按相同格式追加 `or http.user_agent contains "..."`。
 >
 > **粘贴注意**：表达式必须**纯 ASCII 半角**字符，不能用中文输入法输入的空格/引号；粘贴后确保是**单行、末尾无空格/换行**。若面板提示不支持，优先改用**可视化构建器**（见下文「可视化方式」），不要死磕表达式。
 >
 > **免费版限制**：`matches`（正则）运算符需要 Business/Enterprise 套餐，免费版只能用 `contains` 的 or 串联。
 ```
-(http.host eq "<前端域名，如xeu.life>" and (http.user_agent contains "Googlebot" or http.user_agent contains "Bingbot" or http.user_agent contains "Baiduspider" or http.user_agent contains "YandexBot" or http.user_agent contains "Sogou" or http.user_agent contains "Bytespider" or http.user_agent contains "YisouSpider" or http.user_agent contains "DuckDuckBot") and not starts_with(http.request.uri.path, "/sub/") and not starts_with(http.request.uri.path, "/seo/") and not starts_with(http.request.uri.path, "/assets/") and not starts_with(http.request.uri.path, "/locales/") and http.request.uri.path ne "/robots.txt" and http.request.uri.path ne "/particles.js")
+(http.host eq "<前端域名，如xeu.life>" and (http.user_agent contains "Googlebot" or http.user_agent contains "Bingbot" or http.user_agent contains "Baiduspider" or http.user_agent contains "YandexBot" or http.user_agent contains "Sogou" or http.user_agent contains "360Spider" or http.user_agent contains "Bytespider" or http.user_agent contains "YisouSpider" or http.user_agent contains "DuckDuckBot") and not starts_with(http.request.uri.path, "/sub/") and not starts_with(http.request.uri.path, "/seo/") and not starts_with(http.request.uri.path, "/assets/") and not starts_with(http.request.uri.path, "/locales/") and http.request.uri.path ne "/robots.txt" and http.request.uri.path ne "/particles.js")
 ```
 > [!TIP]
 > 对比单爬虫规则，只把 `http.user_agent contains "Googlebot"` 扩成 `( ... or ... )`，前后 `http.host eq` 与排除条件（`/sub/` sitemap/RSS、`/seo/` 预渲染、静态资源、robots.txt）保持不变，避免预渲染 URL 被二次重写。

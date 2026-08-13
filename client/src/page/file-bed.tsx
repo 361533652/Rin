@@ -127,6 +127,7 @@ export function FileBedPage() {
     <>
       <Helmet>
         <title>{`${t("file_host")} - ${process.env.NAME}`}</title>
+        <meta name="description" content={`${t("file_host")} - ${siteName}`} />
         <meta property="og:site_name" content={siteName} />
         <meta property="og:title" content={t("file_host")} />
         <meta property="og:url" content={document.URL} />

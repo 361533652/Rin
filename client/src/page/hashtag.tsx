@@ -57,6 +57,7 @@ export function HashtagPage({ name }: { name: string }) {
         <>
             <Helmet>
                 <title>{`${hashtag?.name} - ${process.env.NAME}`}</title>
+                <meta name="description" content={`${hashtag?.name ?? ''} - ${siteName}`} />
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={hashtag?.name} />
                 <meta property="og:image" content={process.env.AVATAR} />

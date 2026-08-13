@@ -134,8 +134,15 @@ export function FeedsPage() {
                 <meta property="og:site_name" content={siteName} />
                 <meta property="og:title" content={t('article.title')} />
                 <meta property="og:image" content={process.env.AVATAR} />
-                <meta property="og:type" content="article" />
+                <meta property="og:type" content="website" />
                 <meta property="og:url" content={document.URL} />
+                {/* WebSite 结构化数据：声明站点身份与名称 */}
+                <script type="application/ld+json">{JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebSite",
+                    "name": siteName,
+                    "url": document.location.origin,
+                })}</script>
             </Helmet>
             <Waiting for={feeds.draft.size + feeds.normal.size + feeds.unlisted.size > 0 || status === 'idle'}>
                 <main className="w-full flex flex-col mb-12">

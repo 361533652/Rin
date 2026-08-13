@@ -30,6 +30,12 @@ export function SEOService() {
                 return new Response(response.body, {
                     status: response.status,
                     statusText: response.statusText,
+                    headers: {
+                        'Content-Type': 'text/html; charset=UTF-8',
+                        // 预渲染 HTML 每小时过期一次：文章增删/改名后边缘缓存最多滞后 1h，
+                        // 配合每日 SEO cron 全量重爬，避免爬虫长时间看到陈旧内容
+                        'Cache-Control': 'public, max-age=3600',
+                    },
                 });
             } catch (e: any) {
                 console.error(e);

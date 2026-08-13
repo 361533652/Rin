@@ -40,6 +40,7 @@ type Feed = {
     username: string;
   };
   cover?: string | null;
+  alias: string | null;
   pv: number;
   uv: number;
 };
@@ -222,26 +223,56 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
         feed.content.replace(/[一-鿿]/g, " ").trim().split(/\s+/).filter(Boolean).length / 200))
     : 0;
 
+  // canonical：有别名用别名（如 /about），否则用 /feed/:id。
+  // 同一篇文章存在 /feed/:id 与 /:alias 两个入口，统一 canonical 可避免重复内容稀释权重；
+  // 与 og:url 保持一致，让分享/爬虫都指向同一个主版本。
+  const canonicalUrl = feed
+    ? `${document.location.origin}${feed.alias ? `/${encodeURIComponent(feed.alias)}` : `/feed/${feed.id}`}`
+    : document.URL;
+
   return (
     <Waiting for={feed || error}>
       {feed && (
         <Helmet>
           <title>{`${feed.title ?? "Unnamed"} - ${process.env.NAME}`}</title>
+          <link rel="canonical" href={canonicalUrl} />
           <meta property="og:site_name" content={siteName} />
           <meta property="og:title" content={feed.title ?? ""} />
           <meta property="og:image" content={headImage ?? process.env.AVATAR} />
           <meta property="og:type" content="article" />
-          <meta property="og:url" content={document.URL} />
+          <meta property="og:url" content={canonicalUrl} />
           <meta
             property="og:description"
             content={makeDescription(feed.content)}
           />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={feed.title ?? ""} />
+          <meta
+            name="twitter:description"
+            content={makeDescription(feed.content)}
+          />
+          <meta name="twitter:image" content={headImage ?? process.env.AVATAR} />
           <meta name="author" content={feed.user.username} />
           <meta
             name="keywords"
             content={feed.hashtags.map(({ name }) => name).join(", ")}
           />
           <meta name="description" content={makeDescription(feed.content)} />
+          {/* Article 结构化数据：让搜索结果展示富摘要（时间、作者、大图） */}
+          <script type="application/ld+json">{JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": feed.title ?? "Unnamed",
+            "description": makeDescription(feed.content),
+            "image": headImage ?? process.env.AVATAR,
+            "datePublished": new Date(feed.createdAt).toISOString(),
+            "dateModified": new Date(feed.updatedAt).toISOString(),
+            "author": { "@type": "Person", "name": feed.user.username },
+            "publisher": { "@type": "Person", "name": process.env.NAME },
+            "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
+            "url": canonicalUrl,
+            "keywords": feed.hashtags.map(({ name }) => name).join(", "),
+          })}</script>
         </Helmet>
       )}
       <div className="w-full flex flex-row justify-center ani-show">
