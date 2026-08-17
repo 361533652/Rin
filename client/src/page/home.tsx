@@ -32,7 +32,7 @@ export function HomePage() {
                                 {t('home.kicker')}
                             </p>
                             {process.env.AVATAR && (
-                                <img src={process.env.AVATAR} alt="" className="mb-9 h-16 w-16 border border-paper-border object-cover grayscale" />
+                                <img src={process.env.AVATAR} alt="" className="mb-9 h-16 w-16 border border-paper-border object-cover" />
                             )}
                             <h1 className="max-w-md font-serif text-5xl font-medium leading-[0.98] tracking-[-0.055em] text-[var(--text-main)] sm:text-7xl">
                                 {process.env.NAME || siteName}
