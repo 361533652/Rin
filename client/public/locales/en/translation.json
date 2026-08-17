@@ -132,7 +132,13 @@
   "github_login": "Github Login",
   "hashtags": "Hashtags",
   "home": "Home",
-  "home.enter": "Enter Blog",
+  "home.enter": "Read the journal",
+  "home.kicker": "A personal index",
+  "home.direction": "Notes on what I am thinking, reading, and living through.",
+  "home.index": "Reading index",
+  "home.archive_title": "Begin with a page.",
+  "home.archive_description": "An evolving collection of notes, thoughts, and small observations. Read slowly, then come back when you like.",
+  "home.credit": "Built with Rin",
   "index": {
     "back": "Back to Home",
     "empty": {

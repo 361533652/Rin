@@ -132,7 +132,13 @@
   "github_login": "Github ログイン",
   "hashtags": "ラベル",
   "home": "ホーム",
-  "home.enter": "ブログへ",
+  "home.enter": "記事を読む",
+  "home.kicker": "個人の記録帳",
+  "home.direction": "考えたこと、読んだこと、日々のことを不定期に記しています。",
+  "home.index": "読むための目次",
+  "home.archive_title": "一篇から、はじめよう。",
+  "home.archive_description": "ここには、書き続けているノートと思いつき、小さな観察を収めています。ゆっくり読んで、またいつでも戻ってきてください。",
+  "home.credit": "Rin で構築",
   "index": {
     "back": "ホームに戻る",
     "empty": {

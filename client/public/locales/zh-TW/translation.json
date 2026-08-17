@@ -132,7 +132,13 @@
   "github_login": "Github 登入",
   "hashtags": "標籤",
   "home": "首頁",
-  "home.enter": "進入主站",
+  "home.enter": "閱讀文章",
+  "home.kicker": "個人寫作索引",
+  "home.direction": "不定期記錄正在思考、閱讀和經歷的事。",
+  "home.index": "閱讀目錄",
+  "home.archive_title": "從一篇文章開始。",
+  "home.archive_description": "這裡收錄持續更新的筆記、想法與片段。慢慢讀，隨時離開，也歡迎再回來。",
+  "home.credit": "由 Rin 建置",
   "index": {
     "back": "返回首頁",
     "empty": {
