@@ -123,7 +123,13 @@ export function FeedsPage() {
     }, [loadMore])
     const sortedFeeds = useMemo(() => {
         const arr = [...feeds[listState].data];
-        arr.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
+        // 置顶优先，再按 sortBy 排序——与服务端 orderBy(top, createdAt, updatedAt) 语义对齐，
+        // 否则滚动加载追加后整体重排会把置顶文章埋进列表中间（表现为"乱序"）
+        arr.sort((a, b) => {
+            const topDiff = (b.top || 0) - (a.top || 0);
+            if (topDiff !== 0) return topDiff;
+            return new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime();
+        });
         return arr;
     }, [feeds, listState, sortBy]);
     return (
