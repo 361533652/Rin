@@ -73,7 +73,8 @@ export function FeedsPage() {
             query: {
                 page: 1,
                 limit: limit,
-                type: type
+                type: type,
+                sortBy: sortBy
             },
             headers: headersWithAuth()
         }).then(({ data }) => {
@@ -95,7 +96,8 @@ export function FeedsPage() {
             query: {
                 page: page + 1,
                 limit: limit,
-                type: listState
+                type: listState,
+                sortBy: sortBy
             },
             headers: headersWithAuth()
         }).then(({ data }) => {
@@ -111,7 +113,7 @@ export function FeedsPage() {
                 setPage(p => p + 1)
             }
         }).finally(() => setLoadingMore(false))
-    }, [loadingMore, hasNext, page, listState, limit])
+    }, [loadingMore, hasNext, page, listState, limit, sortBy])
     useEffect(() => {
         const el = sentinelRef.current
         if (!el) return
@@ -121,17 +123,9 @@ export function FeedsPage() {
         observer.observe(el)
         return () => observer.disconnect()
     }, [loadMore])
-    const sortedFeeds = useMemo(() => {
-        const arr = [...feeds[listState].data];
-        // 置顶优先，再按 sortBy 排序——与服务端 orderBy(top, createdAt, updatedAt) 语义对齐，
-        // 否则滚动加载追加后整体重排会把置顶文章埋进列表中间（表现为"乱序"）
-        arr.sort((a, b) => {
-            const topDiff = (b.top || 0) - (a.top || 0);
-            if (topDiff !== 0) return topDiff;
-            return new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime();
-        });
-        return arr;
-    }, [feeds, listState, sortBy]);
+    // 顺序由服务端保证（top 置顶优先 + sortBy 排序 + 稳定分页），
+    // 前端不再整体重排：滚动加载的数据按服务端顺序追加，避免新页内容被插进列表中间
+    const feedList = feeds[listState].data;
     return (
         <>
             <Helmet>
@@ -176,10 +170,10 @@ export function FeedsPage() {
                         </div>
                     </div>
                     <Waiting for={status === 'idle'}>
-                        {sortedFeeds.length > 0 ? (<>
-                            {listState === 'normal' && <FeaturedCard feed={sortedFeeds[0]} />}
+                        {feedList.length > 0 ? (<>
+                            {listState === 'normal' && <FeaturedCard feed={feedList[0]} />}
                             <div className="flex flex-col space-y-6 ani-show">
-                                {sortedFeeds.slice(listState === 'normal' ? 1 : 0).map((feed) => (
+                                {feedList.slice(listState === 'normal' ? 1 : 0).map((feed) => (
                                     <FeedCard key={feed.id} {...feed} />
                                 ))}
                             </div>

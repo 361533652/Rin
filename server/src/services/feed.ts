@@ -17,7 +17,7 @@ export function FeedService() {
         .use(setup())
         .group('/feed', (group) =>
             group
-                .get('/', async ({ admin, set, query: { page, limit, type } }) => {
+                .get('/', async ({ admin, set, query: { page, limit, type, sortBy } }) => {
                     if ((type === 'draft' || type === 'unlisted') && !admin) {
                         set.status = 403;
                         return 'Permission denied';
@@ -25,7 +25,8 @@ export function FeedService() {
                     const cache = PublicCache();
                     const page_num = (page ? page > 0 ? page : 1 : 1) - 1;
                     const limit_num = limit ? +limit > 50 ? 50 : +limit : 20;
-                    const cacheKey = `feeds_${type}_${page_num}_${limit_num}`;
+                    const sort_field = sortBy === 'createdAt' ? feeds.createdAt : feeds.updatedAt;
+                    const cacheKey = `feeds_${type}_${page_num}_${limit_num}_${sortBy || 'updatedAt'}`;
                     const cached = await cache.get(cacheKey);
                     if (cached) {
                         return cached;
@@ -57,7 +58,7 @@ export function FeedService() {
                                 columns: { id: true, username: true, avatar: true }
                             }
                         },
-                        orderBy: [desc(feeds.top), desc(feeds.createdAt), desc(feeds.updatedAt)],
+                        orderBy: [desc(feeds.top), desc(sort_field)],
                         offset: page_num * limit_num,
                         limit: limit_num + 1,
                     })).map(({ content, hashtags, summary, cover, ...other }) => {
@@ -88,7 +89,8 @@ export function FeedService() {
                     query: t.Object({
                         page: t.Optional(t.Numeric()),
                         limit: t.Optional(t.Numeric()),
-                        type: t.Optional(t.String())
+                        type: t.Optional(t.String()),
+                        sortBy: t.Optional(t.String())
                     })
                 })
                 .get('/timeline', async () => {
