@@ -114,14 +114,13 @@ export function HomePage() {
                                     ))}
                                 </ol>
                             )}
-                            {/* 分页控制 */}
+                            {/* 分页控制：页号已在目录标题行右侧显示，这里只放翻页按钮 */}
                             {totalPages > 1 && (
                                 <div className="flex items-center justify-between pt-6">
                                     <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
                                         className="flex items-center gap-1 font-mono text-xs text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-30">
                                         <i className="ri-arrow-left-line" /> {t('previous')}
                                     </button>
-                                    <span className="font-mono text-[10px] text-[var(--text-faint)]">{String(page).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}</span>
                                     <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
                                         className="flex items-center gap-1 font-mono text-xs text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-30">
                                         {t('next')} <i className="ri-arrow-right-line" />
