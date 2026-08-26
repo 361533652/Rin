@@ -1,10 +1,49 @@
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
+import { client } from "../main";
 import { siteName } from "../utils/constants";
+
+const CATALOG_LIMIT = 5;
+
+interface CatalogFeed {
+    id: number;
+    title: string | null;
+    createdAt: Date | string;
+}
+
+function formatShortDate(d: Date | string): string {
+    const date = new Date(d);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`;
+}
 
 export function HomePage() {
     const { t } = useTranslation();
+    // 阅读目录：最新文章列表 + 分页
+    const [page, setPage] = useState(1);
+    const [catalog, setCatalog] = useState<{ id: string; title: string; createdAt: Date | string }[]>([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [catalogLoading, setCatalogLoading] = useState(true);
+    useEffect(() => {
+        let cancelled = false;
+        setCatalogLoading(true);
+        client.feed.index.get({
+            query: { page, limit: CATALOG_LIMIT, type: "normal" },
+        }).then(({ data }) => {
+            if (cancelled || !data || typeof data === "string") return;
+            setCatalog(data.data.map((f: CatalogFeed) => ({
+                id: String(f.id),
+                title: f.title ?? "Untitled",
+                createdAt: f.createdAt,
+            })));
+            setTotalPages(Math.max(1, Math.ceil(data.size / CATALOG_LIMIT)));
+        }).finally(() => {
+            if (!cancelled) setCatalogLoading(false);
+        });
+        return () => { cancelled = true; };
+    }, [page]);
 
     return (
         <>
@@ -49,13 +88,49 @@ export function HomePage() {
                         </div>
                     </section>
 
-                    <section className="flex flex-col justify-between py-10 lg:py-14 lg:pl-14">
+                    <section className="flex flex-col py-10 lg:py-14 lg:pl-14">
                         <div className="flex items-center justify-between border-b border-paper-border pb-4 text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
                             <span>{t('home.index')}</span>
-                            <span>01 / 01</span>
+                            <span className="font-mono">{String(page).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}</span>
                         </div>
 
-                        <div className="py-16 sm:py-24">
+                        {/* 阅读目录：最新文章列表 + 分页 */}
+                        <div className="py-8">
+                            {catalogLoading && catalog.length === 0 ? (
+                                <p className="py-6 font-mono text-xs text-[var(--text-faint)]">{t('loading')}</p>
+                            ) : catalog.length === 0 ? (
+                                <p className="py-6 font-mono text-xs text-[var(--text-faint)]">{t('empty.articles')}</p>
+                            ) : (
+                                <ol>
+                                    {catalog.map((feed, index) => (
+                                        <li key={feed.id}>
+                                            <Link href={`/feed/${feed.id}`}
+                                                className="group flex items-baseline gap-4 border-b border-paper-border py-4 transition-colors hover:border-[var(--primary)]">
+                                                <span className="font-mono text-[10px] text-[var(--text-faint)]">{String((page - 1) * CATALOG_LIMIT + index + 1).padStart(2, "0")}</span>
+                                                <span className="min-w-0 flex-1 truncate text-sm font-medium text-[var(--text-main)] transition-colors group-hover:text-[var(--primary)]">{feed.title}</span>
+                                                <time className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-[var(--text-faint)]">{formatShortDate(feed.createdAt)}</time>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ol>
+                            )}
+                            {/* 分页控制 */}
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-between pt-6">
+                                    <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
+                                        className="flex items-center gap-1 font-mono text-xs text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-30">
+                                        <i className="ri-arrow-left-line" /> {t('previous')}
+                                    </button>
+                                    <span className="font-mono text-[10px] text-[var(--text-faint)]">{String(page).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}</span>
+                                    <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
+                                        className="flex items-center gap-1 font-mono text-xs text-[var(--text-muted)] transition-colors hover:text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-30">
+                                        {t('next')} <i className="ri-arrow-right-line" />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="py-10 sm:py-14">
                             <p className="mb-5 font-mono text-xs text-[var(--primary-hover)]">/ blog</p>
                             <h2 className="max-w-lg font-serif text-4xl font-medium leading-[1.05] tracking-[-0.04em] text-[var(--text-main)] sm:text-6xl">
                                 {t('home.archive_title')}
