@@ -88,7 +88,10 @@ export function UserService() {
                     query: t.Object({
                         state: t.String(),
                         code: t.String(),
-                    })
+                        // GitHub 现在会在 OAuth 回调附带 iss（RFC 9207 授权服务器标识）；
+                        // 额外参数一律放行，避免第三方新增参数时再次中断登录
+                        iss: t.Optional(t.String()),
+                    }, { additionalProperties: true })
                 })
                 .get('/profile', async ({ set, uid }) => {
                     if (!uid) {
