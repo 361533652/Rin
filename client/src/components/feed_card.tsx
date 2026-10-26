@@ -16,34 +16,34 @@ export function FeedCard({ id, title, avatar, cover, draft, listed, top, summary
     const coverImage = cover || avatar
     return useMemo(() => (
         <>
-            <Link href={`/feed/${id}`} target="_blank" className="group w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 p-6 c-shadow hover:c-shadow-hover hover:-translate-y-1.5 hover:scale-[1.015] transition-all duration-300 hover:border-[#D8A0AD]" style={{ '--bg-card-hover': '#FFFDF8', '--shadow-hover': '0 18px 50px rgba(80,60,40,0.16)' } as React.CSSProperties}>
+            <Link href={`/feed/${id}`} target="_blank" className="group w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 p-6 c-shadow hover:c-shadow-hover hover:-translate-y-1.5 hover:scale-[1.015] transition-all duration-300 hover:border-[var(--primary-light)]" style={{ '--bg-card-hover': '#FFFDF8', '--shadow-hover': '0 18px 50px rgba(80,60,40,0.16)' } as React.CSSProperties}>
                 {coverImage &&
                     <div className="mb-4 rounded-xl overflow-hidden max-h-48">
                         <img src={coverImage} alt={title}
                             className="object-cover object-center w-full h-48 transition-transform duration-500 group-hover:scale-105" />
                     </div>}
-                <h1 className="text-xl font-bold c-text-main dark:text-white text-pretty overflow-hidden mb-3">
+                <h2 className="text-xl font-bold c-text-main dark:text-white text-pretty overflow-hidden mb-3">
                     {title}
-                </h1>
+                </h2>
                 <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm flex items-center" title={new Date(createdAt).toLocaleString()}>
+                    <span className="c-text-faint text-sm flex items-center" title={new Date(createdAt).toLocaleString()}>
                         <i className="ri-time-line mr-1" />
                         {createdAt === updatedAt ? timeago(createdAt) : t('feed_card.published$time', { time: timeago(createdAt) })}
                     </span>
                     {createdAt !== updatedAt &&
-                        <span className="text-gray-500 dark:text-gray-400 text-sm" title={new Date(updatedAt).toLocaleString()}>
+                        <span className="c-text-faint text-sm" title={new Date(updatedAt).toLocaleString()}>
                             {t('feed_card.updated$time', { time: timeago(updatedAt) })}
                         </span>
                     }
                     <div className="flex flex-wrap gap-2">
-                        {draft === 1 && <span className="text-gray-500 dark:text-gray-400 text-xs px-2 py-1 bg-zinc-100 dark:bg-neutral-800 rounded-full">{t("draft")}</span>}
-                        {listed === 0 && <span className="text-gray-500 dark:text-gray-400 text-xs px-2 py-1 bg-zinc-100 dark:bg-neutral-800 rounded-full">{t("unlisted")}</span>}
+                        {draft === 1 && <span className="c-text-muted text-xs px-2 py-1 c-bg-code rounded-full">{t("draft")}</span>}
+                        {listed === 0 && <span className="c-text-muted text-xs px-2 py-1 c-bg-code rounded-full">{t("unlisted")}</span>}
                         {top === 1 && <span className="text-theme text-xs px-2 py-1 bg-theme/10 rounded-full">
                             {t('article.top.title')}
                         </span>}
                     </div>
                 </div>
-                <p className="text-[#6E6862] dark:text-gray-300 text-pretty overflow-hidden mb-4 line-clamp-3">
+                <p className="c-text-body text-pretty overflow-hidden mb-4 line-clamp-3">
                     {summary}
                 </p>
                 {hashtags.length > 0 &&

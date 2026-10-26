@@ -67,7 +67,7 @@ export function HomePage() {
                 <div className="grid w-full grid-cols-1 border-y border-paper-border lg:grid-cols-[minmax(0,0.92fr)_minmax(20rem,1.08fr)]">
                     <section className="flex min-h-[52vh] flex-col justify-between border-paper-border py-10 lg:min-h-0 lg:border-r lg:py-14 lg:pr-14">
                         <div>
-                            <p className="mb-12 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                            <p className="mb-12 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">
                                 {t('home.kicker')}
                             </p>
                             {process.env.AVATAR && (
@@ -81,7 +81,7 @@ export function HomePage() {
 
                         <div className="max-w-sm pt-14 lg:pt-0">
                             {process.env.DESCRIPTION && (
-                                <p className="text-base leading-[1.75] text-[var(--text-body)] sm:text-[17px]">{process.env.DESCRIPTION}</p>
+                                <p className="text-[1.0625rem] leading-[1.75] text-[var(--text-body)]">{process.env.DESCRIPTION}</p>
                             )}
                             <p className="mt-5 border-l-2 border-[var(--primary)] pl-4 text-sm leading-6 text-[var(--text-muted)]">
                                 {t('home.direction')}
@@ -90,7 +90,7 @@ export function HomePage() {
                     </section>
 
                     <section className="flex flex-col py-10 lg:py-14 lg:pl-14">
-                        <div className="flex items-baseline justify-between border-b border-paper-border pb-4 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                        <div className="flex items-baseline justify-between border-b border-paper-border pb-4 text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-[var(--text-muted)]">
                             <span>{t('home.index')}</span>
                             <span className="font-mono tabular-nums">{String(page).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}</span>
                         </div>
@@ -107,9 +107,9 @@ export function HomePage() {
                                         <li key={feed.id}>
                                             <Link href={`/feed/${feed.id}`}
                                                 className="group flex items-baseline gap-4 border-b border-[color:var(--border-strong)] py-4 transition-colors hover:border-[var(--primary)]">
-                                                <span className="font-mono text-[11px] tabular-nums text-[var(--text-faint)]">{String((page - 1) * CATALOG_LIMIT + index + 1).padStart(2, "0")}</span>
-                                                <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-[var(--text-main)] transition-colors group-hover:text-[var(--primary-ink)]">{feed.title}</span>
-                                                <time className="shrink-0 font-mono text-[11px] tabular-nums text-[var(--text-faint)]">{formatShortDate(feed.createdAt)}</time>
+                                                <span className="font-mono text-[0.6875rem] tabular-nums text-[var(--text-faint)]">{String((page - 1) * CATALOG_LIMIT + index + 1).padStart(2, "0")}</span>
+                                                <span className="min-w-0 flex-1 truncate text-[0.9375rem] font-medium text-[var(--text-main)] transition-colors group-hover:text-[var(--primary-ink)]">{feed.title}</span>
+                                                <time className="shrink-0 font-mono text-[0.6875rem] tabular-nums text-[var(--text-faint)]">{formatShortDate(feed.createdAt)}</time>
                                             </Link>
                                         </li>
                                     ))}
@@ -135,10 +135,10 @@ export function HomePage() {
                         <div className="py-10 sm:py-14">
                             <p className="mb-5 font-mono text-xs text-[var(--primary-ink)]">/ blog</p>
                             {/* 与 h1 形成 1.6:1 的层级，不再和站名抢重量 */}
-                            <h2 className="max-w-lg font-serif text-[28px] font-medium leading-[1.18] tracking-[-0.025em] text-[var(--text-main)] sm:text-[40px]">
+                            <h2 className="max-w-lg font-serif text-[1.75rem] font-medium leading-[1.18] tracking-[-0.025em] text-[var(--text-main)] sm:text-[2.5rem]">
                                 {t('home.archive_title')}
                             </h2>
-                            <p className="mt-7 text-[17px] leading-[1.75] text-[var(--text-body)]">{t('home.archive_description')}</p>
+                            <p className="mt-7 text-[1.0625rem] leading-[1.75] text-[var(--text-body)]">{t('home.archive_description')}</p>
                         </div>
 
                         {/* CTA 钉在网格底部：与左栏 justify-between 的底对齐构图呼应，
@@ -150,7 +150,7 @@ export function HomePage() {
                     </section>
                 </div>
 
-                <p className="absolute bottom-2 left-6 text-[11px] uppercase tracking-[0.12em] text-[var(--text-faint)] sm:left-10 lg:left-16">
+                <p className="absolute bottom-2 left-6 text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--text-faint)] sm:left-10 lg:left-16">
                     <a className="transition-colors hover:text-[var(--text-main)]" href="https://github.com/openRin/Rin" target="_blank" rel="noreferrer">{t('home.credit')}</a>
                 </p>
             </main>

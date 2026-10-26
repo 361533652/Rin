@@ -175,10 +175,10 @@ export function MomentsPage() {
             </Helmet>
             <Waiting for={!loading}>
                 <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start c-text-main py-4 text-4xl font-bold">
-                        <p>
+                    <div className="wauto text-start c-text-main py-4">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                             {t('moments.title')}
-                        </p>
+                        </h1>
                         <div className="flex flex-row justify-between items-center">
                             <p className="text-sm mt-4 c-text-muted font-normal">
                                 {t('moments.total$count', { count: length })}

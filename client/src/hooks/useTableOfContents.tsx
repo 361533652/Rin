@@ -29,13 +29,20 @@ const useTableOfContents = (selector: string) => {
         ) // all headers
 
         // set TableOfContents
-        const tocData = Array.from(headers).map<TableOfContent>((header, i) => ({
-            index: i,
-            text: header.textContent || '',
-            marginLeft: (Number(header.tagName.charAt(1)) - 1) * 16,
-            level: Number(header.tagName.charAt(1)),
-            element: header, // have to down little bit
-        }))
+        // 层级按「实际出现的最小标题级」归一化：正文标题会整体降级渲染，
+        // 若直接用 tagName 算缩进，降级后整棵目录会平白多出一级缩进。
+        const rawLevels = Array.from(headers).map(h => Number(h.tagName.charAt(1)))
+        const minLevel = rawLevels.length > 0 ? Math.min(...rawLevels) : 1
+        const tocData = Array.from(headers).map<TableOfContent>((header, i) => {
+            const level = rawLevels[i] - minLevel + 1
+            return {
+                index: i,
+                text: header.textContent || '',
+                marginLeft: (level - 1) * 16,
+                level,
+                element: header, // have to down little bit
+            }
+        })
         setTableOfContents(tocData)
 
         // create IntersectionObserver
@@ -79,14 +86,18 @@ const useTableOfContents = (selector: string) => {
     }
 
     return {
-        TOC: () => (<div className='rounded-xl c-border backdrop-blur-md py-4 px-4 c-text-main' style={{ background: 'rgba(255,253,248,0.65)' }}>
+        // 没有标题时不要渲染整个目录面板：/about 这类无标题页面本来就会显示「目录为空」，
+        // 白白占掉右侧一整条，还挤压正文。
+        hasTOC: tableOfContents.length > 0,
+        TOC: () => (<div className='flex h-full min-h-0 flex-col rounded-xl c-border backdrop-blur-md py-4 px-4 c-text-main' style={{ background: 'rgba(255,253,248,0.65)' }}>
             <h2 className="text-sm font-semibold mb-2 c-text-muted tracking-wide">{t("index.title")}</h2>
-            <ul className="max-h-[calc(100vh-10.25rem)] overflow-auto" style={{ scrollbarWidth: "none" }}>
-                {tableOfContents.length === 0 && <li>{t("index.empty.title")}</li>}
+            {/* 高度交给外层 aside 的 flex 布局分配，避免与右下悬浮按钮（TOP + 音乐）重叠 */}
+            <ul className="min-h-0 flex-1 overflow-auto" style={{ scrollbarWidth: "none" }}>
+                {tableOfContents.length === 0 && <li className="c-text-muted text-sm">{t("index.empty.title")}</li>}
                 {tableOfContents.map((item) => (
                     <li
                         key={`toc$${item.index}`}
-                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "c-primary c-primary-bg-light c-primary-hover font-medium" : "border-transparent c-text-nav hover:c-text-main"} hover:bg-[var(--primary-light)] [&:hover]:bg-opacity-40 ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
+                        className={`cursor-pointer relative pl-3 py-1 my-0.5 rounded-r transition-colors duration-200 border-l-[3px] ${activeIndex === item.index ? "c-primary-ink c-primary-bg-light font-medium" : "border-transparent c-text-nav hover:c-text-main"} hover:bg-[var(--primary-light)] [&:hover]:bg-opacity-40 ${item.level === 1 ? "text-sm" : item.level >= 3 ? "text-xs" : "text-sm"}`}
                         style={{ marginLeft: item.marginLeft }}
                         onClick={() => {
                             smoothScrollToElement(item.element);

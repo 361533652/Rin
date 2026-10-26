@@ -340,5 +340,7 @@
     "self_only": "Visible to self only"
   },
   "writing": "Writing",
-  "year$year": "{{year}}"
+  "year$year": "{{year}}",
+  "adjacent.previous": "Previous",
+  "adjacent.next": "Next"
 }

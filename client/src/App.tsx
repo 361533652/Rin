@@ -344,7 +344,7 @@ function RouteMe({ path, children, headerComponent, paddingClassName, requirePer
 
 function RouteWithIndex({ path, children }:
   { path: PathPattern, children: (params: DefaultParams, TOC: () => JSX.Element, clean: (id: string) => void) => React.ReactNode }) {
-  const { TOC, cleanup } = useTableOfContents(".toc-content");
+  const { TOC, cleanup, hasTOC } = useTableOfContents(".toc-content");
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -360,16 +360,22 @@ function RouteWithIndex({ path, children }:
               <Footer />
             </div>
           </div>
-          <button
-            onClick={() => setExpanded(v => !v)}
-            className="hidden lg:flex fixed right-0 top-16 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
-            title={expanded ? "收起大纲" : "展开大纲"}
-          >
-            <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
-          </button>
-          <aside className={`hidden lg:block fixed right-0 top-16 h-[calc(100vh-4rem)] z-40 w-56 pt-4 pb-8 pl-4 pr-2 overflow-y-auto bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
-            <TOC />
-          </aside>
+          {/* 没有标题的页面（如 /about）不渲染目录与折叠按钮，避免右侧留一条空面板 */}
+          {hasTOC && <>
+            <button
+              onClick={() => setExpanded(v => !v)}
+              className="hidden lg:flex fixed right-0 top-16 z-50 w-7 h-14 rounded-l-lg bg-white/20 dark:bg-neutral-900/20 backdrop-blur-xl items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 shadow-sm border border-gray-200/20 dark:border-gray-700/20 transition-colors"
+              title={expanded ? "收起大纲" : "展开大纲"}
+              aria-label={expanded ? "收起大纲" : "展开大纲"}
+            >
+              <i className={`ri-arrow-${expanded ? 'right' : 'left'}-s-line`} />
+            </button>
+            {/* 目录容器给底部留出悬浮按钮（TOP + 音乐，约 130px）的安全区，
+                并让内部列表用 flex 撑满剩余高度，最后几项才不会被圆钮盖住 */}
+            <aside className={`hidden lg:block fixed right-0 top-16 h-[calc(100vh-4rem)] z-40 w-56 pt-4 pb-[8.5rem] pl-4 pr-2 overflow-hidden bg-transparent backdrop-blur-xl shadow-lg transition-transform duration-300 [&_.bg-w]:!bg-transparent ${expanded ? 'translate-x-0' : 'translate-x-full'}`}>
+              <TOC />
+            </aside>
+          </>}
         </>
       )}
     </Route>

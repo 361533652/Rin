@@ -148,7 +148,7 @@ ul {
 }
 
 .wmde-markdown code {
-  color: var(--primary-hover);
+  color: var(--primary-ink);
   background-color: var(--primary-light);
   font-size: 0.9em;
   padding: 0 4px;

@@ -100,7 +100,11 @@ export function FriendsPage() {
         </Helmet>
         <Waiting for={friendsAvailable.length !== 0 || friendsUnavailable.length !== 0 || status === "idle"}>
             <main className="w-full flex flex-col justify-center items-center mb-8 t-primary ani-show">
-                <FriendList title={t('friends.title')} show={friendsAvailable.length > 0} friends={friendsAvailable} />
+                <div className="wauto text-start pt-4 pb-2">
+                    <h1 className="text-3xl sm:text-4xl font-bold">{t('friends.title')}</h1>
+                </div>
+                {/* 可用友链本身就是一个列表，不再重复一次「朋友们」小标题 */}
+                <FriendList show={friendsAvailable.length > 0} friends={friendsAvailable} />
                 <FriendList title={t('friends.left')} show={friendsUnavailable.length > 0} friends={friendsUnavailable} />
                 <FriendList title={t('friends.review.waiting')} show={waitList.length > 0} friends={waitList} />
                 <FriendList title={t('friends.review.rejected')} show={refusedList.length > 0} friends={refusedList} />
@@ -132,19 +136,21 @@ export function FriendsPage() {
     </>)
 }
 
-function FriendList({ title, show, friends }: { title: string, show: boolean, friends: FriendItem[] }) {
+function FriendList({ title, show, friends }: { title?: string, show: boolean, friends: FriendItem[] }) {
     return (<>
         {
             show && <>
-                <div className="wauto flex flex-row items-center gap-3 pt-8 pb-2">
-                    <span className="w-1.5 h-5 rounded-full bg-theme/70" />
-                    <h2 className="text-xl font-bold t-primary">
-                        {title}
-                    </h2>
-                    <span className="text-xs t-secondary bg-theme-light/70 px-2 py-0.5 rounded-full">
-                        {friends.length}
-                    </span>
-                </div>
+                {title &&
+                    <div className="wauto flex flex-row items-center gap-3 pt-8 pb-2">
+                        <span className="w-1.5 h-5 rounded-full bg-theme/70" />
+                        <h2 className="text-xl font-bold t-primary">
+                            {title}
+                        </h2>
+                        <span className="text-xs t-secondary bg-theme-light/70 px-2 py-0.5 rounded-full">
+                            {friends.length}
+                        </span>
+                    </div>
+                }
                 <div className="wauto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {friends.map((friend) => (
                         <Friend key={friend.id} friend={friend} />

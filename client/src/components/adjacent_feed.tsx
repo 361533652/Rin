@@ -47,12 +47,13 @@ export function AdjacentCard({data, type}: { data: AdjacentFeed | null | undefin
     const direction = type === "previous" ? "text-start" : "text-end"
     const radius = type === "previous" ? "rounded-t-2xl sm:rounded-none sm:rounded-l-2xl" : "rounded-b-2xl sm:rounded-none sm:rounded-r-2xl"
     const {t} = useTranslation()
+    const label = type === "previous" ? t('adjacent.previous') : t('adjacent.next')
     if (!data) {
         return (<div className="w-full p-6 duration-300">
             <p className={`t-secondary w-full ${direction}`}>
-                {type === "previous" ? "Previous" : "Next"}
+                {label}
             </p>
-            <h3 className={`text-xl text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
+            <h3 className={`text-xl c-text-muted text-pretty truncate ${direction}`}>
                 {t('no_more')}
             </h3>
         </div>);
@@ -61,17 +62,17 @@ export function AdjacentCard({data, type}: { data: AdjacentFeed | null | undefin
         <Link href={`/feed/${data.id}`} target="_blank"
               className={`w-full p-6 duration-300 bg-button ${radius}`}>
             <p className={`t-secondary w-full ${direction}`}>
-                {type === "previous" ? "Previous" : "Next"}
+                {label}
             </p>
-            <h3 className={`text-xl font-bold text-gray-700 dark:text-white text-pretty truncate ${direction}`}>
+            <h3 className={`text-xl font-bold c-text-main text-pretty truncate ${direction}`}>
                 {data.title}
             </h3>
             <p className={`space-x-2 ${direction}`}>
-                <span className="text-gray-400 text-sm" title={new Date(data.createdAt).toLocaleString()}>
+                <span className="c-text-faint text-sm" title={new Date(data.createdAt).toLocaleString()}>
                     {data.createdAt === data.updatedAt ? timeago(data.createdAt) : t('feed_card.published$time', {time: timeago(data.createdAt)})}
                 </span>
                 {data.createdAt !== data.updatedAt &&
-                    <span className="text-gray-400 text-sm" title={new Date(data.updatedAt).toLocaleString()}>
+                    <span className="c-text-faint text-sm" title={new Date(data.updatedAt).toLocaleString()}>
                         {t('feed_card.updated$time', {time: timeago(data.updatedAt)})}
                     </span>
                 }

@@ -340,5 +340,7 @@
     "self_only": "自分のみ可視"
   },
   "writing": "執筆",
-  "year$year": "{{year}} 年"
+  "year$year": "{{year}} 年",
+  "adjacent.previous": "前の記事",
+  "adjacent.next": "次の記事"
 }

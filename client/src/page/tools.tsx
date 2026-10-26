@@ -18,9 +18,9 @@ export function ToolsPage() {
             </Helmet>
             <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
                 <div className="wauto flex flex-col items-start py-4 w-full">
-                    <div className="text-start c-text-main text-4xl font-bold">
-                        <p>{t('tools')}</p>
-                    </div>
+                    <h1 className="text-start c-text-main text-3xl sm:text-4xl font-bold">
+                        {t('tools')}
+                    </h1>
                     <p className="text-sm t-secondary mt-2">{t('tools_desc')}</p>
                 </div>
 

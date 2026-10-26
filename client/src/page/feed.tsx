@@ -278,7 +278,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
       <div className="w-full flex flex-row justify-center ani-show">
         {error && (
           <>
-            <div className="flex flex-col wauto bg-[#FFFDF8] dark:bg-neutral-900 rounded-2xl m-2 p-6 items-center justify-center space-y-2">
+            <div className="flex flex-col wauto c-bg-card dark:bg-neutral-900 rounded-2xl m-2 p-6 items-center justify-center space-y-2">
               <h1 className="text-xl font-bold t-primary">{error}</h1>
               {error === "Not found" && id === "about" && (
                 <Tips value={t("about.notfound")} />
@@ -294,14 +294,14 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
           <>
             <main className="w-full">
               <article
-                className="bg-[#FFFDF8] dark:bg-neutral-900 m-2 w-full max-w-[900px] mx-auto rounded-2xl px-4 py-6 sm:px-12 sm:py-12 overflow-x-hidden shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+                className="c-bg-card dark:bg-neutral-900 m-2 w-full max-w-[900px] mx-auto rounded-2xl px-4 py-6 sm:px-12 sm:py-12 overflow-x-hidden shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
                 aria-label={feed.title ?? "Unnamed"}
               >
                 <div className="flex justify-between">
                   <div>
                     <div className="mt-1 mb-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                       <p
-                        className="text-gray-400 text-[12px]"
+                        className="c-text-faint text-[0.75rem]"
                         title={new Date(feed.createdAt).toLocaleString()}
                       >
                         {t("feed_card.published$time", {
@@ -311,7 +311,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
 
                       {feed.createdAt !== feed.updatedAt && (
                         <p
-                          className="text-gray-400 text-[12px]"
+                          className="c-text-faint text-[0.75rem]"
                           title={new Date(feed.updatedAt).toLocaleString()}
                         >
                           {t("feed_card.updated$time", {
@@ -320,12 +320,12 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                         </p>
                       )}
 
-                      <span className="text-gray-400 text-[12px] flex items-center gap-0.5">
+                      <span className="c-text-faint text-[0.75rem] flex items-center gap-0.5">
                         <i className="ri-time-line" />
                         {t("article.reading_time$min", { min: readingMinutes })}
                       </span>
                     </div>
-                    {counterEnabled && <p className='text-[12px] text-gray-400 font-normal link-line'>
+                    {counterEnabled && <p className='text-[0.75rem] c-text-faint font-normal link-line'>
                       <span> {t("count.pv")} </span>
                       <span>
                         {feed.pv}
@@ -337,7 +337,7 @@ export function FeedPage({ id, clean }: { id: string, clean: (id: string) => voi
                       </span>
                     </p>}
                     <div className="flex flex-row items-center">
-                      <h1 className="text-2xl font-bold t-primary break-all">
+                      <h1 className="text-3xl font-bold t-primary break-all text-pretty">
                         {feed.title}
                       </h1>
                       <div className="flex-1 w-0" />
@@ -518,7 +518,7 @@ function CommentInput({
       });
   }
   return (
-    <div className="w-full m-2 max-w-[900px] mx-auto bg-[#FFFDF8] dark:bg-neutral-900 rounded-2xl t-primary p-6 items-end flex flex-col">
+    <div className="w-full m-2 max-w-[900px] mx-auto c-bg-card dark:bg-neutral-900 rounded-2xl t-primary p-6 items-end flex flex-col">
       <div className="flex flex-col w-full items-start mb-4">
         <label htmlFor="comment">{t("comment.title")}</label>
       </div>
@@ -534,7 +534,7 @@ function CommentInput({
       <textarea
         id="comment"
         placeholder={t("comment.placeholder.title")}
-        className="bg-[#F8F6F2] w-full h-24 rounded-lg border border-[#E8DDE0] focus:border-[#D88A9A] focus:outline-none px-3 py-2"
+        className="c-bg-code w-full h-24 rounded-lg border border-[var(--border)] focus:border-[var(--primary)] focus:outline-none px-3 py-2"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
@@ -598,7 +598,7 @@ function Comments({ id }: { id: string }) {
           <CommentInput id={id} onRefresh={loadComments} />
           {error && (
             <>
-              <div className="flex flex-col wauto bg-[#FFFDF8] dark:bg-neutral-900 rounded-2xl t-primary m-2 p-6 items-center justify-center">
+              <div className="flex flex-col wauto c-bg-card dark:bg-neutral-900 rounded-2xl t-primary m-2 p-6 items-center justify-center">
                 <h1 className="text-xl font-bold t-primary">{error}</h1>
                 <button
                   className="mt-2 bg-theme text-white px-4 py-2 rounded-full"
@@ -669,7 +669,7 @@ function CommentItem({
       ) : comment.guestId ? (
         <Identicon seed={comment.guestId} size={32} className="mt-4" />
       ) : null}
-      <div className="flex flex-col flex-1 w-0 ml-2 bg-[#F8F6F2] rounded-lg p-4">
+      <div className="flex flex-col flex-1 w-0 ml-2 c-bg-code rounded-lg p-4">
         <div className="flex flex-row">
           <span className="t-primary text-base font-bold">
             {comment.user ? comment.user.username : comment.nickname}
@@ -677,7 +677,7 @@ function CommentItem({
           <div className="flex-1 w-0" />
           <span
             title={new Date(comment.createdAt).toLocaleString()}
-            className="text-gray-400 text-sm"
+            className="c-text-faint text-sm"
           >
             {timeago(comment.createdAt)}
           </span>

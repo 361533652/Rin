@@ -207,9 +207,9 @@ function FeaturedCard({ feed }: { feed: FeedItem }) {
     const coverImage = feed.cover || feed.avatar
     return (
         <Link href={`/feed/${feed.id}`} target="_blank"
-            className="group block w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 overflow-hidden c-shadow hover:c-shadow-hover border border-transparent hover:border-[#D8A0AD] transition-all duration-300">
+            className="group block w-full rounded-2xl c-bg-card dark:bg-neutral-900 my-4 overflow-hidden c-shadow hover:c-shadow-hover border border-transparent hover:border-[var(--primary-light)] transition-all duration-300">
             {coverImage &&
-                <div className="relative aspect-[21/9] overflow-hidden bg-[var(--primary-light)]/30">
+                <div className="relative aspect-[16/9] overflow-hidden bg-[var(--primary-light)]/30">
                     <img src={coverImage} alt={feed.title}
                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
                 </div>
@@ -221,7 +221,7 @@ function FeaturedCard({ feed }: { feed: FeedItem }) {
                             {t('article.top.title')}
                         </span>
                     }
-                    <span className="text-[#AAA39A] dark:text-gray-400 text-sm flex items-center">
+                    <span className="c-text-faint text-sm flex items-center">
                         <i className="ri-time-line mr-1" />
                         {feed.createdAt === feed.updatedAt ? timeago(feed.createdAt) : t('feed_card.published$time', { time: timeago(feed.createdAt) })}
                     </span>
@@ -229,7 +229,7 @@ function FeaturedCard({ feed }: { feed: FeedItem }) {
                 <h2 className="text-xl sm:text-2xl font-bold c-text-main dark:text-white text-pretty mb-3">
                     {feed.title}
                 </h2>
-                <p className="text-[#6E6862] dark:text-gray-300 text-pretty mb-4 line-clamp-3">
+                <p className="c-text-body text-pretty mb-4 line-clamp-3">
                     {feed.summary}
                 </p>
                 <div className="flex flex-row flex-wrap justify-start gap-2 mb-5">

@@ -15,7 +15,7 @@ function Footer() {
     const { LoginModal, setIsOpened } = useLoginModal()
 
     return (
-        <div>
+        <div className="mt-auto">
             <footer>
                 <Helmet>
                     <link rel="alternate" type="application/rss+xml" title={siteName} href="/sub/rss.xml" />

@@ -43,25 +43,25 @@ export function HashtagsPage() {
             </Helmet>
             <Waiting for={hashtags}>
                 <main className="w-full flex flex-col justify-center items-center mb-8 ani-show">
-                    <div className="wauto text-start c-text-main py-4 text-4xl font-bold">
-                        <p>
+                    <div className="wauto text-start c-text-main py-4">
+                        <h1 className="text-3xl sm:text-4xl font-bold">
                             {t('hashtags')}
-                        </p>
+                        </h1>
                     </div>
 
                     {visibleHashtags.length > 0 ? (
-                        <div className="wauto flex flex-row flex-wrap justify-center items-center gap-3 py-4">
+                        <div className="wauto flex flex-row flex-wrap justify-start items-center gap-3 py-4">
                             {visibleHashtags.map((hashtag, index) => {
                                 const ratio = hashtag.feeds / maxFeeds;
-                                const fontSize = 13 + Math.round(ratio * 11);
-                                const opacity = 0.55 + ratio * 0.45;
+                                // 权重只用字号表达，不再叠 opacity——两档叠加会让最少的标签既小又淡到读不清
+                                const fontSize = 13 + Math.round(ratio * 7);
                                 return (
                                     <Link key={index} href={`/hashtag/${hashtag.name}`}
-                                        className="inline-flex items-center gap-1.5 rounded-full bg-w px-4 py-2 border border-[var(--border)] duration-200 hover:text-theme hover:border-[var(--primary)]"
-                                        style={{ fontSize, opacity }}>
-                                        <span className="italic opacity-60">#</span>
+                                        className="inline-flex items-center gap-1.5 rounded-full bg-w px-4 py-2 border border-[var(--border)] duration-200 c-text-body hover:text-theme hover:border-[var(--primary)]"
+                                        style={{ fontSize }}>
+                                        <span className="italic c-text-muted">#</span>
                                         {hashtag.name}
-                                        <span className="text-xs opacity-60">{hashtag.feeds}</span>
+                                        <span className="text-xs c-text-muted">{hashtag.feeds}</span>
                                     </Link>
                                 )
                             })}

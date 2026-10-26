@@ -162,7 +162,7 @@ export function Markdown({ content }: { content: string }) {
             return (
               <code
                 {...rest}
-                className={`c-primary-bg-light c-primary-hover px-[6px] rounded mx-[2px] text-[0.9em] ${className || ""
+                className={`c-primary-bg-light c-primary-ink px-[6px] rounded mx-[2px] text-[0.9em] ${className || ""
                   }`}
                 style={inlineCodeStyle}
               >
@@ -230,40 +230,32 @@ export function Markdown({ content }: { content: string }) {
             </a>
           );
         },
+        // 正文标题整体降一级语义标签：文章标题已经是页面唯一的 h1，
+        // 正文再出 h1 会出现两个一级标题，也让 TOC 的层级语义失真。
+        // 视觉尺寸同步收一档，保证「文章标题 > 正文 h1 > h2 > h3」始终递减。
         h1({ children, ...props }) {
-          return (
-            <h1
-              id={children?.toString()}
-              className="text-3xl font-bold c-text-main mt-8 mb-4 pb-3 border-b c-primary-bg-light/[0.5]"
-              {...props}
-            >
-              {children}
-            </h1>
-          );
-        },
-        h2({ children, ...props }) {
           return (
             <h2
               id={children?.toString()}
-              className="text-2xl font-bold c-text-main mt-8 mb-3 pl-3 border-l-[3px] c-primary"
+              className="text-2xl font-bold c-text-main mt-8 mb-4 pb-3 border-b c-primary-bg-light/[0.5]"
               {...props}
             >
               {children}
             </h2>
           );
         },
-        h3({ children, ...props }) {
+        h2({ children, ...props }) {
           return (
             <h3
               id={children?.toString()}
-              className="text-xl font-bold mt-4"
+              className="text-xl font-bold c-text-main mt-8 mb-3 pl-3 border-l-[3px] c-primary"
               {...props}
             >
               {children}
             </h3>
           );
         },
-        h4({ children, ...props }) {
+        h3({ children, ...props }) {
           return (
             <h4
               id={children?.toString()}
@@ -274,7 +266,7 @@ export function Markdown({ content }: { content: string }) {
             </h4>
           );
         },
-        h5({ children, ...props }) {
+        h4({ children, ...props }) {
           return (
             <h5
               id={children?.toString()}
@@ -283,6 +275,17 @@ export function Markdown({ content }: { content: string }) {
             >
               {children}
             </h5>
+          );
+        },
+        h5({ children, ...props }) {
+          return (
+            <h6
+              id={children?.toString()}
+              className="text-sm font-bold mt-4"
+              {...props}
+            >
+              {children}
+            </h6>
           );
         },
         h6({ children, ...props }) {

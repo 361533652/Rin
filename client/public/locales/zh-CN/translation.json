@@ -340,5 +340,7 @@
     "self_only": "仅自己可见"
   },
   "writing": "写作",
-  "year$year": "{{year}} 年"
+  "year$year": "{{year}} 年",
+  "adjacent.previous": "上一篇",
+  "adjacent.next": "下一篇"
 }
