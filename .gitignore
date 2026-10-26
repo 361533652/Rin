@@ -43,3 +43,5 @@ dist-ssr
 # 本地分析用 UML 图 + WorkBuddy 生成的临时文档（只留本地，不进仓库）
 docs/uml/
 docs/ARCHITECTURE.md
+# 本地 UI 评审截图与临时脚本（只留本地）
+.dsh-shots/

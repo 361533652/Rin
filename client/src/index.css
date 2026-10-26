@@ -79,6 +79,8 @@ body::after {
 .c-bg-info { background-color: var(--accent-light); }
 .c-primary { color: var(--primary); }
 .c-primary-hover { color: var(--primary-hover); }
+/* 小字级粉色强调：--primary 只有 2.36:1，正文尺寸的文字改用这一档 */
+.c-primary-ink { color: var(--primary-ink); }
 .c-primary-bg { background-color: var(--primary); }
 .c-primary-bg-hover { background-color: var(--primary-hover); }
 .c-primary-bg-light { background-color: var(--primary-light); }

@@ -17,11 +17,16 @@
 
   --text-main: #292724;
   --text-body: #3C3A37;
-  --text-muted: #8B877F;
-  --text-faint: #AAA39A;
+  /* 次要文字对比度（底色 #F7F3EA）：muted 4.84:1、faint 3.38:1，满足 WCAG AA */
+  --text-muted: #6F6A63;
+  --text-faint: #8A837A;
   --text-nav: #6E6862;
+  /* 强调用粉字：primary-hover 仅 3.25:1，正文级小字改用这一档（5.01:1） */
+  --primary-ink: #A8495F;
 
   --border: #E8DDE0;
+  /* 列表分行线：比结构线略深，扫读时能抓住行边界 */
+  --border-strong: #DFD2D6;
   --border-music: #F0D5DC;
 
   --shadow: 0 8px 30px rgba(80, 60, 40, 0.06);
@@ -56,11 +61,14 @@
 
   --text-main: #E8E4E0;
   --text-body: #C5C0B8;
+  /* 深色下同样过 AA：muted 4.95:1、faint 4.73:1 */
   --text-muted: #8B877F;
-  --text-faint: #6E6862;
+  --text-faint: #8A837A;
   --text-nav: #A09A92;
+  --primary-ink: #E8C1CC;
 
   --border: #3A3530;
+  --border-strong: #4A443E;
   --border-music: #3A3530;
 
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.20);

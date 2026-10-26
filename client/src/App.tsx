@@ -45,7 +45,18 @@ function App() {
     return saved ? JSON.parse(saved) : false; // 默认关闭
   });
   const [showPlayer, setShowPlayer] = useState(true)
+  const [showTopButton, setShowTopButton] = useState(false)
   const lastScrollY = useRef(0)
+
+  // 回到顶部按钮滚过一屏后才出现，首屏别让它在右下空白里孤零零地悬着
+  useEffect(() => {
+    const handleTopButtonVisibility = () => {
+      setShowTopButton(window.scrollY > window.innerHeight * 0.75)
+    }
+    handleTopButtonVisibility()
+    window.addEventListener('scroll', handleTopButtonVisibility, { passive: true })
+    return () => window.removeEventListener('scroll', handleTopButtonVisibility)
+  }, [])
   
   // 保存音乐启用状态到 localStorage
   useEffect(() => {
@@ -284,13 +295,17 @@ function App() {
           <i className={`ri-${musicEnabled ? 'volume-up' : 'volume-mute'}-fill`} />
         </button>
       </div>
-      {/* 回到顶部按钮 */}
-      <div className="fixed bottom-[100px] right-4 z-50">
+      {/* 回到顶部按钮：首屏不出现，滚过一屏后再淡入，避免悬在页面右下空白里 */}
+      <div
+        className={`fixed bottom-[100px] right-4 z-50 transition-opacity duration-300 ${showTopButton ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      >
         <button
           id="top-btn"
           onClick={() => smoothScrollTo(0)}
-          className="w-11 h-11 rounded-full c-primary-glass c-primary flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 [@media(hover:hover)]:hover:c-primary-bg-hover [@media(hover:hover)]:hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
+          className="w-11 h-11 rounded-full c-primary-glass c-primary-ink flex items-center justify-center border c-border-primary backdrop-blur-md transition-all duration-200 [@media(hover:hover)]:hover:c-primary-bg [@media(hover:hover)]:hover:text-white c-shadow-sakura active:scale-95 touch-manipulation"
           aria-label="回到顶部"
+          aria-hidden={!showTopButton}
+          tabIndex={showTopButton ? 0 : -1}
         >
           <span className="text-xs font-bold">TOP</span>
         </button>

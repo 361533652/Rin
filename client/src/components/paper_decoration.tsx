@@ -12,7 +12,7 @@ export function PaperDecoration() {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-      {/* 左下猫爪 */}
+      {/* 左下猫爪：落在青色渐变里，原来 13% 几乎看不见，提到 18% */}
       <svg
         className="absolute"
         style={{
@@ -21,7 +21,7 @@ export function PaperDecoration() {
           width: 90,
           height: 90,
           color: PAW_COLOR,
-          opacity: 0.13,
+          opacity: 0.18,
           transform: 'rotate(-20deg)',
         }}
         viewBox="0 0 200 200"
@@ -34,16 +34,17 @@ export function PaperDecoration() {
         <circle cx="160" cy="75" r="18" fill="currentColor" />
       </svg>
 
-      {/* 右上樱花 */}
+      {/* 右上樱花：原来正压在粉色渐变峰值上，差值与底色只有 8~12/255，读作污渍；
+          挪到渐变较弱处并降到 8% */}
       <svg
         className="absolute"
         style={{
-          right: 170,
-          top: 100,
+          right: 300,
+          top: 220,
           width: 120,
           height: 120,
           color: SAKURA_COLOR,
-          opacity: 0.12,
+          opacity: 0.08,
           transform: 'rotate(20deg)',
         }}
         viewBox="0 0 200 200"
