@@ -342,5 +342,15 @@
   "writing": "執筆",
   "year$year": "{{year}} 年",
   "adjacent.previous": "前の記事",
-  "adjacent.next": "次の記事"
+  "adjacent.next": "次の記事",
+  "doc_convert": "文書をテキストに",
+  "doc_convert_desc": "Word 文書から本文を抽出",
+  "doc_convert.click": "クリックして文書を選択",
+  "doc_convert.accept": "対応形式：{{formats}}",
+  "doc_convert.working": "変換中…",
+  "doc_convert.unsupported": "この形式には未対応です。現在は {{formats}} のみ",
+  "doc_convert.failed": "変換に失敗しました",
+  "doc_convert.download": ".txt を保存",
+  "doc_convert.reset": "クリア",
+  "doc_convert.legacy_doc": "旧形式の .doc です。Word で開いて .docx として保存し直してください"
 }

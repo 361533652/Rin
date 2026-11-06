@@ -342,5 +342,15 @@
   "writing": "寫作",
   "year$year": "{{year}} 年",
   "adjacent.previous": "上一篇",
-  "adjacent.next": "下一篇"
+  "adjacent.next": "下一篇",
+  "doc_convert": "文件轉文字",
+  "doc_convert_desc": "提取 Word 文件裡的文字",
+  "doc_convert.click": "點擊選擇文件",
+  "doc_convert.accept": "目前支援：{{formats}}",
+  "doc_convert.working": "轉換中…",
+  "doc_convert.unsupported": "暫不支援這個格式，目前只支援 {{formats}}",
+  "doc_convert.failed": "轉換失敗",
+  "doc_convert.download": "下載 .txt",
+  "doc_convert.reset": "清空",
+  "doc_convert.legacy_doc": "這是舊版 .doc 檔案，請先用 Word 開啟並另存為 .docx"
 }

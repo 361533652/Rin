@@ -35,6 +35,11 @@ export function ToolsPage() {
                         <p className="text-base font-bold t-primary">{t('file_host')}</p>
                         <p className="text-xs t-secondary mt-1 text-center">{t('file_host_desc')}</p>
                     </Link>
+                    <Link href="/doc-convert" className="relative flex flex-col items-center justify-center rounded-2xl p-6 bg-w border-card hover:text-theme duration-300 cursor-pointer">
+                        <i className="ri-file-text-line text-4xl mb-3" />
+                        <p className="text-base font-bold t-primary">{t('doc_convert')}</p>
+                        <p className="text-xs t-secondary mt-1 text-center">{t('doc_convert_desc')}</p>
+                    </Link>
                 </div>
             </main>
         </>

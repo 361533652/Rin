@@ -342,5 +342,15 @@
   "writing": "Writing",
   "year$year": "{{year}}",
   "adjacent.previous": "Previous",
-  "adjacent.next": "Next"
+  "adjacent.next": "Next",
+  "doc_convert": "Document to text",
+  "doc_convert_desc": "Extract text from Word documents",
+  "doc_convert.click": "Click to choose a document",
+  "doc_convert.accept": "Supported: {{formats}}",
+  "doc_convert.working": "Converting...",
+  "doc_convert.unsupported": "Not supported yet — currently only {{formats}}",
+  "doc_convert.failed": "Conversion failed",
+  "doc_convert.download": "Download .txt",
+  "doc_convert.reset": "Clear",
+  "doc_convert.legacy_doc": "This is a legacy .doc file — open it in Word and save as .docx first"
 }

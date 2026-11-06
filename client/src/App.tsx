@@ -32,6 +32,7 @@ import { smoothScrollTo } from './utils/scroll';
 import { ToolsPage } from './page/tools'
 import { ImageBedPage } from './page/image-bed'
 import { FileBedPage } from './page/file-bed'
+import { DocConvertPage } from './page/doc-convert'
 import { PaperDecoration } from './components/paper_decoration'
 
 function App() {
@@ -214,6 +215,10 @@ function App() {
 
             <RouteMe path="/file-bed">
               <FileBedPage />
+            </RouteMe>
+
+            <RouteMe path="/doc-convert">
+              <DocConvertPage />
             </RouteMe>
 
             <RouteWithIndex path="/feed/:id">
